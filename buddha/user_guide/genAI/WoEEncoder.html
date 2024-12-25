@@ -1,0 +1,1101 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Weight of Evidence (WoE) &#8212; 3.1</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=5b4479735964841361fd" rel="stylesheet" />
+<link href="../../_static/styles/bootstrap.css?digest=5b4479735964841361fd" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=5b4479735964841361fd" rel="stylesheet" />
+
+  
+  <link href="../../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=5b4479735964841361fd" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/custom.css?v=30c166bc" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/custom.css?v=30c166bc" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=5b4479735964841361fd" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=5b4479735964841361fd" />
+  <script src="../../_static/vendor/fontawesome/6.1.2/js/all.min.js?digest=5b4479735964841361fd"></script>
+
+    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js?v=e1ce3931"></script>
+    <script src="../../_static/doctools.js?v=888ff710"></script>
+    <script src="../../_static/sphinx_highlight.js?v=4825356b"></script>
+    <script defer data-domain="feature-engine.readthedocs.io" src="https://plausible.io/js/plausible.js"></script>
+    <script src="../../_static/js/copybutton.js?v=84772c1c"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'user_guide/genAI/WoEEncoder';</script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+
+    <!-- Cookie banner -->
+    <style>
+        /* Style for the cookie banner */
+        #cookie-banner {
+            position: fixed;
+            bottom: 0;
+            right: 0;
+            background-color: #ffe4e1; /* Light Pink */
+            color: #333;
+            padding: 15px;
+            max-width: 400px;
+            display: none;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            z-index: 1000; /* Set a higher z-index value */
+        }
+
+        #cookie-banner p {
+        font-size: 16px; /* Font size for the text */
+        color: #333 !important; /* Set link color to black */
+        line-height: 1.5; /* Increase line height for added spacing between sentences */
+        }
+
+        #cookie-banner a {
+            color: #333;
+            text-decoration: underline;
+        }
+    </style>
+
+    <div id="cookie-banner">
+        <h2 style="font-size: 20px; margin-bottom: 10px;">This site uses cookies</h2>
+        <p style="font-size: 16px;">We use cookies to recognize your visits and preferences, to measure the effectiveness of the documentation, and discover how people find us. With your consent, you're helping us make our documentation better. <br><a href="https://www.trainindata.com/p/privacy" target="_blank">Learn More</a>.</p>
+        <button id="cookie-accept">Accept</button>
+        <button id="cookie-decline">Decline</button>
+    </div>
+
+    <script>
+        // JavaScript to show the cookie banner and handle the accept button
+        document.addEventListener('DOMContentLoaded', function () {
+            var cookieBanner = document.getElementById('cookie-banner');
+            var acceptButton = document.getElementById('cookie-accept');
+            var declineButton = document.getElementById('cookie-decline');
+
+            // Check if the user has already accepted or declined cookies
+            var cookiesAccepted = localStorage.getItem('cookiesAccepted');
+
+            if (!cookiesAccepted) {
+                cookieBanner.style.display = 'block';
+
+                acceptButton.addEventListener('click', function () {
+                    localStorage.setItem('cookiesAccepted', 'true');
+                    loadGoogleAnalytics();
+                    cookieBanner.style.display = 'none';
+                });
+
+                declineButton.addEventListener('click', function () {
+                    localStorage.setItem('cookiesAccepted', 'false');
+                    cookieBanner.style.display = 'none';
+                });
+            } else if (cookiesAccepted === 'true') {
+                loadGoogleAnalytics();
+            }
+        });
+
+        function loadGoogleAnalytics() {
+            // Load Google Analytics only if consent is given
+            var script = document.createElement('script');
+            script.async = true;
+            script.src = 'https://www.googletagmanager.com/gtag/js?id=G-Z6MPCG673G';
+            document.head.appendChild(script);
+
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', 'G-Z6MPCG673G');
+        }
+    </script>
+    <!-- Cookie banner -->
+
+
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>
+    Back to top
+  </button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
+<div class="bd-header__inner bd-page-width">
+  <label class="sidebar-toggle primary-toggle" for="__primary">
+    <span class="fa-solid fa-bars"></span>
+  </label>
+  
+  
+  <div class="col-lg-3 navbar-header-items__start">
+    
+      <div class="navbar-item">
+
+  
+
+<a class="navbar-brand logo" href="../../index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../../_static/sageops_logo.png" class="logo__image only-light" alt="3.1 - Home"/>
+    <script>document.write(`<img src="../../_static/sageops_logo.png" class="logo__image only-dark" alt="3.1 - Home"/>`);</script>
+  
+  
+</a></div>
+    
+      <div class="navbar-item">
+<script>
+document.write(`
+  <div class="version-switcher__container dropdown">
+    <button id="pst-version-switcher-button-2"
+      type="button"
+      class="version-switcher__button btn btn-sm navbar-btn dropdown-toggle"
+      data-bs-toggle="dropdown"
+      aria-haspopup="listbox"
+      aria-controls="pst-version-switcher-list-2"
+      aria-label="Version switcher list"
+    >
+      Choose version  <!-- this text may get changed later by javascript -->
+      <span class="caret"></span>
+    </button>
+    <div id="pst-version-switcher-list-2"
+      class="version-switcher__menu dropdown-menu list-group-flush py-0"
+      role="listbox" aria-labelledby="pst-version-switcher-button-2">
+      <!-- dropdown will be populated by javascript on page load -->
+    </div>
+  </div>
+`);
+</script></div>
+    
+  </div>
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item">
+<nav class="navbar-nav">
+  <p class="sidebar-header-items__title"
+     role="heading"
+     aria-level="1"
+     aria-label="Site Navigation">
+    Site Navigation
+  </p>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../quickstart/index.html">
+                        Quick Start
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../index.html">
+                        SageOps User Guide
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../api_doc/index.html">
+                        API
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../example_notebooks/index.html">
+                        Example Notebooks
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../about/index.html">
+                        About
+                      </a>
+                    </li>
+                
+            <li class="nav-item dropdown">
+                <button class="btn dropdown-toggle nav-item" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-controls="pst-nav-more-links">
+                    More
+                </button>
+                <ul id="pst-nav-more-links" class="dropdown-menu">
+                    
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../../Support/index.html">
+                        Support
+                      </a>
+                    </li>
+                
+                </ul>
+            </li>
+            
+  </ul>
+</nav></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+ <script>
+ document.write(`
+   <button class="btn navbar-btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script>
+        </div>
+      
+      
+        <div class="navbar-item">
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  </button>
+`);
+</script></div>
+      
+        <div class="navbar-item"><ul class="navbar-icon-links navbar-nav"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/" title="GitHub" class="nav-link" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><span><i class="fab fa-github-square fa-lg" aria-hidden="true"></i></span>
+            <span class="sr-only">GitHub</span></a>
+        </li>
+</ul></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+ <script>
+ document.write(`
+   <button class="btn navbar-btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script>
+    </div>
+  
+
+  
+    <label class="sidebar-toggle secondary-toggle" for="__secondary" tabindex="0">
+      <span class="fa-solid fa-outdent"></span>
+    </label>
+  
+</div>
+
+    </nav>
+  
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      <div class="bd-sidebar-primary bd-sidebar hide-on-wide">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          <div class="navbar-item">
+<nav class="navbar-nav">
+  <p class="sidebar-header-items__title"
+     role="heading"
+     aria-level="1"
+     aria-label="Site Navigation">
+    Site Navigation
+  </p>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../quickstart/index.html">
+                        Quick Start
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../index.html">
+                        SageOps User Guide
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../api_doc/index.html">
+                        API
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../example_notebooks/index.html">
+                        Example Notebooks
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../about/index.html">
+                        About
+                      </a>
+                    </li>
+                
+            <li class="nav-item dropdown">
+                <button class="btn dropdown-toggle nav-item" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-controls="pst-nav-more-links-2">
+                    More
+                </button>
+                <ul id="pst-nav-more-links-2" class="dropdown-menu">
+                    
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../../Support/index.html">
+                        Support
+                      </a>
+                    </li>
+                
+                </ul>
+            </li>
+            
+  </ul>
+</nav></div>
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  </button>
+`);
+</script></div>
+        
+          <div class="navbar-item"><ul class="navbar-icon-links navbar-nav"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/" title="GitHub" class="nav-link" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><span><i class="fab fa-github-square fa-lg" aria-hidden="true"></i></span>
+            <span class="sr-only">GitHub</span></a>
+        </li>
+</ul></div>
+        
+      </div>
+    
+  </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+
+
+<nav aria-label="Breadcrumb">
+  <ul class="bd-breadcrumbs">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="../../index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    <li class="breadcrumb-item active" aria-current="page">Weight of...</li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article" role="main">
+                  
+  <section id="weight-of-evidence-woe">
+<span id="woe-encoder"></span><h1>Weight of Evidence (WoE)<a class="headerlink" href="#weight-of-evidence-woe" title="Permalink to this heading">#</a></h1>
+<p>The term Weight of Evidence (WoE) can be traced to the financial sector, especially to
+1983, when it took on an important role in describing the key components of credit risk
+analysis and credit scoring. Since then, it has been used for medical research, GIS
+studies, and more (see references below for review).</p>
+<p>The WoE is a statistical data-driven method based on Bayes’ theorem and the concepts of
+prior and posterior probability, so the concepts of log odds, events, and non-events
+are crucial to understanding how the weight of evidence works.</p>
+<p>The WoE is only defined for binary classification problems. In other words, we can only
+encode variables using the WoE when the target variable is binary.</p>
+<section id="formulation">
+<h2>Formulation<a class="headerlink" href="#formulation" title="Permalink to this heading">#</a></h2>
+<p>The weight of evidence is given by:</p>
+<div class="math notranslate nohighlight">
+\[log( p(X=xj|Y = 1) / p(X=xj|Y=0) )\]</div>
+<p>We discuss the formula in the next section.</p>
+</section>
+<section id="calculation">
+<h2>Calculation<a class="headerlink" href="#calculation" title="Permalink to this heading">#</a></h2>
+<p>How is the WoE calculated? Let’s say we have a dataset with a binary dependent variable
+with two categories, 0 and 1, and a categorical predictor variable named variable A
+with three categories (A1, A2, and A3). The dataset has the following characteristics:</p>
+<ul class="simple">
+<li><p>There are 20 positive (1) cases and 80 negative (0) cases in the target variable.</p></li>
+<li><p>Category A1 has 10 positive cases and 15 negative cases.</p></li>
+<li><p>Category A2 has 5 positive cases and 15 negative cases.</p></li>
+<li><p>Category A3 has 5 positive cases and 50 negative cases.</p></li>
+</ul>
+<p>First, we find out the number of instances with a positive target value (1) per category,
+and then we divide that by the total number of positive cases in the data. Then we determine
+the number of instances with target value of 0 per category and divide that by the total
+number of negative instances in the dataset:</p>
+<ul class="simple">
+<li><p>For category A1, we have 10 positive cases and 15 negative cases, resulting in a positive ratio of 10/20 and a negative ratio of 15/80. This means that the positive ratio is 0.5 and the negative ratio is 0.1875.</p></li>
+<li><p>For category A2, we have 5 positive cases out of 20 positive cases, giving us a  positive ratio of 5/20 and a negative ratio of 15/80. This results in a positive ratio of 0.25 and a negative ratio of 0.1875.</p></li>
+<li><p>For category A3, we have 5 positive cases out of 20 positive cases, resulting in a positive ratio of 5/20, and a 50/80 negative ratio. So the positive ratio is 0.25, and the negative ratio is 0.625.</p></li>
+</ul>
+<p>Now we calculate the log of the ratio of positive cases in each category:</p>
+<ul class="simple">
+<li><p>For category A1, we have log (0.5/ 0.1875) = 0.98.</p></li>
+<li><p>For category A2, we have log (0.25/ 0.1875) = 0.28.</p></li>
+<li><p>For category A3, we have log (0.25/0.625) =-0.91.</p></li>
+</ul>
+<p>Finally, we replace the categories (A1, A2, and A3) of the independent variable A with
+the WoE values: 0.98, 0.28, -0.91.</p>
+</section>
+<section id="characteristics-of-the-woe">
+<h2>Characteristics of the WoE<a class="headerlink" href="#characteristics-of-the-woe" title="Permalink to this heading">#</a></h2>
+<p>The beauty of the WoE, is that we can directly understand the impact of the category on
+the probability of success (target variable being 1):</p>
+<ul class="simple">
+<li><p>If WoE values are negative, there are more negative cases than positive cases for the category.</p></li>
+<li><p>If WoE values are positive, there are more positive cases than negative cases for that category.</p></li>
+<li><p>If WoE is 0, then there is an equal number of positive and negative cases for that category.</p></li>
+</ul>
+<p>In other words, for categories with positive WoE, the probability of success is high,
+for categories with negative WoE, the probability of success is low, and for those with
+WoE of zero, there are equal chances for both target outcomes.</p>
+</section>
+<section id="advantages-of-the-woe">
+<h2>Advantages of the WoE<a class="headerlink" href="#advantages-of-the-woe" title="Permalink to this heading">#</a></h2>
+<p>In addition to the intuitive interpretation of the WoE values, the WoE shows the following
+advantages:</p>
+<ul class="simple">
+<li><p>It creates monotonic relationships between the encoded variable and the target.</p></li>
+<li><p>It returns numeric variables on a similar scale.</p></li>
+</ul>
+</section>
+<section id="uses-of-the-woe">
+<h2>Uses of the WoE<a class="headerlink" href="#uses-of-the-woe" title="Permalink to this heading">#</a></h2>
+<p>In general, we use the WoE to encode both categorical and numerical variables. For
+continuous variables, we first need to do binning, that is, sort the variables into
+discrete intervals. You can do this by preprocessing the variable using any of
+Feature-engine’s discretizers.</p>
+<p>Some authors have extended the Weight of Evidence approach to neural networks and other
+algorithms, and although they have shown good results, the predictive modeling performance
+of Weight of Evidence was superior when used with logistic regression models (see
+reference below).</p>
+</section>
+<section id="limitations-of-the-woe">
+<h2>Limitations of the WoE<a class="headerlink" href="#limitations-of-the-woe" title="Permalink to this heading">#</a></h2>
+<p>As the methodology to calculate the WoE is based on ratios and logarithm, the WoE value
+is not defined when <code class="docutils literal notranslate"><span class="pre">p(X=xj|Y</span> <span class="pre">=</span> <span class="pre">1)</span> <span class="pre">=</span> <span class="pre">0</span></code> or <code class="docutils literal notranslate"><span class="pre">p(X=xj|Y=0)</span> <span class="pre">=</span> <span class="pre">0</span></code>. For the latter, the division
+by 0 is not defined, and for the former, the log of 0 is not defined.</p>
+<p>This occurs when a category shows only 1 of the possible values of the target (either it
+always takes 1 or 0). In practice, this happens mostly when a category has a low frequency
+in the dataset, that is, when only very few observations show that category.</p>
+<p>To overcome this limitation, consider using a variable transformation method to group
+those categories together, for example by using Feature-engine’s <code class="xref py py-class docutils literal notranslate"><span class="pre">RareLabelEncoder()</span></code>.</p>
+<p>Taking into account the above considerations, conducting a detailed exploratory data
+analysis (EDA) is essential as part of the data science and model-building process.
+Integrating these considerations and practices not only enhances the feature engineering
+process but also improves the performance of your models.</p>
+</section>
+<section id="unseen-categories">
+<h2>Unseen categories<a class="headerlink" href="#unseen-categories" title="Permalink to this heading">#</a></h2>
+<p>When using the WoE, we define the mappings, that is, the WoE values per category using
+the observations from the training set. If the test set shows new (unseen) categories,
+we’ll lack a WoE value for them, and won’t be able to encode them.</p>
+<p>This is a known issue, without an elegant solution. If the new values appear in continuous
+variables, consider changing the size and number of the intervals. If the unseen categories
+appear in categorical variables, consider grouping low frequency categories before doing
+the encoding.</p>
+</section>
+<section id="woeencoder">
+<h2>WoEEncoder<a class="headerlink" href="#woeencoder" title="Permalink to this heading">#</a></h2>
+<p>The <code class="xref py py-class docutils literal notranslate"><span class="pre">WoEEncoder()</span></code> allows you to automate the process of calculating weight of
+evidence for a given set of features. By default, <code class="xref py py-class docutils literal notranslate"><span class="pre">WoEEncoder()</span></code> will encode all
+categorical variables. You can encode just a subset by passing the variables names in a
+list to the <code class="docutils literal notranslate"><span class="pre">variables</span></code> parameter.</p>
+<p>By default, <code class="xref py py-class docutils literal notranslate"><span class="pre">WoEEncoder()</span></code> will not encode numerical variables, instead, it will
+raise an error. If you want to encode numerical, for example discrete variables, set
+<code class="docutils literal notranslate"><span class="pre">ignore_format</span></code> to <code class="docutils literal notranslate"><span class="pre">True</span></code>.</p>
+<p><code class="xref py py-class docutils literal notranslate"><span class="pre">WoEEncoder()</span></code> does not handle missing values automatically, so make sure to
+replace them with a suitable value before the encoding. You can impute missing values
+with Feature-engine’s imputers.</p>
+<p><code class="xref py py-class docutils literal notranslate"><span class="pre">WoEEncoder()</span></code> will ignore unseen categories by default, in which case, they will
+be replaced by np.nan after the encoding. You have the option to make the encoder raise
+an error instead, by setting <code class="docutils literal notranslate"><span class="pre">unseen='raise'</span></code>. You can also replace unseen categories
+by an arbitrary value you need to define in <code class="docutils literal notranslate"><span class="pre">fill_value</span></code>, although we do not recommend
+this option because it may lead to unpredictable results.</p>
+</section>
+<section id="python-example">
+<h2>Python example<a class="headerlink" href="#python-example" title="Permalink to this heading">#</a></h2>
+<p>In the rest of the document, we’ll show <code class="xref py py-class docutils literal notranslate"><span class="pre">WoEEncoder()</span></code>’s functionality. Let’s
+look at an example using the Titanic Dataset.</p>
+<p>First, let’s load the data and separate the dataset into train and test:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="kn">import</span> <span class="n">train_test_split</span>
+<span class="kn">from</span> <span class="nn">feature_engine.datasets</span> <span class="kn">import</span> <span class="n">load_titanic</span>
+<span class="kn">from</span> <span class="nn">feature_engine.encoding</span> <span class="kn">import</span> <span class="n">WoEEncoder</span><span class="p">,</span> <span class="n">RareLabelEncoder</span>
+
+<span class="n">X</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">load_titanic</span><span class="p">(</span>
+    <span class="n">return_X_y_frame</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="n">handle_missing</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="n">predictors_only</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="n">cabin</span><span class="o">=</span><span class="s2">&quot;letter_only&quot;</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="n">X_train</span><span class="p">,</span> <span class="n">X_test</span><span class="p">,</span> <span class="n">y_train</span><span class="p">,</span> <span class="n">y_test</span> <span class="o">=</span> <span class="n">train_test_split</span><span class="p">(</span>
+    <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">test_size</span><span class="o">=</span><span class="mf">0.3</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">X_train</span><span class="o">.</span><span class="n">head</span><span class="p">())</span>
+</pre></div>
+</div>
+<p>We see the resulting dataframe below:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span>      <span class="n">pclass</span>     <span class="n">sex</span>        <span class="n">age</span>  <span class="n">sibsp</span>  <span class="n">parch</span>     <span class="n">fare</span> <span class="n">cabin</span> <span class="n">embarked</span>
+<span class="mi">501</span>        <span class="mi">2</span>  <span class="n">female</span>  <span class="mf">13.000000</span>      <span class="mi">0</span>      <span class="mi">1</span>  <span class="mf">19.5000</span>     <span class="n">M</span>        <span class="n">S</span>
+<span class="mi">588</span>        <span class="mi">2</span>  <span class="n">female</span>   <span class="mf">4.000000</span>      <span class="mi">1</span>      <span class="mi">1</span>  <span class="mf">23.0000</span>     <span class="n">M</span>        <span class="n">S</span>
+<span class="mi">402</span>        <span class="mi">2</span>  <span class="n">female</span>  <span class="mf">30.000000</span>      <span class="mi">1</span>      <span class="mi">0</span>  <span class="mf">13.8583</span>     <span class="n">M</span>        <span class="n">C</span>
+<span class="mi">1193</span>       <span class="mi">3</span>    <span class="n">male</span>  <span class="mf">29.881135</span>      <span class="mi">0</span>      <span class="mi">0</span>   <span class="mf">7.7250</span>     <span class="n">M</span>        <span class="n">Q</span>
+<span class="mi">686</span>        <span class="mi">3</span>  <span class="n">female</span>  <span class="mf">22.000000</span>      <span class="mi">0</span>      <span class="mi">0</span>   <span class="mf">7.7250</span>     <span class="n">M</span>        <span class="n">Q</span>
+</pre></div>
+</div>
+<p>Before we encode the variables, we group infrequent categories into one
+category, which we’ll call ‘Rare’. For this, we use the <code class="xref py py-class docutils literal notranslate"><span class="pre">RareLabelEncoder()</span></code> as
+follows:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># set up a rare label encoder</span>
+<span class="n">rare_encoder</span> <span class="o">=</span> <span class="n">RareLabelEncoder</span><span class="p">(</span>
+    <span class="n">tol</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span>
+    <span class="n">n_categories</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+    <span class="n">variables</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;cabin&#39;</span><span class="p">,</span> <span class="s1">&#39;pclass&#39;</span><span class="p">,</span> <span class="s1">&#39;embarked&#39;</span><span class="p">],</span>
+    <span class="n">ignore_format</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="c1"># fit and transform data</span>
+<span class="n">train_t</span> <span class="o">=</span> <span class="n">rare_encoder</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">X_train</span><span class="p">)</span>
+<span class="n">test_t</span> <span class="o">=</span> <span class="n">rare_encoder</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">X_train</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Note that we pass <code class="docutils literal notranslate"><span class="pre">ignore_format=True</span></code> because pclass is numeric.</p>
+<p>Now, we set up <code class="xref py py-class docutils literal notranslate"><span class="pre">WoEEncoder()</span></code> to replace the categories by the weight of the
+evidence, only in the 3 indicated variables:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># set up a weight of evidence encoder</span>
+<span class="n">woe_encoder</span> <span class="o">=</span> <span class="n">WoEEncoder</span><span class="p">(</span>
+    <span class="n">variables</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;cabin&#39;</span><span class="p">,</span> <span class="s1">&#39;pclass&#39;</span><span class="p">,</span> <span class="s1">&#39;embarked&#39;</span><span class="p">],</span>
+    <span class="n">ignore_format</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="c1"># fit the encoder</span>
+<span class="n">woe_encoder</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">train_t</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>With <code class="docutils literal notranslate"><span class="pre">fit()</span></code> the encoder learns the weight of the evidence for each category, which are
+stored in its <code class="docutils literal notranslate"><span class="pre">encoder_dict_</span></code> parameter:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">woe_encoder</span><span class="o">.</span><span class="n">encoder_dict_</span>
+</pre></div>
+</div>
+<p>In the <code class="docutils literal notranslate"><span class="pre">encoder_dict_</span></code> we find the WoE for each one of the categories of the
+variables to encode. This way, we can map the original values to the new values:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="p">{</span><span class="s1">&#39;cabin&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;M&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">0.35752781962490193</span><span class="p">,</span> <span class="s1">&#39;Rare&#39;</span><span class="p">:</span> <span class="mf">1.083797390800775</span><span class="p">},</span>
+ <span class="s1">&#39;pclass&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;1&#39;</span><span class="p">:</span> <span class="mf">0.9453018143294478</span><span class="p">,</span>
+  <span class="s1">&#39;2&#39;</span><span class="p">:</span> <span class="mf">0.21009172435857942</span><span class="p">,</span>
+  <span class="s1">&#39;3&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">0.5841726684724614</span><span class="p">},</span>
+ <span class="s1">&#39;embarked&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;C&#39;</span><span class="p">:</span> <span class="mf">0.679904786667102</span><span class="p">,</span>
+  <span class="s1">&#39;Rare&#39;</span><span class="p">:</span> <span class="mf">0.012075414091446468</span><span class="p">,</span>
+  <span class="s1">&#39;S&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">0.20113381737960143</span><span class="p">}}</span>
+</pre></div>
+</div>
+<p>Now, we can go ahead and encode the variables:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">train_t</span> <span class="o">=</span> <span class="n">woe_encoder</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">train_t</span><span class="p">)</span>
+<span class="n">test_t</span> <span class="o">=</span> <span class="n">woe_encoder</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">test_t</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">train_t</span><span class="o">.</span><span class="n">head</span><span class="p">())</span>
+</pre></div>
+</div>
+<p>Below we see the resulting dataset with the weight of the evidence replacing the original
+variable values:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span>        <span class="n">pclass</span>     <span class="n">sex</span>        <span class="n">age</span>  <span class="n">sibsp</span>  <span class="n">parch</span>     <span class="n">fare</span>     <span class="n">cabin</span>  <span class="n">embarked</span>
+<span class="mi">501</span>   <span class="mf">0.210092</span>  <span class="n">female</span>  <span class="mf">13.000000</span>      <span class="mi">0</span>      <span class="mi">1</span>  <span class="mf">19.5000</span> <span class="o">-</span><span class="mf">0.357528</span> <span class="o">-</span><span class="mf">0.201134</span>
+<span class="mi">588</span>   <span class="mf">0.210092</span>  <span class="n">female</span>   <span class="mf">4.000000</span>      <span class="mi">1</span>      <span class="mi">1</span>  <span class="mf">23.0000</span> <span class="o">-</span><span class="mf">0.357528</span> <span class="o">-</span><span class="mf">0.201134</span>
+<span class="mi">402</span>   <span class="mf">0.210092</span>  <span class="n">female</span>  <span class="mf">30.000000</span>      <span class="mi">1</span>      <span class="mi">0</span>  <span class="mf">13.8583</span> <span class="o">-</span><span class="mf">0.357528</span>  <span class="mf">0.679905</span>
+<span class="mi">1193</span> <span class="o">-</span><span class="mf">0.584173</span>    <span class="n">male</span>  <span class="mf">29.881135</span>      <span class="mi">0</span>      <span class="mi">0</span>   <span class="mf">7.7250</span> <span class="o">-</span><span class="mf">0.357528</span>  <span class="mf">0.012075</span>
+<span class="mi">686</span>  <span class="o">-</span><span class="mf">0.584173</span>  <span class="n">female</span>  <span class="mf">22.000000</span>      <span class="mi">0</span>      <span class="mi">0</span>   <span class="mf">7.7250</span> <span class="o">-</span><span class="mf">0.357528</span>  <span class="mf">0.012075</span>
+</pre></div>
+</div>
+<section id="woe-in-categorical-and-numerical-variables">
+<h3>WoE in categorical and numerical variables<a class="headerlink" href="#woe-in-categorical-and-numerical-variables" title="Permalink to this heading">#</a></h3>
+<p>In the previous example, we encoded only the variables ‘cabin’, ‘pclass’, ‘embarked’,
+and left the rest of the variables untouched. In the following example, we will use
+Feature-engine’s pipeline to transform variables in sequence. We’ll group rare categories
+in categorical variables. Next, we’ll discretize numerical variables. And finally, we’ll
+encode them all with the WoE.</p>
+<p>First, let’s load the data and separate it into train and test:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="kn">import</span> <span class="n">train_test_split</span>
+<span class="kn">from</span> <span class="nn">feature_engine.datasets</span> <span class="kn">import</span> <span class="n">load_titanic</span>
+<span class="kn">from</span> <span class="nn">feature_engine.encoding</span> <span class="kn">import</span> <span class="n">WoEEncoder</span><span class="p">,</span> <span class="n">RareLabelEncoder</span>
+<span class="kn">from</span> <span class="nn">feature_engine.pipeline</span> <span class="kn">import</span> <span class="n">Pipeline</span>
+<span class="kn">from</span> <span class="nn">feature_engine.discretisation</span> <span class="kn">import</span> <span class="n">EqualFrequencyDiscretiser</span>
+
+
+<span class="n">X</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">load_titanic</span><span class="p">(</span>
+    <span class="n">return_X_y_frame</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="n">handle_missing</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="n">predictors_only</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="n">cabin</span><span class="o">=</span><span class="s2">&quot;letter_only&quot;</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="n">X_train</span><span class="p">,</span> <span class="n">X_test</span><span class="p">,</span> <span class="n">y_train</span><span class="p">,</span> <span class="n">y_test</span> <span class="o">=</span> <span class="n">train_test_split</span><span class="p">(</span>
+    <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">test_size</span><span class="o">=</span><span class="mf">0.3</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">X_train</span><span class="o">.</span><span class="n">head</span><span class="p">())</span>
+</pre></div>
+</div>
+<p>We see the resulting dataset below:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span>      <span class="n">pclass</span>     <span class="n">sex</span>        <span class="n">age</span>  <span class="n">sibsp</span>  <span class="n">parch</span>     <span class="n">fare</span> <span class="n">cabin</span> <span class="n">embarked</span>
+<span class="mi">501</span>        <span class="mi">2</span>  <span class="n">female</span>  <span class="mf">13.000000</span>      <span class="mi">0</span>      <span class="mi">1</span>  <span class="mf">19.5000</span>     <span class="n">M</span>        <span class="n">S</span>
+<span class="mi">588</span>        <span class="mi">2</span>  <span class="n">female</span>   <span class="mf">4.000000</span>      <span class="mi">1</span>      <span class="mi">1</span>  <span class="mf">23.0000</span>     <span class="n">M</span>        <span class="n">S</span>
+<span class="mi">402</span>        <span class="mi">2</span>  <span class="n">female</span>  <span class="mf">30.000000</span>      <span class="mi">1</span>      <span class="mi">0</span>  <span class="mf">13.8583</span>     <span class="n">M</span>        <span class="n">C</span>
+<span class="mi">1193</span>       <span class="mi">3</span>    <span class="n">male</span>  <span class="mf">29.881135</span>      <span class="mi">0</span>      <span class="mi">0</span>   <span class="mf">7.7250</span>     <span class="n">M</span>        <span class="n">Q</span>
+<span class="mi">686</span>        <span class="mi">3</span>  <span class="n">female</span>  <span class="mf">22.000000</span>      <span class="mi">0</span>      <span class="mi">0</span>   <span class="mf">7.7250</span>     <span class="n">M</span>        <span class="n">Q</span>
+</pre></div>
+</div>
+<p>Let’s define lists with the categorical and numerical variables:</p>
+<p>Now, we will set up the pipeline to first discretize the numerical variables, then group
+rare labels and low frequency intervals into a common group, and finally encode all
+variables with the WoE:</p>
+<p>We have created a variable transformation pipeline with the following steps:</p>
+<ul class="simple">
+<li><p>First, we use <code class="xref py py-class docutils literal notranslate"><span class="pre">EqualFrequencyDiscretiser()</span></code> to do binning of the numerical variables.</p></li>
+<li><p>Next, we use <code class="xref py py-class docutils literal notranslate"><span class="pre">RareLabelEncoder()</span></code> to group infrequent categories and intervals into one group.</p></li>
+<li><p>Finally, we use the <code class="xref py py-class docutils literal notranslate"><span class="pre">WoEEncoder()</span></code> to replace values in all variables with the weight of the evidence.</p></li>
+</ul>
+<p>Now, we can go ahead and fit the pipeline to the train set so that the different
+transformers learn the parameters for the variable transformation.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">X_trans_t</span> <span class="o">=</span> <span class="n">pipe</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">X_trans_t</span><span class="o">.</span><span class="n">head</span><span class="p">())</span>
+</pre></div>
+</div>
+<p>We see the resulting dataframe below:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span>        <span class="n">pclass</span>      <span class="n">sex</span>       <span class="n">age</span>     <span class="n">sibsp</span>     <span class="n">parch</span>      <span class="n">fare</span>     <span class="n">cabin</span>  \
+<span class="mi">501</span>   <span class="mf">0.210092</span>  <span class="mf">1.45312</span>  <span class="mf">0.319176</span> <span class="o">-</span><span class="mf">0.097278</span>  <span class="mf">0.764646</span>  <span class="mf">0.020285</span> <span class="o">-</span><span class="mf">0.357528</span>
+<span class="mi">588</span>   <span class="mf">0.210092</span>  <span class="mf">1.45312</span>  <span class="mf">0.319176</span>  <span class="mf">0.458001</span>  <span class="mf">0.764646</span>  <span class="mf">0.248558</span> <span class="o">-</span><span class="mf">0.357528</span>
+<span class="mi">402</span>   <span class="mf">0.210092</span>  <span class="mf">1.45312</span>  <span class="mf">0.092599</span>  <span class="mf">0.458001</span> <span class="o">-</span><span class="mf">0.161255</span> <span class="o">-</span><span class="mf">0.133962</span> <span class="o">-</span><span class="mf">0.357528</span>
+<span class="mi">1193</span> <span class="o">-</span><span class="mf">0.584173</span> <span class="o">-</span><span class="mf">0.99882</span> <span class="o">-</span><span class="mf">0.481682</span> <span class="o">-</span><span class="mf">0.097278</span> <span class="o">-</span><span class="mf">0.161255</span>  <span class="mf">0.020285</span> <span class="o">-</span><span class="mf">0.357528</span>
+<span class="mi">686</span>  <span class="o">-</span><span class="mf">0.584173</span>  <span class="mf">1.45312</span>  <span class="mf">0.222615</span> <span class="o">-</span><span class="mf">0.097278</span> <span class="o">-</span><span class="mf">0.161255</span>  <span class="mf">0.020285</span> <span class="o">-</span><span class="mf">0.357528</span>
+
+      <span class="n">embarked</span>
+<span class="mi">501</span>  <span class="o">-</span><span class="mf">0.201134</span>
+<span class="mi">588</span>  <span class="o">-</span><span class="mf">0.201134</span>
+<span class="mi">402</span>   <span class="mf">0.679905</span>
+<span class="mi">1193</span>  <span class="mf">0.012075</span>
+<span class="mi">686</span>   <span class="mf">0.012075</span>
+</pre></div>
+</div>
+<p>Finally, we can visualize the values of the WoE encoded variables respect to the original
+values to corroborate the sigmoid function shape, which is the expected behavior of the
+WoE:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="n">age_woe</span> <span class="o">=</span> <span class="n">pipe</span><span class="o">.</span><span class="n">named_steps</span><span class="p">[</span><span class="s1">&#39;woe&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">encoder_dict_</span><span class="p">[</span><span class="s1">&#39;age&#39;</span><span class="p">]</span>
+
+<span class="n">sorted_age_woe</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="nb">sorted</span><span class="p">(</span><span class="n">age_woe</span><span class="o">.</span><span class="n">items</span><span class="p">(),</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">item</span><span class="p">:</span> <span class="n">item</span><span class="p">[</span><span class="mi">1</span><span class="p">]))</span>
+<span class="n">categories</span> <span class="o">=</span> <span class="p">[</span><span class="nb">str</span><span class="p">(</span><span class="n">k</span><span class="p">)</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">sorted_age_woe</span><span class="o">.</span><span class="n">keys</span><span class="p">()]</span>
+<span class="n">log_odds</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">sorted_age_woe</span><span class="o">.</span><span class="n">values</span><span class="p">())</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">bar</span><span class="p">(</span><span class="n">categories</span><span class="p">,</span> <span class="n">log_odds</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;skyblue&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Age&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;WoE&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;WoE for Age&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="s1">&#39;y&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>In the following plot, we can see the WoE for different categories of the variable
+‘age’:</p>
+<figure class="align-center align-left">
+<a class="reference internal image-reference" href="../../_images/woe_encoding.png"><img alt="../../_images/woe_encoding.png" src="../../_images/woe_encoding.png" style="width: 600px;" /></a>
+</figure>
+<div class="line-block">
+<div class="line"><br /></div>
+<div class="line"><br /></div>
+<div class="line"><br /></div>
+<div class="line"><br /></div>
+<div class="line"><br /></div>
+<div class="line"><br /></div>
+<div class="line"><br /></div>
+<div class="line"><br /></div>
+<div class="line"><br /></div>
+<div class="line"><br /></div>
+<div class="line"><br /></div>
+<div class="line"><br /></div>
+<div class="line"><br /></div>
+<div class="line"><br /></div>
+<div class="line"><br /></div>
+<div class="line"><br /></div>
+<div class="line"><br /></div>
+</div>
+<p>The WoE values are in the y-axis, and the categories are in the x-axis. We see that the
+WoE values are monotonically increasing, which is the expected behavior of the WoE. If
+we look at category 4, we can see the WoE is around -0.45 which means that in this age
+bracket there was a small portion of positive cases (people who survived) compared to
+negative cases (non-survivors). In other words, people within this age interval had
+a low probability of survival.</p>
+</section>
+<section id="adding-a-model-to-the-pipeline">
+<h3>Adding a model to the pipeline<a class="headerlink" href="#adding-a-model-to-the-pipeline" title="Permalink to this heading">#</a></h3>
+<p>To complete the demo, we can add a logistic regression model to the pipeline to obtain
+predictions of survival after the variable transformation.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.linear_model</span> <span class="kn">import</span> <span class="n">LogisticRegression</span>
+<span class="kn">from</span> <span class="nn">sklearn.metrics</span> <span class="kn">import</span> <span class="n">accuracy_score</span>
+
+<span class="n">pipe</span> <span class="o">=</span> <span class="n">Pipeline</span><span class="p">(</span>
+    <span class="p">[</span>
+        <span class="p">(</span><span class="s2">&quot;disc&quot;</span><span class="p">,</span> <span class="n">EqualFrequencyDiscretiser</span><span class="p">(</span><span class="n">variables</span><span class="o">=</span><span class="n">numerical_features</span><span class="p">)),</span>
+        <span class="p">(</span><span class="s2">&quot;rare_label&quot;</span><span class="p">,</span> <span class="n">RareLabelEncoder</span><span class="p">(</span><span class="n">tol</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span> <span class="n">n_categories</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">variables</span><span class="o">=</span><span class="nb">all</span><span class="p">,</span> <span class="n">ignore_format</span><span class="o">=</span><span class="kc">True</span><span class="p">)),</span>
+        <span class="p">(</span><span class="s2">&quot;woe&quot;</span><span class="p">,</span> <span class="n">WoEEncoder</span><span class="p">(</span><span class="n">variables</span><span class="o">=</span><span class="nb">all</span><span class="p">)),</span>
+        <span class="p">(</span><span class="s1">&#39;model&#39;</span><span class="p">,</span> <span class="n">LogisticRegression</span><span class="p">(</span><span class="n">random_state</span><span class="o">=</span><span class="mi">0</span><span class="p">)),</span>
+    <span class="p">])</span>
+
+
+<span class="n">pipe</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span>
+<span class="n">y_pred</span> <span class="o">=</span> <span class="n">pipe</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X_test</span><span class="p">)</span>
+<span class="n">accuracy</span> <span class="o">=</span> <span class="n">accuracy_score</span><span class="p">(</span><span class="n">y_test</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Accuracy: </span><span class="si">{</span><span class="n">accuracy</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The accuracy of the model is shown below:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">Accuracy</span><span class="p">:</span> <span class="mf">0.76</span>
+</pre></div>
+</div>
+<p>The accuracy of the model is 0.76, which is a good result for a first model. We can
+improve the model by tuning the hyperparameters of the logistic regression model. Please
+note that accuracy may not be the best metric for this problem, as the dataset is
+imbalanced. We recommend using other metrics such as the F1 score, precision, recall, or
+the ROC-AUC score. You can learn more about imbalance datasets in our
+<a class="reference external" href="https://www.trainindata.com/p/machine-learning-with-imbalanced-data">course</a>.</p>
+</section>
+</section>
+<section id="weight-of-evidence-and-information-value">
+<h2>Weight of Evidence and Information Value<a class="headerlink" href="#weight-of-evidence-and-information-value" title="Permalink to this heading">#</a></h2>
+<p>A common extension of the WoE is the information value (IV), which is a measure of the
+predictive power of a variable. The IV is calculated as follows:</p>
+<div class="math notranslate nohighlight">
+\[IV = \sum_{i=1}^{n} (p_{i} - q_{i}) \cdot WoE_{i}\]</div>
+<p>Where, <code class="docutils literal notranslate"><span class="pre">pi</span></code> is the percentage of positive cases in the i-th category, <code class="docutils literal notranslate"><span class="pre">qi</span></code> is the
+percentage of negative cases in the i-th category, and WoE_{i} is the weight of evidence
+of the i-th category.</p>
+<p>The IV is a measure of the predictive power of a variable. The higher the IV value, the
+more predictive the variable is. So the combination of WoE with information value can be
+used for feature selection for binary classification problems.</p>
+<section id="weight-of-evidence-and-information-value-within-feature-engine">
+<h3>Weight of Evidence and Information Value within Feature-engine<a class="headerlink" href="#weight-of-evidence-and-information-value-within-feature-engine" title="Permalink to this heading">#</a></h3>
+<p>If you’re asking yourself whether Feature-engine allows you to automate this process,
+the answer is: of course! You can utilize the <code class="xref py py-class docutils literal notranslate"><span class="pre">SelectByInformationValue()</span></code> class
+and it will handle all these steps for you. Again, remember the given considerations.</p>
+</section>
+</section>
+<section id="references">
+<h2>References<a class="headerlink" href="#references" title="Permalink to this heading">#</a></h2>
+<ul class="simple">
+<li><p><a class="reference external" href="https://onlinelibrary.wiley.com/doi/abs/10.1111/j.1539-6924.2005.00699.x">Weight of Evidence: A Review of Concept and Methods</a></p></li>
+<li><p><a class="reference external" href="https://link.springer.com/article/10.1007/s11069-018-3299-7">Comparison and evaluation of landslide susceptibility maps obtained from weight of evidence, logistic regression, and artificial neural network models</a></p></li>
+<li><p><a class="reference external" href="https://www.sciencedirect.com/science/article/pii/s0149291823003557">Can weight of evidence, quantitative bias, and bounding methods evaluate robustness of real-world evidence for regulator and health technology assessment decisions on medical interventions</a></p></li>
+</ul>
+</section>
+<section id="additional-resources">
+<h2>Additional resources<a class="headerlink" href="#additional-resources" title="Permalink to this heading">#</a></h2>
+<p>In the following notebooks, you can find more details into the <code class="xref py py-class docutils literal notranslate"><span class="pre">WoEEncoder()</span></code>
+functionality and example plots with the encoded variables:</p>
+<ul class="simple">
+<li><p><a class="reference external" href="https://nbviewer.org/github/feature-engine/feature-engine-examples/blob/main/encoding/WoEEncoder.ipynb">WoE in categorical variables</a></p></li>
+<li><p><a class="reference external" href="https://nbviewer.org/github/feature-engine/feature-engine-examples/blob/main/discretisation/EqualFrequencyDiscretiser_plus_WoEEncoder.ipynb">WoE in numerical variables</a></p></li>
+</ul>
+<p>For more details about this and other feature engineering methods check out these resources:</p>
+<figure class="align-center align-left" id="id1">
+<a class="reference external image-reference" href="https://www.trainindata.com/p/feature-engineering-for-machine-learning"><img alt="../../_images/feml.png" src="../../_images/feml.png" style="width: 300px;" /></a>
+<figcaption>
+<p><span class="caption-text">Feature Engineering for Machine Learning</span><a class="headerlink" href="#id1" title="Permalink to this image">#</a></p>
+</figcaption>
+</figure>
+<div class="line-block">
+<div class="line"><br /></div>
+<div class="line"><br /></div>
+<div class="line"><br /></div>
+<div class="line"><br /></div>
+<div class="line"><br /></div>
+<div class="line"><br /></div>
+<div class="line"><br /></div>
+<div class="line"><br /></div>
+<div class="line"><br /></div>
+<div class="line"><br /></div>
+</div>
+<p>Or read our book:</p>
+<figure class="align-center align-left" id="id2">
+<a class="reference external image-reference" href="https://www.packtpub.com/en-us/product/python-feature-engineering-cookbook-9781835883587"><img alt="../../_images/cookbook.png" src="../../_images/cookbook.png" style="width: 200px;" /></a>
+<figcaption>
+<p><span class="caption-text">Python Feature Engineering Cookbook</span><a class="headerlink" href="#id2" title="Permalink to this image">#</a></p>
+</figcaption>
+</figure>
+<div class="line-block">
+<div class="line"><br /></div>
+<div class="line"><br /></div>
+<div class="line"><br /></div>
+<div class="line"><br /></div>
+<div class="line"><br /></div>
+<div class="line"><br /></div>
+<div class="line"><br /></div>
+<div class="line"><br /></div>
+<div class="line"><br /></div>
+<div class="line"><br /></div>
+<div class="line"><br /></div>
+<div class="line"><br /></div>
+<div class="line"><br /></div>
+</div>
+<p>Both our book and course are suitable for beginners and more advanced data scientists
+alike. By purchasing them you are supporting Sole, the main developer of Feature-engine.</p>
+</section>
+</section>
+
+
+                </article>
+              
+              
+              
+              
+              
+                <footer class="prev-next-footer">
+                  
+<div class="prev-next-area">
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+  <div class="sidebar-secondary-item">
+
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> On this page
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#formulation">Formulation</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#calculation">Calculation</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#characteristics-of-the-woe">Characteristics of the WoE</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#advantages-of-the-woe">Advantages of the WoE</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#uses-of-the-woe">Uses of the WoE</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#limitations-of-the-woe">Limitations of the WoE</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#unseen-categories">Unseen categories</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#woeencoder">WoEEncoder</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#python-example">Python example</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#woe-in-categorical-and-numerical-variables">WoE in categorical and numerical variables</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#adding-a-model-to-the-pipeline">Adding a model to the pipeline</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#weight-of-evidence-and-information-value">Weight of Evidence and Information Value</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#weight-of-evidence-and-information-value-within-feature-engine">Weight of Evidence and Information Value within Feature-engine</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#references">References</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#additional-resources">Additional resources</a></li>
+</ul>
+  </nav></div>
+
+  <div class="sidebar-secondary-item">
+
+  <div class="tocsection sourcelink">
+    <a href="../../_sources/user_guide/genAI/WoEEncoder.rst.txt">
+      <i class="fa-solid fa-file-lines"></i> Show Source
+    </a>
+  </div>
+</div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../_static/scripts/bootstrap.js?digest=5b4479735964841361fd"></script>
+<script src="../../_static/scripts/pydata-sphinx-theme.js?digest=5b4479735964841361fd"></script>
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+
+  <p class="sphinx-version">
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.1.2.
+    <br/>
+  </p>
+</div>
+      
+    </div>
+  
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item">
+<p class="theme-version">
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.14.4.
+</p></div>
+      
+    </div>
+  
+</div>
+
+  </footer>
+  </body>
+</html>

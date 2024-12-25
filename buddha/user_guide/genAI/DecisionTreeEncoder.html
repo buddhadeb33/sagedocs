@@ -1,0 +1,1026 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>DecisionTreeEncoder &#8212; 3.1</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=5b4479735964841361fd" rel="stylesheet" />
+<link href="../../_static/styles/bootstrap.css?digest=5b4479735964841361fd" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=5b4479735964841361fd" rel="stylesheet" />
+
+  
+  <link href="../../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=5b4479735964841361fd" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/custom.css?v=30c166bc" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/custom.css?v=30c166bc" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=5b4479735964841361fd" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=5b4479735964841361fd" />
+  <script src="../../_static/vendor/fontawesome/6.1.2/js/all.min.js?digest=5b4479735964841361fd"></script>
+
+    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js?v=e1ce3931"></script>
+    <script src="../../_static/doctools.js?v=888ff710"></script>
+    <script src="../../_static/sphinx_highlight.js?v=4825356b"></script>
+    <script defer data-domain="feature-engine.readthedocs.io" src="https://plausible.io/js/plausible.js"></script>
+    <script src="../../_static/js/copybutton.js?v=84772c1c"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'user_guide/genAI/DecisionTreeEncoder';</script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+
+    <!-- Cookie banner -->
+    <style>
+        /* Style for the cookie banner */
+        #cookie-banner {
+            position: fixed;
+            bottom: 0;
+            right: 0;
+            background-color: #ffe4e1; /* Light Pink */
+            color: #333;
+            padding: 15px;
+            max-width: 400px;
+            display: none;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            z-index: 1000; /* Set a higher z-index value */
+        }
+
+        #cookie-banner p {
+        font-size: 16px; /* Font size for the text */
+        color: #333 !important; /* Set link color to black */
+        line-height: 1.5; /* Increase line height for added spacing between sentences */
+        }
+
+        #cookie-banner a {
+            color: #333;
+            text-decoration: underline;
+        }
+    </style>
+
+    <div id="cookie-banner">
+        <h2 style="font-size: 20px; margin-bottom: 10px;">This site uses cookies</h2>
+        <p style="font-size: 16px;">We use cookies to recognize your visits and preferences, to measure the effectiveness of the documentation, and discover how people find us. With your consent, you're helping us make our documentation better. <br><a href="https://www.trainindata.com/p/privacy" target="_blank">Learn More</a>.</p>
+        <button id="cookie-accept">Accept</button>
+        <button id="cookie-decline">Decline</button>
+    </div>
+
+    <script>
+        // JavaScript to show the cookie banner and handle the accept button
+        document.addEventListener('DOMContentLoaded', function () {
+            var cookieBanner = document.getElementById('cookie-banner');
+            var acceptButton = document.getElementById('cookie-accept');
+            var declineButton = document.getElementById('cookie-decline');
+
+            // Check if the user has already accepted or declined cookies
+            var cookiesAccepted = localStorage.getItem('cookiesAccepted');
+
+            if (!cookiesAccepted) {
+                cookieBanner.style.display = 'block';
+
+                acceptButton.addEventListener('click', function () {
+                    localStorage.setItem('cookiesAccepted', 'true');
+                    loadGoogleAnalytics();
+                    cookieBanner.style.display = 'none';
+                });
+
+                declineButton.addEventListener('click', function () {
+                    localStorage.setItem('cookiesAccepted', 'false');
+                    cookieBanner.style.display = 'none';
+                });
+            } else if (cookiesAccepted === 'true') {
+                loadGoogleAnalytics();
+            }
+        });
+
+        function loadGoogleAnalytics() {
+            // Load Google Analytics only if consent is given
+            var script = document.createElement('script');
+            script.async = true;
+            script.src = 'https://www.googletagmanager.com/gtag/js?id=G-Z6MPCG673G';
+            document.head.appendChild(script);
+
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', 'G-Z6MPCG673G');
+        }
+    </script>
+    <!-- Cookie banner -->
+
+
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>
+    Back to top
+  </button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
+<div class="bd-header__inner bd-page-width">
+  <label class="sidebar-toggle primary-toggle" for="__primary">
+    <span class="fa-solid fa-bars"></span>
+  </label>
+  
+  
+  <div class="col-lg-3 navbar-header-items__start">
+    
+      <div class="navbar-item">
+
+  
+
+<a class="navbar-brand logo" href="../../index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../../_static/sageops_logo.png" class="logo__image only-light" alt="3.1 - Home"/>
+    <script>document.write(`<img src="../../_static/sageops_logo.png" class="logo__image only-dark" alt="3.1 - Home"/>`);</script>
+  
+  
+</a></div>
+    
+      <div class="navbar-item">
+<script>
+document.write(`
+  <div class="version-switcher__container dropdown">
+    <button id="pst-version-switcher-button-2"
+      type="button"
+      class="version-switcher__button btn btn-sm navbar-btn dropdown-toggle"
+      data-bs-toggle="dropdown"
+      aria-haspopup="listbox"
+      aria-controls="pst-version-switcher-list-2"
+      aria-label="Version switcher list"
+    >
+      Choose version  <!-- this text may get changed later by javascript -->
+      <span class="caret"></span>
+    </button>
+    <div id="pst-version-switcher-list-2"
+      class="version-switcher__menu dropdown-menu list-group-flush py-0"
+      role="listbox" aria-labelledby="pst-version-switcher-button-2">
+      <!-- dropdown will be populated by javascript on page load -->
+    </div>
+  </div>
+`);
+</script></div>
+    
+  </div>
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item">
+<nav class="navbar-nav">
+  <p class="sidebar-header-items__title"
+     role="heading"
+     aria-level="1"
+     aria-label="Site Navigation">
+    Site Navigation
+  </p>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../quickstart/index.html">
+                        Quick Start
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../index.html">
+                        SageOps User Guide
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../api_doc/index.html">
+                        API
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../example_notebooks/index.html">
+                        Example Notebooks
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../about/index.html">
+                        About
+                      </a>
+                    </li>
+                
+            <li class="nav-item dropdown">
+                <button class="btn dropdown-toggle nav-item" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-controls="pst-nav-more-links">
+                    More
+                </button>
+                <ul id="pst-nav-more-links" class="dropdown-menu">
+                    
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../../Support/index.html">
+                        Support
+                      </a>
+                    </li>
+                
+                </ul>
+            </li>
+            
+  </ul>
+</nav></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+ <script>
+ document.write(`
+   <button class="btn navbar-btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script>
+        </div>
+      
+      
+        <div class="navbar-item">
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  </button>
+`);
+</script></div>
+      
+        <div class="navbar-item"><ul class="navbar-icon-links navbar-nav"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/" title="GitHub" class="nav-link" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><span><i class="fab fa-github-square fa-lg" aria-hidden="true"></i></span>
+            <span class="sr-only">GitHub</span></a>
+        </li>
+</ul></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+ <script>
+ document.write(`
+   <button class="btn navbar-btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script>
+    </div>
+  
+
+  
+    <label class="sidebar-toggle secondary-toggle" for="__secondary" tabindex="0">
+      <span class="fa-solid fa-outdent"></span>
+    </label>
+  
+</div>
+
+    </nav>
+  
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      <div class="bd-sidebar-primary bd-sidebar hide-on-wide">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          <div class="navbar-item">
+<nav class="navbar-nav">
+  <p class="sidebar-header-items__title"
+     role="heading"
+     aria-level="1"
+     aria-label="Site Navigation">
+    Site Navigation
+  </p>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../quickstart/index.html">
+                        Quick Start
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../index.html">
+                        SageOps User Guide
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../api_doc/index.html">
+                        API
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../example_notebooks/index.html">
+                        Example Notebooks
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../about/index.html">
+                        About
+                      </a>
+                    </li>
+                
+            <li class="nav-item dropdown">
+                <button class="btn dropdown-toggle nav-item" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-controls="pst-nav-more-links-2">
+                    More
+                </button>
+                <ul id="pst-nav-more-links-2" class="dropdown-menu">
+                    
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../../Support/index.html">
+                        Support
+                      </a>
+                    </li>
+                
+                </ul>
+            </li>
+            
+  </ul>
+</nav></div>
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  </button>
+`);
+</script></div>
+        
+          <div class="navbar-item"><ul class="navbar-icon-links navbar-nav"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/" title="GitHub" class="nav-link" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><span><i class="fab fa-github-square fa-lg" aria-hidden="true"></i></span>
+            <span class="sr-only">GitHub</span></a>
+        </li>
+</ul></div>
+        
+      </div>
+    
+  </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+
+
+<nav aria-label="Breadcrumb">
+  <ul class="bd-breadcrumbs">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="../../index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    <li class="breadcrumb-item active" aria-current="page">DecisionTreeEncoder</li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article" role="main">
+                  
+  <section id="decisiontreeencoder">
+<span id="decisiontree-encoder"></span><h1>DecisionTreeEncoder<a class="headerlink" href="#decisiontreeencoder" title="Permalink to this heading">#</a></h1>
+<p>Categorical encoding is the process of transforming the strings of categorical features
+into numbers. Common procedures replace categories with ordinal numbers, counts,
+frequencies, or the target mean value.</p>
+<p>We can also replace the categories with the predictions made by a decision tree based
+on that category value.</p>
+<p>The process consists of fitting a decision tree using a single feature to predict the
+target. The decision tree will try to find a relationship between these variables, if
+one exists, and then we’ll use the predictions as mappings to replace the categories.</p>
+<p>The advantage of this procedure is that it captures some information about the relationship
+between the variables during the encoding. And if there is a relationship between the
+categorical feature and the target, the resulting encoded variable would have a monotonic
+relationship with the target, which can be useful for linear models.</p>
+<p>On the downside, it could cause overfitting, and it adds computational complexity to the
+pipeline because we are fitting a tree per feature. If you plan to encode your features
+with decision trees, make sure you have appropriate validation strategies and train the
+decision trees with regularization.</p>
+<section id="id1">
+<h2>DecisionTreeEncoder<a class="headerlink" href="#id1" title="Permalink to this heading">#</a></h2>
+<p>The <code class="xref py py-class docutils literal notranslate"><span class="pre">DecisionTreeEncoder()</span></code> replaces categories in the variable with
+the predictions of a decision tree.</p>
+<p>The <code class="xref py py-class docutils literal notranslate"><span class="pre">DecisionTreeEncoder()</span></code>  uses Scikit-learn’s decision trees under the hood.
+As these models can’t handle non-numerical data, the <code class="xref py py-class docutils literal notranslate"><span class="pre">DecisionTreeEncoder()</span></code> first
+replaces the categories with ordinal numbers and then fits the trees.</p>
+<p>You have the option to encode the categorical values into integers assigned arbitrarily
+or ordered based on the mean target value per category (for more details, check the
+<code class="xref py py-class docutils literal notranslate"><span class="pre">OrdinalEncoder()</span></code>, which is used by <code class="xref py py-class docutils literal notranslate"><span class="pre">DecisionTreeEncoder()</span></code> under the hood).
+You can regulate this behaviour with the parameter <code class="docutils literal notranslate"><span class="pre">encoding_method</span></code>. As decision trees
+are able to pick non-linear relationships, replacing categories with arbitrary numbers
+should be enough in practice.</p>
+<p>After this, the transformer fits a decision tree using this numerical variable to predict
+the target. Finally, the original categorical variable is replaced by the
+predictions of the decision tree.</p>
+<p>In the attribute <code class="docutils literal notranslate"><span class="pre">encoding_dict_</span></code> you’ll find the mappings from category to numerical
+value. The category is the original value and the numerical value is the prediction
+of the decision tree for the category.</p>
+<p>The motivation for the <code class="xref py py-class docutils literal notranslate"><span class="pre">DecisionTreeEncoder()</span></code> is to try and create monotonic
+relationships between the categorical variables and the target.</p>
+</section>
+<section id="python-example">
+<h2>Python example<a class="headerlink" href="#python-example" title="Permalink to this heading">#</a></h2>
+<p>Let’s look at an example using the Titanic Dataset. First, let’s load the data and
+separate it into train and test:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="kn">import</span> <span class="n">train_test_split</span>
+<span class="kn">from</span> <span class="nn">feature_engine.datasets</span> <span class="kn">import</span> <span class="n">load_titanic</span>
+<span class="kn">from</span> <span class="nn">feature_engine.encoding</span> <span class="kn">import</span> <span class="n">DecisionTreeEncoder</span>
+
+<span class="n">X</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">load_titanic</span><span class="p">(</span>
+    <span class="n">return_X_y_frame</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="n">handle_missing</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="n">predictors_only</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="n">cabin</span><span class="o">=</span><span class="s2">&quot;letter_only&quot;</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="n">X_train</span><span class="p">,</span> <span class="n">X_test</span><span class="p">,</span> <span class="n">y_train</span><span class="p">,</span> <span class="n">y_test</span> <span class="o">=</span> <span class="n">train_test_split</span><span class="p">(</span>
+    <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">test_size</span><span class="o">=</span><span class="mf">0.3</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">X_train</span><span class="p">[[</span><span class="s1">&#39;cabin&#39;</span><span class="p">,</span> <span class="s1">&#39;pclass&#39;</span><span class="p">,</span> <span class="s1">&#39;embarked&#39;</span><span class="p">]]</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">10</span><span class="p">))</span>
+</pre></div>
+</div>
+<p>We will encode the following categorical variables:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span>    <span class="n">cabin</span>  <span class="n">pclass</span> <span class="n">embarked</span>
+<span class="mi">501</span>      <span class="n">M</span>       <span class="mi">2</span>        <span class="n">S</span>
+<span class="mi">588</span>      <span class="n">M</span>       <span class="mi">2</span>        <span class="n">S</span>
+<span class="mi">402</span>      <span class="n">M</span>       <span class="mi">2</span>        <span class="n">C</span>
+<span class="mi">1193</span>     <span class="n">M</span>       <span class="mi">3</span>        <span class="n">Q</span>
+<span class="mi">686</span>      <span class="n">M</span>       <span class="mi">3</span>        <span class="n">Q</span>
+<span class="mi">971</span>      <span class="n">M</span>       <span class="mi">3</span>        <span class="n">Q</span>
+<span class="mi">117</span>      <span class="n">E</span>       <span class="mi">1</span>        <span class="n">C</span>
+<span class="mi">540</span>      <span class="n">M</span>       <span class="mi">2</span>        <span class="n">S</span>
+<span class="mi">294</span>      <span class="n">C</span>       <span class="mi">1</span>        <span class="n">C</span>
+<span class="mi">261</span>      <span class="n">E</span>       <span class="mi">1</span>        <span class="n">S</span>
+</pre></div>
+</div>
+<p>We set up the encoder to encode the variables above with 3 fold cross-validation, using
+a grid search to find the optimal depth of the decision tree (this is the default
+behaviour of the <code class="xref py py-class docutils literal notranslate"><span class="pre">DecisionTreeEncoder()</span></code>). In this example, we optimize the
+tree using the roc-auc metric.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">encoder</span> <span class="o">=</span> <span class="n">DecisionTreeEncoder</span><span class="p">(</span>
+    <span class="n">variables</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;cabin&#39;</span><span class="p">,</span> <span class="s1">&#39;pclass&#39;</span><span class="p">,</span> <span class="s1">&#39;embarked&#39;</span><span class="p">],</span>
+    <span class="n">regression</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="n">scoring</span><span class="o">=</span><span class="s1">&#39;roc_auc&#39;</span><span class="p">,</span>
+    <span class="n">cv</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
+    <span class="n">random_state</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+    <span class="n">ignore_format</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="n">encoder</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>With <code class="docutils literal notranslate"><span class="pre">fit()</span></code> the <code class="xref py py-class docutils literal notranslate"><span class="pre">DecisionTreeEncoder()</span></code> fits 1 decision tree per variable. The
+mappings are stored in the <code class="docutils literal notranslate"><span class="pre">encoding_dict_</span></code>:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">encoder</span><span class="o">.</span><span class="n">encoder_dict_</span>
+</pre></div>
+</div>
+<p>In the following output we see the values that will be used to replace each category
+in each variable:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="p">{</span><span class="s1">&#39;cabin&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;M&#39;</span><span class="p">:</span> <span class="mf">0.30484330484330485</span><span class="p">,</span>
+  <span class="s1">&#39;E&#39;</span><span class="p">:</span> <span class="mf">0.6116504854368932</span><span class="p">,</span>
+  <span class="s1">&#39;C&#39;</span><span class="p">:</span> <span class="mf">0.6116504854368932</span><span class="p">,</span>
+  <span class="s1">&#39;D&#39;</span><span class="p">:</span> <span class="mf">0.6981132075471698</span><span class="p">,</span>
+  <span class="s1">&#39;B&#39;</span><span class="p">:</span> <span class="mf">0.6981132075471698</span><span class="p">,</span>
+  <span class="s1">&#39;A&#39;</span><span class="p">:</span> <span class="mf">0.6981132075471698</span><span class="p">,</span>
+  <span class="s1">&#39;F&#39;</span><span class="p">:</span> <span class="mf">0.6981132075471698</span><span class="p">,</span>
+  <span class="s1">&#39;T&#39;</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span>
+  <span class="s1">&#39;G&#39;</span><span class="p">:</span> <span class="mf">0.5</span><span class="p">},</span>
+ <span class="s1">&#39;pclass&#39;</span><span class="p">:</span> <span class="p">{</span><span class="mi">2</span><span class="p">:</span> <span class="mf">0.43617021276595747</span><span class="p">,</span>
+  <span class="mi">3</span><span class="p">:</span> <span class="mf">0.25903614457831325</span><span class="p">,</span>
+  <span class="mi">1</span><span class="p">:</span> <span class="mf">0.6173913043478261</span><span class="p">},</span>
+ <span class="s1">&#39;embarked&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;S&#39;</span><span class="p">:</span> <span class="mf">0.3389570552147239</span><span class="p">,</span>
+  <span class="s1">&#39;C&#39;</span><span class="p">:</span> <span class="mf">0.553072625698324</span><span class="p">,</span>
+  <span class="s1">&#39;Q&#39;</span><span class="p">:</span> <span class="mf">0.37349397590361444</span><span class="p">,</span>
+  <span class="s1">&#39;Missing&#39;</span><span class="p">:</span> <span class="mf">1.0</span><span class="p">}}</span>
+</pre></div>
+</div>
+<p>Now we can go ahead and transform the categorical variables into numbers, using the
+predictions of these trees:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">train_t</span> <span class="o">=</span> <span class="n">encoder</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">X_train</span><span class="p">)</span>
+<span class="n">test_t</span> <span class="o">=</span> <span class="n">encoder</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">X_test</span><span class="p">)</span>
+
+<span class="n">train_t</span><span class="p">[[</span><span class="s1">&#39;cabin&#39;</span><span class="p">,</span> <span class="s1">&#39;pclass&#39;</span><span class="p">,</span> <span class="s1">&#39;embarked&#39;</span><span class="p">]]</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>We can see the encoded variables below:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span>        <span class="n">cabin</span>    <span class="n">pclass</span>  <span class="n">embarked</span>
+<span class="mi">501</span>   <span class="mf">0.304843</span>  <span class="mf">0.436170</span>  <span class="mf">0.338957</span>
+<span class="mi">588</span>   <span class="mf">0.304843</span>  <span class="mf">0.436170</span>  <span class="mf">0.338957</span>
+<span class="mi">402</span>   <span class="mf">0.304843</span>  <span class="mf">0.436170</span>  <span class="mf">0.553073</span>
+<span class="mi">1193</span>  <span class="mf">0.304843</span>  <span class="mf">0.259036</span>  <span class="mf">0.373494</span>
+<span class="mi">686</span>   <span class="mf">0.304843</span>  <span class="mf">0.259036</span>  <span class="mf">0.373494</span>
+<span class="mi">971</span>   <span class="mf">0.304843</span>  <span class="mf">0.259036</span>  <span class="mf">0.373494</span>
+<span class="mi">117</span>   <span class="mf">0.611650</span>  <span class="mf">0.617391</span>  <span class="mf">0.553073</span>
+<span class="mi">540</span>   <span class="mf">0.304843</span>  <span class="mf">0.436170</span>  <span class="mf">0.338957</span>
+<span class="mi">294</span>   <span class="mf">0.611650</span>  <span class="mf">0.617391</span>  <span class="mf">0.553073</span>
+<span class="mi">261</span>   <span class="mf">0.611650</span>  <span class="mf">0.617391</span>  <span class="mf">0.338957</span>
+</pre></div>
+</div>
+<section id="rounding-the-predictions">
+<h3>Rounding the predictions<a class="headerlink" href="#rounding-the-predictions" title="Permalink to this heading">#</a></h3>
+<p>The predictions of the decision tree can have a lot of decimals after the comma. When this
+happens, reading the categorical variables might be confusing. We can control the precision
+of the output to return less decimals after the comma like this:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">encoder</span> <span class="o">=</span> <span class="n">DecisionTreeEncoder</span><span class="p">(</span>
+    <span class="n">variables</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;cabin&#39;</span><span class="p">,</span> <span class="s1">&#39;pclass&#39;</span><span class="p">,</span> <span class="s1">&#39;embarked&#39;</span><span class="p">],</span>
+    <span class="n">regression</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="n">scoring</span><span class="o">=</span><span class="s1">&#39;roc_auc&#39;</span><span class="p">,</span>
+    <span class="n">cv</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
+    <span class="n">random_state</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+    <span class="n">ignore_format</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="n">precision</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="n">encoder</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Now, the mappings for each category contain 2 decimals at most:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">encoder</span><span class="o">.</span><span class="n">encoder_dict_</span>
+</pre></div>
+</div>
+<p>In the following output we see the values that will be used to replace each category
+in each variable:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="p">{</span><span class="s1">&#39;cabin&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;M&#39;</span><span class="p">:</span> <span class="mf">0.3</span><span class="p">,</span>
+  <span class="s1">&#39;E&#39;</span><span class="p">:</span> <span class="mf">0.61</span><span class="p">,</span>
+  <span class="s1">&#39;C&#39;</span><span class="p">:</span> <span class="mf">0.61</span><span class="p">,</span>
+  <span class="s1">&#39;D&#39;</span><span class="p">:</span> <span class="mf">0.7</span><span class="p">,</span>
+  <span class="s1">&#39;B&#39;</span><span class="p">:</span> <span class="mf">0.7</span><span class="p">,</span>
+  <span class="s1">&#39;A&#39;</span><span class="p">:</span> <span class="mf">0.7</span><span class="p">,</span>
+  <span class="s1">&#39;F&#39;</span><span class="p">:</span> <span class="mf">0.7</span><span class="p">,</span>
+  <span class="s1">&#39;T&#39;</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span>
+  <span class="s1">&#39;G&#39;</span><span class="p">:</span> <span class="mf">0.5</span><span class="p">},</span>
+ <span class="s1">&#39;pclass&#39;</span><span class="p">:</span> <span class="p">{</span><span class="mi">2</span><span class="p">:</span> <span class="mf">0.44</span><span class="p">,</span> <span class="mi">3</span><span class="p">:</span> <span class="mf">0.26</span><span class="p">,</span> <span class="mi">1</span><span class="p">:</span> <span class="mf">0.62</span><span class="p">},</span>
+ <span class="s1">&#39;embarked&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;S&#39;</span><span class="p">:</span> <span class="mf">0.34</span><span class="p">,</span> <span class="s1">&#39;C&#39;</span><span class="p">:</span> <span class="mf">0.55</span><span class="p">,</span> <span class="s1">&#39;Q&#39;</span><span class="p">:</span> <span class="mf">0.37</span><span class="p">,</span> <span class="s1">&#39;Missing&#39;</span><span class="p">:</span> <span class="mf">1.0</span><span class="p">}}</span>
+</pre></div>
+</div>
+<p>Now we can go ahead and transform the categorical variables into numbers, using the
+predictions of these trees:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">train_t</span> <span class="o">=</span> <span class="n">encoder</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">X_train</span><span class="p">)</span>
+<span class="n">test_t</span> <span class="o">=</span> <span class="n">encoder</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">X_test</span><span class="p">)</span>
+
+<span class="n">train_t</span><span class="p">[[</span><span class="s1">&#39;cabin&#39;</span><span class="p">,</span> <span class="s1">&#39;pclass&#39;</span><span class="p">,</span> <span class="s1">&#39;embarked&#39;</span><span class="p">]]</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>We can see the encoded variables below:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span>      <span class="n">cabin</span>  <span class="n">pclass</span>  <span class="n">embarked</span>
+<span class="mi">501</span>    <span class="mf">0.30</span>    <span class="mf">0.44</span>      <span class="mf">0.34</span>
+<span class="mi">588</span>    <span class="mf">0.30</span>    <span class="mf">0.44</span>      <span class="mf">0.34</span>
+<span class="mi">402</span>    <span class="mf">0.30</span>    <span class="mf">0.44</span>      <span class="mf">0.55</span>
+<span class="mi">1193</span>   <span class="mf">0.30</span>    <span class="mf">0.26</span>      <span class="mf">0.37</span>
+<span class="mi">686</span>    <span class="mf">0.30</span>    <span class="mf">0.26</span>      <span class="mf">0.37</span>
+<span class="mi">971</span>    <span class="mf">0.30</span>    <span class="mf">0.26</span>      <span class="mf">0.37</span>
+<span class="mi">117</span>    <span class="mf">0.61</span>    <span class="mf">0.62</span>      <span class="mf">0.55</span>
+<span class="mi">540</span>    <span class="mf">0.30</span>    <span class="mf">0.44</span>      <span class="mf">0.34</span>
+<span class="mi">294</span>    <span class="mf">0.61</span>    <span class="mf">0.62</span>      <span class="mf">0.55</span>
+<span class="mi">261</span>    <span class="mf">0.61</span>    <span class="mf">0.62</span>      <span class="mf">0.34</span>
+</pre></div>
+</div>
+<p>We can also revert the data to its original representation as follows:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">revert</span> <span class="o">=</span> <span class="n">encoder</span><span class="o">.</span><span class="n">inverse_transform</span><span class="p">(</span><span class="n">test_t</span><span class="p">)</span>
+<span class="n">revert</span><span class="p">[[</span><span class="s1">&#39;cabin&#39;</span><span class="p">,</span> <span class="s1">&#39;pclass&#39;</span><span class="p">,</span> <span class="s1">&#39;embarked&#39;</span><span class="p">]]</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>In the following output we see that with inverse transform, we obtain the original
+categories from the tree predictions:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span>     <span class="n">cabin</span>  <span class="n">pclass</span> <span class="n">embarked</span>
+<span class="mi">1139</span>     <span class="n">M</span>       <span class="mi">3</span>        <span class="n">S</span>
+<span class="mi">533</span>      <span class="n">M</span>       <span class="mi">2</span>        <span class="n">S</span>
+<span class="mi">459</span>      <span class="n">M</span>       <span class="mi">2</span>        <span class="n">S</span>
+<span class="mi">1150</span>     <span class="n">M</span>       <span class="mi">3</span>        <span class="n">S</span>
+<span class="mi">393</span>      <span class="n">M</span>       <span class="mi">2</span>        <span class="n">S</span>
+<span class="mi">1189</span>     <span class="n">G</span>       <span class="mi">3</span>        <span class="n">S</span>
+<span class="mi">5</span>        <span class="n">C</span>       <span class="mi">1</span>        <span class="n">S</span>
+<span class="mi">231</span>      <span class="n">C</span>       <span class="mi">1</span>        <span class="n">S</span>
+<span class="mi">330</span>      <span class="n">M</span>       <span class="mi">2</span>        <span class="n">S</span>
+<span class="mi">887</span>      <span class="n">M</span>       <span class="mi">3</span>        <span class="n">S</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="collisions">
+<h2>Collisions<a class="headerlink" href="#collisions" title="Permalink to this heading">#</a></h2>
+<p>This encoder can lead to collisions. Collisions are instances where different categories
+are encoded with the same number. It is useful to reduce cardinality. On the other hand,
+if the mappings are not meaningful we might lose the information contained in those
+categories.</p>
+<p>When there are collisions, <code class="docutils literal notranslate"><span class="pre">inverse_transform</span></code> would revert to only 1 of the categories,
+so some of the original information will be lost with the inverse transformation.</p>
+</section>
+<section id="unseen-categories">
+<h2>Unseen categories<a class="headerlink" href="#unseen-categories" title="Permalink to this heading">#</a></h2>
+<p>Unseen categories are labels that appear in the test set, or in live data, that were not
+present in the training set. As the decision tree is trained on the training set, there
+will only be mappings for seen categories.</p>
+<p>By default, <code class="xref py py-class docutils literal notranslate"><span class="pre">DecisionTreeEncoder()</span></code> will ignore unseen categories, which means that
+they will be replaced by NAN after the encoding. You can instruct the encoder to raise an
+error when it encounters unseen categories (parameter <code class="docutils literal notranslate"><span class="pre">unseen</span></code>). Alternatively, this
+encoder allows you to set up an arbitrary number to replace unseen categories
+(param <code class="docutils literal notranslate"><span class="pre">fill_value</span></code>).</p>
+</section>
+<section id="monotonic-variables">
+<h2>Monotonic variables<a class="headerlink" href="#monotonic-variables" title="Permalink to this heading">#</a></h2>
+<p>We mentioned previously that the idea of this encoding is to create features whose values
+grow monotonically with the target. Let’s explore that. We’ll use the house prices dataset:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">from</span> <span class="nn">sklearn.datasets</span> <span class="kn">import</span> <span class="n">fetch_openml</span>
+<span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="kn">import</span> <span class="n">train_test_split</span>
+
+<span class="kn">from</span> <span class="nn">feature_engine.encoding</span> <span class="kn">import</span> <span class="n">DecisionTreeEncoder</span>
+
+<span class="c1"># Load dataset</span>
+<span class="n">X</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">fetch_openml</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;house_prices&#39;</span><span class="p">,</span> <span class="n">version</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+                    <span class="n">return_X_y</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">as_frame</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="n">X_train</span><span class="p">,</span> <span class="n">X_test</span><span class="p">,</span> <span class="n">y_train</span><span class="p">,</span> <span class="n">y_test</span> <span class="o">=</span> <span class="n">train_test_split</span><span class="p">(</span>
+    <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">test_size</span><span class="o">=</span><span class="mf">0.3</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">42</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Let’s now plot the mean house price per category of the variable <code class="docutils literal notranslate"><span class="pre">MNZoning</span></code>:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">y_train</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="n">X_train</span><span class="p">[</span><span class="s2">&quot;MSZoning&quot;</span><span class="p">])</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">bar</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;mean house price&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>In the following image, we see that there isn’t a monotonic relationship between the
+current order of the categories and the house price:</p>
+<img alt="../../_images/mzoning-price-per-cat.png" src="../../_images/mzoning-price-per-cat.png" />
+<p>Let’s explore another variable:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">y_train</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="n">X_train</span><span class="p">[</span><span class="s2">&quot;LotShape&quot;</span><span class="p">])</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">bar</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;mean house price&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>In the following image we see that there isn’t a monotonic relationship between <code class="docutils literal notranslate"><span class="pre">LotShape</span></code>
+and the house price either:</p>
+<img alt="../../_images/lotshape-price-per-cat.png" src="../../_images/lotshape-price-per-cat.png" />
+<p>Let’s now encode these variables using decision trees:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">encoder</span> <span class="o">=</span> <span class="n">DecisionTreeEncoder</span><span class="p">(</span>
+    <span class="n">variables</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;MSZoning&quot;</span><span class="p">,</span> <span class="s1">&#39;LotShape&#39;</span><span class="p">],</span>
+    <span class="n">regression</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="n">cv</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
+    <span class="n">random_state</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+    <span class="n">ignore_format</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="n">precision</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="n">encoder</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Let’s check out the created mappings:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">encoder</span><span class="o">.</span><span class="n">encoder_dict_</span>
+</pre></div>
+</div>
+<p>Below we see the values that will be used to replace each category:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="p">{</span><span class="s1">&#39;MSZoning&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;RL&#39;</span><span class="p">:</span> <span class="mf">191179.0</span><span class="p">,</span>
+  <span class="s1">&#39;RM&#39;</span><span class="p">:</span> <span class="mf">127281.0</span><span class="p">,</span>
+  <span class="s1">&#39;FV&#39;</span><span class="p">:</span> <span class="mf">215063.0</span><span class="p">,</span>
+  <span class="s2">&quot;&#39;C (all)&#39;&quot;</span><span class="p">:</span> <span class="mf">90450.0</span><span class="p">,</span>
+  <span class="s1">&#39;RH&#39;</span><span class="p">:</span> <span class="mf">129380.0</span><span class="p">},</span>
+ <span class="s1">&#39;LotShape&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;Reg&#39;</span><span class="p">:</span> <span class="mf">166233.0</span><span class="p">,</span>
+  <span class="s1">&#39;IR1&#39;</span><span class="p">:</span> <span class="mf">203423.0</span><span class="p">,</span>
+  <span class="s1">&#39;IR2&#39;</span><span class="p">:</span> <span class="mf">231688.0</span><span class="p">,</span>
+  <span class="s1">&#39;IR3&#39;</span><span class="p">:</span> <span class="mf">231688.0</span><span class="p">}}</span>
+</pre></div>
+</div>
+<p>Let’s now encode the variables:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">train_t</span> <span class="o">=</span> <span class="n">encoder</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">X_train</span><span class="p">)</span>
+<span class="n">test_t</span> <span class="o">=</span> <span class="n">encoder</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">X_test</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">train_t</span><span class="p">[[</span><span class="s2">&quot;MSZoning&quot;</span><span class="p">,</span> <span class="s1">&#39;LotShape&#39;</span><span class="p">]]</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">10</span><span class="p">))</span>
+</pre></div>
+</div>
+<p>We see the encoded variables in the following output:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span>      <span class="n">MSZoning</span>  <span class="n">LotShape</span>
+<span class="mi">135</span>   <span class="mf">191179.0</span>  <span class="mf">166233.0</span>
+<span class="mi">1452</span>  <span class="mf">127281.0</span>  <span class="mf">166233.0</span>
+<span class="mi">762</span>   <span class="mf">215063.0</span>  <span class="mf">166233.0</span>
+<span class="mi">932</span>   <span class="mf">191179.0</span>  <span class="mf">203423.0</span>
+<span class="mi">435</span>   <span class="mf">191179.0</span>  <span class="mf">231688.0</span>
+<span class="mi">629</span>   <span class="mf">191179.0</span>  <span class="mf">166233.0</span>
+<span class="mi">1210</span>  <span class="mf">191179.0</span>  <span class="mf">166233.0</span>
+<span class="mi">1118</span>  <span class="mf">191179.0</span>  <span class="mf">166233.0</span>
+<span class="mi">1084</span>  <span class="mf">191179.0</span>  <span class="mf">231688.0</span>
+<span class="mi">158</span>   <span class="mf">215063.0</span>  <span class="mf">166233.0</span>
+</pre></div>
+</div>
+<p>And now, let’s plot the mean house price per category again, after the encoding:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">y_test</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="n">test_t</span><span class="p">[</span><span class="s2">&quot;MSZoning&quot;</span><span class="p">])</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">bar</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;mean house price&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>In the following image we see that the categories are ordered in a way that created a
+monotonic relationship with the target variable:</p>
+<img alt="../../_images/mzoning-price-per-cat-enc.png" src="../../_images/mzoning-price-per-cat-enc.png" />
+<p>Let’s repeat that for the second variable:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">y_test</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="n">test_t</span><span class="p">[</span><span class="s2">&quot;LotShape&quot;</span><span class="p">])</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">bar</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;mean house price&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>In the following image we also see a monotonic relationship after the encoding:</p>
+<img alt="../../_images/lotshape-price-per-cat-enc.png" src="../../_images/lotshape-price-per-cat-enc.png" />
+<section id="note">
+<h3>Note<a class="headerlink" href="#note" title="Permalink to this heading">#</a></h3>
+<p>Not every encoding will result in monotonic relationshops. For that to occur there needs to
+be some sort of relationship between the target and the categories that can be captured by
+the decision tree. Use with caution.</p>
+</section>
+</section>
+<section id="additional-resources">
+<h2>Additional resources<a class="headerlink" href="#additional-resources" title="Permalink to this heading">#</a></h2>
+<p>In the following notebook, you can find more details into the <code class="xref py py-class docutils literal notranslate"><span class="pre">DecisionTreeEncoder()</span></code>
+functionality and example plots with the encoded variables:</p>
+<ul class="simple">
+<li><p><a class="reference external" href="https://nbviewer.org/github/feature-engine/feature-engine-examples/blob/main/encoding/DecisionTreeEncoder.ipynb">Jupyter notebook</a></p></li>
+</ul>
+<p>For more details about this and other feature engineering methods check out these resources:</p>
+<figure class="align-center align-left" id="id2">
+<a class="reference external image-reference" href="https://www.trainindata.com/p/feature-engineering-for-machine-learning"><img alt="../../_images/feml.png" src="../../_images/feml.png" style="width: 300px;" /></a>
+<figcaption>
+<p><span class="caption-text">Feature Engineering for Machine Learning</span><a class="headerlink" href="#id2" title="Permalink to this image">#</a></p>
+</figcaption>
+</figure>
+<div class="line-block">
+<div class="line"><br /></div>
+<div class="line"><br /></div>
+<div class="line"><br /></div>
+<div class="line"><br /></div>
+<div class="line"><br /></div>
+<div class="line"><br /></div>
+<div class="line"><br /></div>
+<div class="line"><br /></div>
+<div class="line"><br /></div>
+<div class="line"><br /></div>
+</div>
+<p>Or read our book:</p>
+<figure class="align-center align-left" id="id3">
+<a class="reference external image-reference" href="https://www.packtpub.com/en-us/product/python-feature-engineering-cookbook-9781835883587"><img alt="../../_images/cookbook.png" src="../../_images/cookbook.png" style="width: 200px;" /></a>
+<figcaption>
+<p><span class="caption-text">Python Feature Engineering Cookbook</span><a class="headerlink" href="#id3" title="Permalink to this image">#</a></p>
+</figcaption>
+</figure>
+<p>Both our book and course are suitable for beginners and more advanced data scientists
+alike. By purchasing them you are supporting Sole, the main developer of Feature-engine.</p>
+</section>
+</section>
+
+
+                </article>
+              
+              
+              
+              
+              
+                <footer class="prev-next-footer">
+                  
+<div class="prev-next-area">
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+  <div class="sidebar-secondary-item">
+
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> On this page
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">DecisionTreeEncoder</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#python-example">Python example</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#rounding-the-predictions">Rounding the predictions</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#collisions">Collisions</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#unseen-categories">Unseen categories</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#monotonic-variables">Monotonic variables</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#note">Note</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#additional-resources">Additional resources</a></li>
+</ul>
+  </nav></div>
+
+  <div class="sidebar-secondary-item">
+
+  <div class="tocsection sourcelink">
+    <a href="../../_sources/user_guide/genAI/DecisionTreeEncoder.rst.txt">
+      <i class="fa-solid fa-file-lines"></i> Show Source
+    </a>
+  </div>
+</div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../_static/scripts/bootstrap.js?digest=5b4479735964841361fd"></script>
+<script src="../../_static/scripts/pydata-sphinx-theme.js?digest=5b4479735964841361fd"></script>
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+
+  <p class="sphinx-version">
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.1.2.
+    <br/>
+  </p>
+</div>
+      
+    </div>
+  
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item">
+<p class="theme-version">
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.14.4.
+</p></div>
+      
+    </div>
+  
+</div>
+
+  </footer>
+  </body>
+</html>

@@ -1,0 +1,1296 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>ProbeFeatureSelection &#8212; 3.1</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=5b4479735964841361fd" rel="stylesheet" />
+<link href="../../_static/styles/bootstrap.css?digest=5b4479735964841361fd" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=5b4479735964841361fd" rel="stylesheet" />
+
+  
+  <link href="../../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=5b4479735964841361fd" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/custom.css?v=30c166bc" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/custom.css?v=30c166bc" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=5b4479735964841361fd" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=5b4479735964841361fd" />
+  <script src="../../_static/vendor/fontawesome/6.1.2/js/all.min.js?digest=5b4479735964841361fd"></script>
+
+    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js?v=e1ce3931"></script>
+    <script src="../../_static/doctools.js?v=888ff710"></script>
+    <script src="../../_static/sphinx_highlight.js?v=4825356b"></script>
+    <script defer data-domain="feature-engine.readthedocs.io" src="https://plausible.io/js/plausible.js"></script>
+    <script src="../../_static/js/copybutton.js?v=84772c1c"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'user_guide/selection/ProbeFeatureSelection';</script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="MRMR - Minimum Redundancy Maximum Relevance" href="MRMR.html" />
+    <link rel="prev" title="SelectByInformationValue" href="SelectByInformationValue.html" />
+    
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+
+    <!-- Cookie banner -->
+    <style>
+        /* Style for the cookie banner */
+        #cookie-banner {
+            position: fixed;
+            bottom: 0;
+            right: 0;
+            background-color: #ffe4e1; /* Light Pink */
+            color: #333;
+            padding: 15px;
+            max-width: 400px;
+            display: none;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            z-index: 1000; /* Set a higher z-index value */
+        }
+
+        #cookie-banner p {
+        font-size: 16px; /* Font size for the text */
+        color: #333 !important; /* Set link color to black */
+        line-height: 1.5; /* Increase line height for added spacing between sentences */
+        }
+
+        #cookie-banner a {
+            color: #333;
+            text-decoration: underline;
+        }
+    </style>
+
+    <div id="cookie-banner">
+        <h2 style="font-size: 20px; margin-bottom: 10px;">This site uses cookies</h2>
+        <p style="font-size: 16px;">We use cookies to recognize your visits and preferences, to measure the effectiveness of the documentation, and discover how people find us. With your consent, you're helping us make our documentation better. <br><a href="https://www.trainindata.com/p/privacy" target="_blank">Learn More</a>.</p>
+        <button id="cookie-accept">Accept</button>
+        <button id="cookie-decline">Decline</button>
+    </div>
+
+    <script>
+        // JavaScript to show the cookie banner and handle the accept button
+        document.addEventListener('DOMContentLoaded', function () {
+            var cookieBanner = document.getElementById('cookie-banner');
+            var acceptButton = document.getElementById('cookie-accept');
+            var declineButton = document.getElementById('cookie-decline');
+
+            // Check if the user has already accepted or declined cookies
+            var cookiesAccepted = localStorage.getItem('cookiesAccepted');
+
+            if (!cookiesAccepted) {
+                cookieBanner.style.display = 'block';
+
+                acceptButton.addEventListener('click', function () {
+                    localStorage.setItem('cookiesAccepted', 'true');
+                    loadGoogleAnalytics();
+                    cookieBanner.style.display = 'none';
+                });
+
+                declineButton.addEventListener('click', function () {
+                    localStorage.setItem('cookiesAccepted', 'false');
+                    cookieBanner.style.display = 'none';
+                });
+            } else if (cookiesAccepted === 'true') {
+                loadGoogleAnalytics();
+            }
+        });
+
+        function loadGoogleAnalytics() {
+            // Load Google Analytics only if consent is given
+            var script = document.createElement('script');
+            script.async = true;
+            script.src = 'https://www.googletagmanager.com/gtag/js?id=G-Z6MPCG673G';
+            document.head.appendChild(script);
+
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', 'G-Z6MPCG673G');
+        }
+    </script>
+    <!-- Cookie banner -->
+
+
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>
+    Back to top
+  </button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
+<div class="bd-header__inner bd-page-width">
+  <label class="sidebar-toggle primary-toggle" for="__primary">
+    <span class="fa-solid fa-bars"></span>
+  </label>
+  
+  
+  <div class="col-lg-3 navbar-header-items__start">
+    
+      <div class="navbar-item">
+
+  
+
+<a class="navbar-brand logo" href="../../index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../../_static/sageops_logo.png" class="logo__image only-light" alt="3.1 - Home"/>
+    <script>document.write(`<img src="../../_static/sageops_logo.png" class="logo__image only-dark" alt="3.1 - Home"/>`);</script>
+  
+  
+</a></div>
+    
+      <div class="navbar-item">
+<script>
+document.write(`
+  <div class="version-switcher__container dropdown">
+    <button id="pst-version-switcher-button-2"
+      type="button"
+      class="version-switcher__button btn btn-sm navbar-btn dropdown-toggle"
+      data-bs-toggle="dropdown"
+      aria-haspopup="listbox"
+      aria-controls="pst-version-switcher-list-2"
+      aria-label="Version switcher list"
+    >
+      Choose version  <!-- this text may get changed later by javascript -->
+      <span class="caret"></span>
+    </button>
+    <div id="pst-version-switcher-list-2"
+      class="version-switcher__menu dropdown-menu list-group-flush py-0"
+      role="listbox" aria-labelledby="pst-version-switcher-button-2">
+      <!-- dropdown will be populated by javascript on page load -->
+    </div>
+  </div>
+`);
+</script></div>
+    
+  </div>
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item">
+<nav class="navbar-nav">
+  <p class="sidebar-header-items__title"
+     role="heading"
+     aria-level="1"
+     aria-label="Site Navigation">
+    Site Navigation
+  </p>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../quickstart/index.html">
+                        Quick Start
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item current active">
+                      <a class="nav-link nav-internal" href="../index.html">
+                        SageOps User Guide
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../api_doc/index.html">
+                        API
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../example_notebooks/index.html">
+                        Example Notebooks
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../about/index.html">
+                        About
+                      </a>
+                    </li>
+                
+            <li class="nav-item dropdown">
+                <button class="btn dropdown-toggle nav-item" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-controls="pst-nav-more-links">
+                    More
+                </button>
+                <ul id="pst-nav-more-links" class="dropdown-menu">
+                    
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../../Support/index.html">
+                        Support
+                      </a>
+                    </li>
+                
+                </ul>
+            </li>
+            
+  </ul>
+</nav></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+ <script>
+ document.write(`
+   <button class="btn navbar-btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script>
+        </div>
+      
+      
+        <div class="navbar-item">
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  </button>
+`);
+</script></div>
+      
+        <div class="navbar-item"><ul class="navbar-icon-links navbar-nav"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/" title="GitHub" class="nav-link" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><span><i class="fab fa-github-square fa-lg" aria-hidden="true"></i></span>
+            <span class="sr-only">GitHub</span></a>
+        </li>
+</ul></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+ <script>
+ document.write(`
+   <button class="btn navbar-btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script>
+    </div>
+  
+
+  
+    <label class="sidebar-toggle secondary-toggle" for="__secondary" tabindex="0">
+      <span class="fa-solid fa-outdent"></span>
+    </label>
+  
+</div>
+
+    </nav>
+  
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          <div class="navbar-item">
+<nav class="navbar-nav">
+  <p class="sidebar-header-items__title"
+     role="heading"
+     aria-level="1"
+     aria-label="Site Navigation">
+    Site Navigation
+  </p>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../quickstart/index.html">
+                        Quick Start
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item current active">
+                      <a class="nav-link nav-internal" href="../index.html">
+                        SageOps User Guide
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../api_doc/index.html">
+                        API
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../example_notebooks/index.html">
+                        Example Notebooks
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../about/index.html">
+                        About
+                      </a>
+                    </li>
+                
+            <li class="nav-item dropdown">
+                <button class="btn dropdown-toggle nav-item" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-controls="pst-nav-more-links-2">
+                    More
+                </button>
+                <ul id="pst-nav-more-links-2" class="dropdown-menu">
+                    
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../../Support/index.html">
+                        Support
+                      </a>
+                    </li>
+                
+                </ul>
+            </li>
+            
+  </ul>
+</nav></div>
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  </button>
+`);
+</script></div>
+        
+          <div class="navbar-item"><ul class="navbar-icon-links navbar-nav"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/" title="GitHub" class="nav-link" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><span><i class="fab fa-github-square fa-lg" aria-hidden="true"></i></span>
+            <span class="sr-only">GitHub</span></a>
+        </li>
+</ul></div>
+        
+      </div>
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+<nav class="bd-docs-nav bd-links"
+     aria-label="Section Navigation">
+  <p class="bd-links__title" role="heading" aria-level="1">Section Navigation</p>
+  <div class="bd-toc-item navbar-nav"><ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../experiment/index.html">Experiment</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-1"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../experiment/overview.html">Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../experiment/experiment_setup.html">Experiment Setup</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../experiment/track.html">Tracking and Managing Experiments</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../experiment/api.html">Programmatic API Reference</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../experiment/trial.html">Trial &amp; Trial Components</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../experiment/logging_metrics.html">Logging Metrics and Parameters</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../experiment/troubleshoot.html">Troubleshooting</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../model_monitoring/index.html">Model Monitoring</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-2"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../model_monitoring/core_concepts.html">Core Concepts</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../model_monitoring/setting_up.html">Setting Up Model Monitoring</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../model_monitoring/visualization.html">Visualization and Reporting</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../encoding/index.html">Categorical Encoding</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-3"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../encoding/OneHotEncoder.html">OneHotEncoder</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../encoding/OrdinalEncoder.html">Ordinal Encoding</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../encoding/CountFrequencyEncoder.html">CountFrequencyEncoder</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../encoding/MeanEncoder.html">MeanEncoder</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../encoding/WoEEncoder.html">Weight of Evidence (WoE)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../encoding/DecisionTreeEncoder.html">DecisionTreeEncoder</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../encoding/RareLabelEncoder.html">RareLabelEncoder</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../encoding/StringSimilarityEncoder.html">StringSimilarityEncoder</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../discretisation/index.html">Discretisation</a><input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-4"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../discretisation/EqualFrequencyDiscretiser.html">EqualFrequencyDiscretiser</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../discretisation/EqualWidthDiscretiser.html">EqualWidthDiscretiser</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../discretisation/ArbitraryDiscretiser.html">ArbitraryDiscretiser</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../discretisation/DecisionTreeDiscretiser.html">DecisionTreeDiscretiser</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../discretisation/GeometricWidthDiscretiser.html">GeometricWidthDiscretiser</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../outliers/index.html">Outlier Handling</a><input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-5"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../outliers/Winsorizer.html">Winsorizer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../outliers/ArbitraryOutlierCapper.html">ArbitraryOutlierCapper</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../outliers/OutlierTrimmer.html">OutlierTrimmer</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../transformation/index.html">Variance Stabilizing Transformations</a><input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-6"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../transformation/LogTransformer.html">LogTransformer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../transformation/LogCpTransformer.html">LogCpTransformer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../transformation/ReciprocalTransformer.html">ReciprocalTransformer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../transformation/ArcsinTransformer.html">ArcsinTransformer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../transformation/PowerTransformer.html">PowerTransformer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../transformation/BoxCoxTransformer.html">BoxCoxTransformer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../transformation/YeoJohnsonTransformer.html">YeoJohnsonTransformer</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../scaling/index.html">Scaling</a><input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-7"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../scaling/MeanNormalizationScaler.html">MeanNormalizationScaler</a></li>
+</ul>
+</li>
+</ul>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../creation/index.html">Feature Creation</a><input class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-8"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../creation/CyclicalFeatures.html">CyclicalFeatures</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../creation/MathFeatures.html">MathFeatures</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../creation/RelativeFeatures.html">RelativeFeatures</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../creation/DecisionTreeFeatures.html">DecisionTreeFeatures</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../datetime/index.html">Datetime Features</a><input class="toctree-checkbox" id="toctree-checkbox-9" name="toctree-checkbox-9" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-9"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../datetime/DatetimeFeatures.html">DatetimeFeatures</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../datetime/DatetimeSubtraction.html">DatetimeSubtraction</a></li>
+</ul>
+</li>
+</ul>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="index.html">Feature Selection</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-10" name="toctree-checkbox-10" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-10"><i class="fa-solid fa-chevron-down"></i></label><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="DropFeatures.html">DropFeatures</a></li>
+<li class="toctree-l2"><a class="reference internal" href="DropConstantFeatures.html">DropConstantFeatures</a></li>
+<li class="toctree-l2"><a class="reference internal" href="DropDuplicateFeatures.html">DropDuplicateFeatures</a></li>
+<li class="toctree-l2"><a class="reference internal" href="DropCorrelatedFeatures.html">DropCorrelatedFeatures</a></li>
+<li class="toctree-l2"><a class="reference internal" href="SmartCorrelatedSelection.html">SmartCorrelatedSelection</a></li>
+<li class="toctree-l2"><a class="reference internal" href="SelectBySingleFeaturePerformance.html">SelectBySingleFeaturePerformance</a></li>
+<li class="toctree-l2"><a class="reference internal" href="RecursiveFeatureElimination.html">RecursiveFeatureElimination</a></li>
+<li class="toctree-l2"><a class="reference internal" href="RecursiveFeatureAddition.html">RecursiveFeatureAddition</a></li>
+<li class="toctree-l2"><a class="reference internal" href="SelectByShuffling.html">SelectByShuffling</a></li>
+<li class="toctree-l2"><a class="reference internal" href="SelectByTargetMeanPerformance.html">SelectByTargetMeanPerformance</a></li>
+<li class="toctree-l2"><a class="reference internal" href="DropHighPSIFeatures.html">DropHighPSIFeatures</a></li>
+<li class="toctree-l2"><a class="reference internal" href="SelectByInformationValue.html">SelectByInformationValue</a></li>
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">ProbeFeatureSelection</a></li>
+<li class="toctree-l2"><a class="reference internal" href="MRMR.html">MRMR - Minimum Redundancy Maximum Relevance</a></li>
+</ul>
+</li>
+</ul>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../preprocessing/index.html">Preprocessing</a><input class="toctree-checkbox" id="toctree-checkbox-11" name="toctree-checkbox-11" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-11"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../preprocessing/MatchCategories.html">MatchCategories</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../preprocessing/MatchVariables.html">MatchVariables</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../wrappers/index.html">Scikit-learn Wrapper</a><input class="toctree-checkbox" id="toctree-checkbox-12" name="toctree-checkbox-12" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-12"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../wrappers/Wrapper.html">SklearnTransformerWrapper</a></li>
+</ul>
+</li>
+</ul>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../pipeline/index.html">Pipeline</a><input class="toctree-checkbox" id="toctree-checkbox-13" name="toctree-checkbox-13" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-13"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../pipeline/Pipeline.html">Pipeline</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../pipeline/make_pipeline.html">make_pipeline</a></li>
+</ul>
+</li>
+</ul>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../variable_handling/index.html">Variable handling functions</a><input class="toctree-checkbox" id="toctree-checkbox-14" name="toctree-checkbox-14" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-14"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../variable_handling/find_all_variables.html">find_all_variables</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../variable_handling/find_categorical_variables.html">find_categorical_variables</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../variable_handling/find_datetime_variables.html">find_datetime_variables</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../variable_handling/find_numerical_variables.html">find_numerical_variables</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../variable_handling/find_categorical_and_numerical_variables.html">find_categorical_and_numerical_variables</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../variable_handling/check_all_variables.html">check_all_variables</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../variable_handling/check_categorical_variables.html">check_categorical_variables</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../variable_handling/check_datetime_variables.html">check_datetime_variables</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../variable_handling/check_numerical_variables.html">check_numerical_variables</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../variable_handling/retain_variables_if_in_df.html">retain_variables_if_in_df</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+
+
+<nav aria-label="Breadcrumb">
+  <ul class="bd-breadcrumbs">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="../../index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    
+    <li class="breadcrumb-item"><a href="../index.html" class="nav-link">SageOps User Guide</a></li>
+    
+    
+    <li class="breadcrumb-item"><a href="index.html" class="nav-link">Feature Selection</a></li>
+    
+    <li class="breadcrumb-item active" aria-current="page">ProbeFeature...</li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article" role="main">
+                  
+  <section id="probefeatureselection">
+<span id="probe-features"></span><h1>ProbeFeatureSelection<a class="headerlink" href="#probefeatureselection" title="Permalink to this heading">#</a></h1>
+<p><code class="xref py py-class docutils literal notranslate"><span class="pre">ProbeFeatureSelection()</span></code> adds one or more random variables to the dataframe. Next
+it derives the feature importance for each variable, including the probe features. Finally,
+it removes those features whose importance is lower than the probes.</p>
+<section id="deriving-feature-importance">
+<h2>Deriving feature importance<a class="headerlink" href="#deriving-feature-importance" title="Permalink to this heading">#</a></h2>
+<p><code class="xref py py-class docutils literal notranslate"><span class="pre">ProbeFeatureSelection()</span></code> has 2 strategies to derive feature importance.</p>
+<p>In the <code class="docutils literal notranslate"><span class="pre">collective</span></code> strategy, <code class="xref py py-class docutils literal notranslate"><span class="pre">ProbeFeatureSelection()</span></code> trains one machine learning
+model using all the variables plus the probe features, and then derives the feature importance
+from the fitted model. This feature importance is given by the coefficients of
+linear models or the feature importance derived from tree-based algorithms.</p>
+<p>In the <code class="docutils literal notranslate"><span class="pre">individual</span> <span class="pre">feature</span></code> strategy, <code class="xref py py-class docutils literal notranslate"><span class="pre">ProbeFeatureSelection()</span></code> trains one machine
+learning model per feature and per probe, and then, the feature importance is given by the
+performance of that single feature model. Here, the importance is given by any performance
+metric chosen by you.</p>
+<p>Both strategies have advantages and limitations. If the features are correlated, the
+feature importance value returned by the coefficients of a linear model, or derived from
+a decision tree, will appear to be smaller than if the feature was used to train a model
+individually. Hence, potentially important features might be lost to the probes due to these
+seemingly low importance values resulting from correlation.</p>
+<p>On the other hand, training models using individual features, does not allow to detect
+feature interactions and does not remove redundant variables.</p>
+<p>In addition, keep in mind that the importance derived tree-based models is biased towards
+features with high cardinality. Hence, continuous features will seem to be more important
+than discrete variables. If your features are discrete and your probes continuous,
+you could be removing important features accidentally.</p>
+</section>
+<section id="selecting-features">
+<h2>Selecting features<a class="headerlink" href="#selecting-features" title="Permalink to this heading">#</a></h2>
+<p>After assigning a value of feature importance to each feature, including the probes,
+<code class="xref py py-class docutils literal notranslate"><span class="pre">ProbeFeatureSelection()</span></code> will select those variables whose importance is greater
+than the mean importance of all probes.</p>
+</section>
+<section id="feature-selection-process">
+<h2>Feature selection process<a class="headerlink" href="#feature-selection-process" title="Permalink to this heading">#</a></h2>
+<p>This is how <code class="xref py py-class docutils literal notranslate"><span class="pre">ProbeFeatureSelection()</span></code> selects features using the <code class="docutils literal notranslate"><span class="pre">collective</span></code>
+strategy:</p>
+<ol class="arabic simple">
+<li><p>Add 1 or more random features to the dataset</p></li>
+<li><p>Train a machine learning model using all features including the random ones</p></li>
+<li><p>Derive feature importance from the fitted model</p></li>
+<li><p>Take the average importance of the random features</p></li>
+<li><p>Select features whose importance is greater than the importance of the random variables (step 4)</p></li>
+</ol>
+<p>This is how <code class="xref py py-class docutils literal notranslate"><span class="pre">ProbeFeatureSelection()</span></code> selects features using the <code class="docutils literal notranslate"><span class="pre">individual</span> <span class="pre">feature</span></code>
+strategy:</p>
+<ol class="arabic simple">
+<li><p>Add 1 or more random features to the dataset</p></li>
+<li><p>Train a machine learning per feature and per probe</p></li>
+<li><p>Determine the feature importance as the performance of the single feature model</p></li>
+<li><p>Take the average importance of the random features</p></li>
+<li><p>Select features whose importance is greater than the importance of the random variables (step 4)</p></li>
+</ol>
+</section>
+<section id="rationale-of-probe-feature-selection">
+<h2>Rationale of probe feature selection<a class="headerlink" href="#rationale-of-probe-feature-selection" title="Permalink to this heading">#</a></h2>
+<p>One of the primary goals of feature selection is to remove noise from the dataset. A
+randomly generated variable, i.e., probe feature, inherently possesses a high level of
+noise. Consequently, any variable with less importance than a probe feature is assumed
+to be noise and can be discarded from the dataset.</p>
+</section>
+<section id="distribution-of-the-probe-features">
+<h2>Distribution of the probe features<a class="headerlink" href="#distribution-of-the-probe-features" title="Permalink to this heading">#</a></h2>
+<p>When initiating the <code class="xref py py-class docutils literal notranslate"><span class="pre">ProbeFeatureSelection()</span></code> class, you have the option to select
+which distribution is to be assumed to create the probe feature(s), as well as the number of
+probe features to create.</p>
+<p>The possible distributions are ‘normal’, ‘binary’, ‘uniform’, or ‘all’. ‘all’ creates 1
+or more probe features comprised of each distribution type, i.e., normal, binomial, and
+uniform. So, if you selected ‘all’ and are creating 9 probe features, you will have 3 probes
+for each distribution.</p>
+<p>The distribution matters. Tree-based models tend to give more importance to highly cardinal
+features. Hence, probes created from a uniform or normal distribution will display a greater
+importance than probes extracted from a binomial distribution when using these models.</p>
+</section>
+<section id="python-examples">
+<h2>Python examples<a class="headerlink" href="#python-examples" title="Permalink to this heading">#</a></h2>
+<p>Let’s see how to use this transformer to select variables from UC Irvine’s Breast Cancer
+Wisconsin (Diagnostic) dataset, which can be found <a class="reference external" href="https://archive.ics.uci.edu/ml/datasets/Breast+Cancer+Wisconsin+(Diagnostic)">here</a>. We will use Scikit-learn to load
+the dataset. This dataset concerns breast cancer diagnoses. The target variable is binary, i.e.,
+malignant or benign. The data is solely comprised of numerical data.</p>
+<p>Let’s import the required libraries and classes:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">from</span> <span class="nn">sklearn.datasets</span> <span class="kn">import</span> <span class="n">load_breast_cancer</span>
+<span class="kn">from</span> <span class="nn">sklearn.ensemble</span> <span class="kn">import</span> <span class="n">RandomForestClassifier</span>
+<span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="kn">import</span> <span class="n">train_test_split</span>
+<span class="kn">from</span> <span class="nn">feature_engine.selection</span> <span class="kn">import</span> <span class="n">ProbeFeatureSelection</span>
+</pre></div>
+</div>
+<p>Let’s now load the cancer diagnostic data:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">cancer_X</span><span class="p">,</span> <span class="n">cancer_y</span> <span class="o">=</span> <span class="n">load_breast_cancer</span><span class="p">(</span><span class="n">return_X_y</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">as_frame</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Let’s check the shape of <code class="docutils literal notranslate"><span class="pre">cancer_X</span></code>:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">cancer_X</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>We see that the dataset is comprised of 569 observations and 30 features:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="mi">569</span><span class="p">,</span> <span class="mi">30</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Let’s now split the data into train and test sets:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># separate train and test sets</span>
+<span class="n">X_train</span><span class="p">,</span> <span class="n">X_test</span><span class="p">,</span> <span class="n">y_train</span><span class="p">,</span> <span class="n">y_test</span> <span class="o">=</span> <span class="n">train_test_split</span><span class="p">(</span>
+    <span class="n">cancer_X</span><span class="p">,</span>
+    <span class="n">cancer_y</span><span class="p">,</span>
+    <span class="n">test_size</span><span class="o">=</span><span class="mf">0.2</span><span class="p">,</span>
+    <span class="n">random_state</span><span class="o">=</span><span class="mi">3</span>
+<span class="p">)</span>
+
+<span class="n">X_train</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">X_test</span><span class="o">.</span><span class="n">shape</span>
+</pre></div>
+</div>
+<p>We see the size of the datasets below. Note that there are 30 features in both the
+training and test sets.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="p">((</span><span class="mi">455</span><span class="p">,</span> <span class="mi">30</span><span class="p">),</span> <span class="p">(</span><span class="mi">114</span><span class="p">,</span> <span class="mi">30</span><span class="p">))</span>
+</pre></div>
+</div>
+<p>Now, we set up <code class="xref py py-class docutils literal notranslate"><span class="pre">ProbeFeatureSelection()</span></code> to select features using the <code class="docutils literal notranslate"><span class="pre">collective</span></code>
+strategy.</p>
+<p>We will pass  <code class="docutils literal notranslate"><span class="pre">RandomForestClassifier()</span></code> as the <code class="code docutils literal notranslate"><span class="pre">estimator</span></code>. We will use <code class="docutils literal notranslate"><span class="pre">precision</span></code>
+as the <code class="code docutils literal notranslate"><span class="pre">scoring</span></code> parameter and <code class="docutils literal notranslate"><span class="pre">5</span></code> as <code class="code docutils literal notranslate"><span class="pre">cv</span></code> parameter, both parameters to be
+used in the cross validation.</p>
+<p>In this example, we will introduce just 1 random feature with a normal distribution. Thus,
+we pass <code class="docutils literal notranslate"><span class="pre">1</span></code> for the <code class="code docutils literal notranslate"><span class="pre">n_probes</span></code> parameter and <code class="docutils literal notranslate"><span class="pre">normal</span></code> as the <code class="code docutils literal notranslate"><span class="pre">distribution</span></code>.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">sel</span> <span class="o">=</span> <span class="n">ProbeFeatureSelection</span><span class="p">(</span>
+    <span class="n">estimator</span><span class="o">=</span><span class="n">RandomForestClassifier</span><span class="p">(),</span>
+    <span class="n">variables</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">scoring</span><span class="o">=</span><span class="s2">&quot;precision&quot;</span><span class="p">,</span>
+    <span class="n">n_probes</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+    <span class="n">distribution</span><span class="o">=</span><span class="s2">&quot;normal&quot;</span><span class="p">,</span>
+    <span class="n">cv</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span>
+    <span class="n">random_state</span><span class="o">=</span><span class="mi">150</span><span class="p">,</span>
+    <span class="n">confirm_variables</span><span class="o">=</span><span class="kc">False</span>
+<span class="p">)</span>
+
+<span class="n">sel</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>With <code class="code docutils literal notranslate"><span class="pre">fit()</span></code>, the transformer:</p>
+<ul class="simple">
+<li><p>creates <code class="docutils literal notranslate"><span class="pre">n_probes</span></code> number of probe features using provided distribution(s)</p></li>
+<li><p>uses cross-validation to fit the provided estimator</p></li>
+<li><p>calculates the feature importance score for each variable, including probe features</p></li>
+<li><p>if there are multiple probe features, the transformer calculates the average importance score</p></li>
+<li><p>identifies features to drop because their importance scores are less than that of the probe feature(s)</p></li>
+</ul>
+<section id="analysing-the-probes">
+<h3>Analysing the probes<a class="headerlink" href="#analysing-the-probes" title="Permalink to this heading">#</a></h3>
+<p>In the attribute <code class="code docutils literal notranslate"><span class="pre">probe_features</span></code>, we find the pseudo-randomly generated variable(s):</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">sel</span><span class="o">.</span><span class="n">probe_features_</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span>       <span class="n">gaussian_probe_0</span>
+<span class="mi">0</span>         <span class="o">-</span><span class="mf">0.694150</span>
+<span class="mi">1</span>          <span class="mf">1.171840</span>
+<span class="mi">2</span>          <span class="mf">1.074892</span>
+<span class="mi">3</span>          <span class="mf">1.698733</span>
+<span class="mi">4</span>          <span class="mf">0.498702</span>
+</pre></div>
+</div>
+<p>We can go ahead and display a histogram of the probe feature:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">sel</span><span class="o">.</span><span class="n">probe_features_</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">bins</span><span class="o">=</span><span class="mi">30</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>As we can see, it shows a normal distribution:</p>
+<figure class="align-center">
+<img alt="../../_images/probe_feature_normal.png" src="../../_images/probe_feature_normal.png" />
+</figure>
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+</section>
+<section id="analysing-the-feature-importance">
+<h3>Analysing the feature importance<a class="headerlink" href="#analysing-the-feature-importance" title="Permalink to this heading">#</a></h3>
+<p>The attribute <code class="code docutils literal notranslate"><span class="pre">feature_importances_</span></code> shows each variable’s feature importance:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">sel</span><span class="o">.</span><span class="n">feature_importances_</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>These are the importance for the first 5 features:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">mean</span> <span class="n">radius</span>        <span class="mf">0.058463</span>
+<span class="n">mean</span> <span class="n">texture</span>       <span class="mf">0.011953</span>
+<span class="n">mean</span> <span class="n">perimeter</span>     <span class="mf">0.069516</span>
+<span class="n">mean</span> <span class="n">area</span>          <span class="mf">0.050947</span>
+<span class="n">mean</span> <span class="n">smoothness</span>    <span class="mf">0.004974</span>
+<span class="n">dtype</span><span class="p">:</span> <span class="n">float64</span>
+</pre></div>
+</div>
+<p>At the end of the series, we see the importance of the probe feature:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">sel</span><span class="o">.</span><span class="n">feature_importances_</span><span class="o">.</span><span class="n">tail</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>These are the importance of the last 5 features including the probe:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">worst</span> <span class="n">concavity</span>            <span class="mf">0.037844</span>
+<span class="n">worst</span> <span class="n">concave</span> <span class="n">points</span>       <span class="mf">0.102769</span>
+<span class="n">worst</span> <span class="n">symmetry</span>             <span class="mf">0.011587</span>
+<span class="n">worst</span> <span class="n">fractal</span> <span class="n">dimension</span>    <span class="mf">0.007456</span>
+<span class="n">gaussian_probe_0</span>           <span class="mf">0.003783</span>
+<span class="n">dtype</span><span class="p">:</span> <span class="n">float64</span>
+</pre></div>
+</div>
+<p>In the attribute <code class="code docutils literal notranslate"><span class="pre">feature_importances_std_</span></code> we find the standard deviation of the
+feature importance, which we can use for data analysis:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">sel</span><span class="o">.</span><span class="n">feature_importances_std_</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>These are the standard deviations for the first 5 features:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">mean</span> <span class="n">radius</span>        <span class="mf">0.013648</span>
+<span class="n">mean</span> <span class="n">texture</span>       <span class="mf">0.002571</span>
+<span class="n">mean</span> <span class="n">perimeter</span>     <span class="mf">0.025189</span>
+<span class="n">mean</span> <span class="n">area</span>          <span class="mf">0.010173</span>
+<span class="n">mean</span> <span class="n">smoothness</span>    <span class="mf">0.001650</span>
+<span class="n">dtype</span><span class="p">:</span> <span class="n">float64</span>
+</pre></div>
+</div>
+<p>We can go ahead and plot bar plots with the feature importance and the standard deviation:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">r</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span>
+    <span class="n">sel</span><span class="o">.</span><span class="n">feature_importances_</span><span class="p">,</span>
+    <span class="n">sel</span><span class="o">.</span><span class="n">feature_importances_std_</span>
+<span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+
+<span class="n">r</span><span class="o">.</span><span class="n">columns</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;mean&quot;</span><span class="p">,</span> <span class="s2">&quot;std&quot;</span><span class="p">]</span>
+
+<span class="n">r</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="s2">&quot;mean&quot;</span><span class="p">,</span> <span class="n">ascending</span><span class="o">=</span><span class="kc">False</span><span class="p">)[</span><span class="s2">&quot;mean&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">bar</span><span class="p">(</span>
+    <span class="n">yerr</span><span class="o">=</span><span class="p">[</span><span class="n">r</span><span class="p">[</span><span class="s1">&#39;std&#39;</span><span class="p">],</span> <span class="n">r</span><span class="p">[</span><span class="s1">&#39;std&#39;</span><span class="p">]],</span> <span class="n">subplots</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">15</span><span class="p">,</span><span class="mi">6</span><span class="p">)</span>
+<span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;Feature importance derived from the random forests&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;Feature importance&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>In the following image, we see the importance of each feature, including the probe:</p>
+<figure class="align-center">
+<img alt="../../_images/probe-importance-std.png" src="../../_images/probe-importance-std.png" />
+</figure>
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+</section>
+<section id="selected-features">
+<h3>Selected features<a class="headerlink" href="#selected-features" title="Permalink to this heading">#</a></h3>
+<p>In the attribute <code class="code docutils literal notranslate"><span class="pre">features_to_drop_</span></code>, we find the variables that were not selected:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">sel</span><span class="o">.</span><span class="n">features_to_drop_</span>
+</pre></div>
+</div>
+<p>These are the variables that will be removed from the dataframe:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="s1">&#39;mean symmetry&#39;</span><span class="p">,</span>
+ <span class="s1">&#39;mean fractal dimension&#39;</span><span class="p">,</span>
+ <span class="s1">&#39;texture error&#39;</span><span class="p">,</span>
+ <span class="s1">&#39;smoothness error&#39;</span><span class="p">,</span>
+ <span class="s1">&#39;concave points error&#39;</span><span class="p">,</span>
+ <span class="s1">&#39;fractal dimension error&#39;</span><span class="p">]</span>
+</pre></div>
+</div>
+<p>We see that the <code class="code docutils literal notranslate"><span class="pre">features_to_drop_</span></code> have feature importance scores that are less
+than the probe feature’s score:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">sel</span><span class="o">.</span><span class="n">feature_importances_</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">sel</span><span class="o">.</span><span class="n">features_to_drop_</span><span class="o">+</span><span class="p">[</span><span class="s2">&quot;gaussian_probe_0&quot;</span><span class="p">]]</span>
+</pre></div>
+</div>
+<p>The previous command returns the following output:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">mean</span> <span class="n">symmetry</span>              <span class="mf">0.003698</span>
+<span class="n">mean</span> <span class="n">fractal</span> <span class="n">dimension</span>     <span class="mf">0.003455</span>
+<span class="n">texture</span> <span class="n">error</span>              <span class="mf">0.003595</span>
+<span class="n">smoothness</span> <span class="n">error</span>           <span class="mf">0.003333</span>
+<span class="n">concave</span> <span class="n">points</span> <span class="n">error</span>       <span class="mf">0.003548</span>
+<span class="n">fractal</span> <span class="n">dimension</span> <span class="n">error</span>    <span class="mf">0.003576</span>
+<span class="n">gaussian_probe_0</span>           <span class="mf">0.003783</span>
+</pre></div>
+</div>
+</section>
+<section id="dropping-features-from-the-data">
+<h3>Dropping features from the data<a class="headerlink" href="#dropping-features-from-the-data" title="Permalink to this heading">#</a></h3>
+<p>With <code class="code docutils literal notranslate"><span class="pre">transform()</span></code>, we can go ahead and drop the six features with feature importance score
+smaller than <code class="docutils literal notranslate"><span class="pre">gaussian_probe_0</span></code> variable:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">Xtr</span> <span class="o">=</span> <span class="n">sel</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">X_test</span><span class="p">)</span>
+
+<span class="n">Xtr</span><span class="o">.</span><span class="n">shape</span>
+</pre></div>
+</div>
+<p>The final shape of the data after removing the features:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="mi">114</span><span class="p">,</span> <span class="mi">24</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="getting-the-name-of-the-resulting-features">
+<h3>Getting the name of the resulting features<a class="headerlink" href="#getting-the-name-of-the-resulting-features" title="Permalink to this heading">#</a></h3>
+<p>And, finally, we can also obtain the names of the features in the final transformed dataset:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">sel</span><span class="o">.</span><span class="n">get_feature_names_out</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>In the following output we see the name of the features that will be present in the
+transformed datasets:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="s1">&#39;mean radius&#39;</span><span class="p">,</span>
+ <span class="s1">&#39;mean texture&#39;</span><span class="p">,</span>
+ <span class="s1">&#39;mean perimeter&#39;</span><span class="p">,</span>
+ <span class="s1">&#39;mean area&#39;</span><span class="p">,</span>
+ <span class="s1">&#39;mean smoothness&#39;</span><span class="p">,</span>
+ <span class="s1">&#39;mean compactness&#39;</span><span class="p">,</span>
+ <span class="s1">&#39;mean concavity&#39;</span><span class="p">,</span>
+ <span class="s1">&#39;mean concave points&#39;</span><span class="p">,</span>
+ <span class="s1">&#39;radius error&#39;</span><span class="p">,</span>
+ <span class="s1">&#39;perimeter error&#39;</span><span class="p">,</span>
+ <span class="s1">&#39;area error&#39;</span><span class="p">,</span>
+ <span class="s1">&#39;compactness error&#39;</span><span class="p">,</span>
+ <span class="s1">&#39;concavity error&#39;</span><span class="p">,</span>
+ <span class="s1">&#39;symmetry error&#39;</span><span class="p">,</span>
+ <span class="s1">&#39;worst radius&#39;</span><span class="p">,</span>
+ <span class="s1">&#39;worst texture&#39;</span><span class="p">,</span>
+ <span class="s1">&#39;worst perimeter&#39;</span><span class="p">,</span>
+ <span class="s1">&#39;worst area&#39;</span><span class="p">,</span>
+ <span class="s1">&#39;worst smoothness&#39;</span><span class="p">,</span>
+ <span class="s1">&#39;worst compactness&#39;</span><span class="p">,</span>
+ <span class="s1">&#39;worst concavity&#39;</span><span class="p">,</span>
+ <span class="s1">&#39;worst concave points&#39;</span><span class="p">,</span>
+ <span class="s1">&#39;worst symmetry&#39;</span><span class="p">,</span>
+ <span class="s1">&#39;worst fractal dimension&#39;</span><span class="p">]</span>
+</pre></div>
+</div>
+<p>For compatibility with Scikit-learn selection transformers, <code class="xref py py-class docutils literal notranslate"><span class="pre">ProbeFeatureSelection()</span></code>
+also supports the method <code class="docutils literal notranslate"><span class="pre">get_support()</span></code>:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">sel</span><span class="o">.</span><span class="n">get_support</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>which returns the following output:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="kc">True</span><span class="p">,</span> <span class="kc">True</span><span class="p">,</span> <span class="kc">True</span><span class="p">,</span> <span class="kc">True</span><span class="p">,</span> <span class="kc">True</span><span class="p">,</span> <span class="kc">True</span><span class="p">,</span> <span class="kc">True</span><span class="p">,</span> <span class="kc">True</span><span class="p">,</span> <span class="kc">False</span><span class="p">,</span> <span class="kc">False</span><span class="p">,</span> <span class="kc">True</span><span class="p">,</span> <span class="kc">False</span><span class="p">,</span> <span class="kc">True</span><span class="p">,</span>
+ <span class="kc">True</span><span class="p">,</span> <span class="kc">False</span><span class="p">,</span> <span class="kc">True</span><span class="p">,</span> <span class="kc">True</span><span class="p">,</span> <span class="kc">False</span><span class="p">,</span> <span class="kc">True</span><span class="p">,</span> <span class="kc">False</span><span class="p">,</span> <span class="kc">True</span><span class="p">,</span> <span class="kc">True</span><span class="p">,</span> <span class="kc">True</span><span class="p">,</span> <span class="kc">True</span><span class="p">,</span> <span class="kc">True</span><span class="p">,</span> <span class="kc">True</span><span class="p">,</span>
+ <span class="kc">True</span><span class="p">,</span> <span class="kc">True</span><span class="p">,</span> <span class="kc">True</span><span class="p">,</span> <span class="kc">True</span><span class="p">]</span>
+</pre></div>
+</div>
+</section>
+<section id="using-several-probe-features">
+<h3>Using several probe features<a class="headerlink" href="#using-several-probe-features" title="Permalink to this heading">#</a></h3>
+<p>Let’s now repeat the selection process, but using more than 1 probe feature.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">sel</span> <span class="o">=</span> <span class="n">ProbeFeatureSelection</span><span class="p">(</span>
+    <span class="n">estimator</span><span class="o">=</span><span class="n">RandomForestClassifier</span><span class="p">(),</span>
+    <span class="n">variables</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">scoring</span><span class="o">=</span><span class="s2">&quot;precision&quot;</span><span class="p">,</span>
+    <span class="n">n_probes</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
+    <span class="n">distribution</span><span class="o">=</span><span class="s2">&quot;all&quot;</span><span class="p">,</span>
+    <span class="n">cv</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span>
+    <span class="n">random_state</span><span class="o">=</span><span class="mi">150</span><span class="p">,</span>
+    <span class="n">confirm_variables</span><span class="o">=</span><span class="kc">False</span>
+<span class="p">)</span>
+
+<span class="n">sel</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Let’s display the random features that the transformer created:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">sel</span><span class="o">.</span><span class="n">probe_features_</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>Here we find some example values of the probe features:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span>   <span class="n">gaussian_probe_0</span>  <span class="n">binary_probe_0</span>  <span class="n">uniform_probe_0</span>
+<span class="mi">0</span>         <span class="o">-</span><span class="mf">0.694150</span>               <span class="mi">1</span>         <span class="mf">0.983610</span>
+<span class="mi">1</span>          <span class="mf">1.171840</span>               <span class="mi">1</span>         <span class="mf">0.765628</span>
+<span class="mi">2</span>          <span class="mf">1.074892</span>               <span class="mi">1</span>         <span class="mf">0.991439</span>
+<span class="mi">3</span>          <span class="mf">1.698733</span>               <span class="mi">0</span>         <span class="mf">0.668574</span>
+<span class="mi">4</span>          <span class="mf">0.498702</span>               <span class="mi">0</span>         <span class="mf">0.192840</span>
+</pre></div>
+</div>
+<p>Let’s go ahead and plot histograms:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">sel</span><span class="o">.</span><span class="n">probe_features_</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">bins</span><span class="o">=</span><span class="mi">30</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>In the histograms we recognise the 3 well defined distributions:</p>
+<figure class="align-center">
+<img alt="../../_images/probe_features.png" src="../../_images/probe_features.png" />
+</figure>
+<p>Let’s display the importance of the random features</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">sel</span><span class="o">.</span><span class="n">feature_importances_</span><span class="o">.</span><span class="n">tail</span><span class="p">()</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">worst</span> <span class="n">symmetry</span>             <span class="mf">0.009176</span>
+<span class="n">worst</span> <span class="n">fractal</span> <span class="n">dimension</span>    <span class="mf">0.007825</span>
+<span class="n">gaussian_probe_0</span>           <span class="mf">0.003765</span>
+<span class="n">binary_probe_0</span>             <span class="mf">0.000354</span>
+<span class="n">uniform_probe_0</span>            <span class="mf">0.002377</span>
+<span class="n">dtype</span><span class="p">:</span> <span class="n">float64</span>
+</pre></div>
+</div>
+<p>We see that the binary feature has an extremely low importance, hence, when we take the
+average, the value is so small, that no feature will be dropped (remember random forests
+favouring highly cardinal features?):</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">sel</span><span class="o">.</span><span class="n">features_to_drop_</span>
+</pre></div>
+</div>
+<p>The previous command returns and empty list:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="p">[]</span>
+</pre></div>
+</div>
+<p>It is important to select a suitable probe feature distribution when trying to remove variables.
+If most variables are continuous, introduce features with normal and uniform distributions.
+If you have one hot encoded features or sparse matrices, binary features might be a better
+option.</p>
+</section>
+<section id="using-the-individual-feature-strategy">
+<h3>Using the individual feature strategy<a class="headerlink" href="#using-the-individual-feature-strategy" title="Permalink to this heading">#</a></h3>
+<p>We will now repeat the process, but we will train a random forest per feature instead, and
+use the roc-auc as a measure of feature importance:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">sel</span> <span class="o">=</span> <span class="n">ProbeFeatureSelection</span><span class="p">(</span>
+    <span class="n">estimator</span><span class="o">=</span><span class="n">RandomForestClassifier</span><span class="p">(</span><span class="n">n_estimators</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">1</span><span class="p">),</span>
+    <span class="n">variables</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">collective</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="n">scoring</span><span class="o">=</span><span class="s2">&quot;roc_auc&quot;</span><span class="p">,</span>
+    <span class="n">n_probes</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
+    <span class="n">distribution</span><span class="o">=</span><span class="s2">&quot;all&quot;</span><span class="p">,</span>
+    <span class="n">cv</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span>
+    <span class="n">random_state</span><span class="o">=</span><span class="mi">150</span><span class="p">,</span>
+    <span class="n">confirm_variables</span><span class="o">=</span><span class="kc">False</span>
+<span class="p">)</span>
+
+<span class="n">sel</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>We can now go ahead and plot the feature importance, including that of the probes:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">r</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span>
+    <span class="n">sel</span><span class="o">.</span><span class="n">feature_importances_</span><span class="p">,</span>
+    <span class="n">sel</span><span class="o">.</span><span class="n">feature_importances_std_</span>
+<span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+
+<span class="n">r</span><span class="o">.</span><span class="n">columns</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;mean&quot;</span><span class="p">,</span> <span class="s2">&quot;std&quot;</span><span class="p">]</span>
+
+<span class="n">r</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="s2">&quot;mean&quot;</span><span class="p">,</span> <span class="n">ascending</span><span class="o">=</span><span class="kc">False</span><span class="p">)[</span><span class="s2">&quot;mean&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">bar</span><span class="p">(</span>
+    <span class="n">yerr</span><span class="o">=</span><span class="p">[</span><span class="n">r</span><span class="p">[</span><span class="s1">&#39;std&#39;</span><span class="p">],</span> <span class="n">r</span><span class="p">[</span><span class="s1">&#39;std&#39;</span><span class="p">]],</span> <span class="n">subplots</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">15</span><span class="p">,</span><span class="mi">6</span><span class="p">)</span>
+<span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;Feature importance derived from single feature models&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;Feature importance - roc-auc&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>In the following image we see the feature importance, including the probes:</p>
+<figure class="align-center">
+<img alt="../../_images/single_feature_probes_imp.png" src="../../_images/single_feature_probes_imp.png" />
+</figure>
+<p>When assessed individually, each feature seems to have a greater importance. Note that
+many of the features return roc-auc that are not significantly different from the probes
+(error bars overlaps). So, even if the transformer would not drop those features, we
+could decide to discard them after analysis of this plot.</p>
+</section>
+</section>
+<section id="additional-resources">
+<h2>Additional resources<a class="headerlink" href="#additional-resources" title="Permalink to this heading">#</a></h2>
+<p>More info about this method can be found in these resources:</p>
+<ul class="simple">
+<li><p><a class="reference external" href="https://www.youtube.com/watch?v=RtqtM1UJfZc&amp;t=3150s">Kaggle Tips for Feature Engineering and Selection</a>, by Gilberto Titericz.</p></li>
+<li><p><a class="reference external" href="https://www.kdnuggets.com/2019/10/feature-selection-beyond-feature-importance.html">Feature Selection: Beyond feature importance?</a>, KDDNuggets.</p></li>
+</ul>
+<p>For more details about this and other feature selection methods check out these resources:</p>
+<figure class="align-center align-left" id="id1">
+<a class="reference external image-reference" href="https://www.trainindata.com/p/feature-selection-for-machine-learning"><img alt="../../_images/fsml.png" src="../../_images/fsml.png" style="width: 300px;" /></a>
+<figcaption>
+<p><span class="caption-text">Feature Selection for Machine Learning</span><a class="headerlink" href="#id1" title="Permalink to this image">#</a></p>
+</figcaption>
+</figure>
+<div class="line-block">
+<div class="line"><br /></div>
+<div class="line"><br /></div>
+<div class="line"><br /></div>
+<div class="line"><br /></div>
+<div class="line"><br /></div>
+<div class="line"><br /></div>
+<div class="line"><br /></div>
+<div class="line"><br /></div>
+<div class="line"><br /></div>
+<div class="line"><br /></div>
+</div>
+<p>Or read our book:</p>
+<figure class="align-center align-left" id="id2">
+<a class="reference external image-reference" href="https://www.trainindata.com/p/feature-selection-in-machine-learning-book"><img alt="../../_images/fsmlbook.png" src="../../_images/fsmlbook.png" style="width: 200px;" /></a>
+<figcaption>
+<p><span class="caption-text">Feature Selection in Machine Learning</span><a class="headerlink" href="#id2" title="Permalink to this image">#</a></p>
+</figcaption>
+</figure>
+<div class="line-block">
+<div class="line"><br /></div>
+<div class="line"><br /></div>
+<div class="line"><br /></div>
+<div class="line"><br /></div>
+<div class="line"><br /></div>
+<div class="line"><br /></div>
+<div class="line"><br /></div>
+<div class="line"><br /></div>
+<div class="line"><br /></div>
+<div class="line"><br /></div>
+<div class="line"><br /></div>
+<div class="line"><br /></div>
+<div class="line"><br /></div>
+<div class="line"><br /></div>
+</div>
+<p>Both our book and course are suitable for beginners and more advanced data scientists
+alike. By purchasing them you are supporting Sole, the main developer of Feature-engine.</p>
+</section>
+</section>
+
+
+                </article>
+              
+              
+              
+              
+              
+                <footer class="prev-next-footer">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="SelectByInformationValue.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">SelectByInformationValue</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="MRMR.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">MRMR - Minimum Redundancy Maximum Relevance</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+  <div class="sidebar-secondary-item">
+
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> On this page
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#deriving-feature-importance">Deriving feature importance</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#selecting-features">Selecting features</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#feature-selection-process">Feature selection process</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#rationale-of-probe-feature-selection">Rationale of probe feature selection</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#distribution-of-the-probe-features">Distribution of the probe features</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#python-examples">Python examples</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#analysing-the-probes">Analysing the probes</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#analysing-the-feature-importance">Analysing the feature importance</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#selected-features">Selected features</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#dropping-features-from-the-data">Dropping features from the data</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#getting-the-name-of-the-resulting-features">Getting the name of the resulting features</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#using-several-probe-features">Using several probe features</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#using-the-individual-feature-strategy">Using the individual feature strategy</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#additional-resources">Additional resources</a></li>
+</ul>
+  </nav></div>
+
+  <div class="sidebar-secondary-item">
+
+  <div class="tocsection sourcelink">
+    <a href="../../_sources/user_guide/selection/ProbeFeatureSelection.rst.txt">
+      <i class="fa-solid fa-file-lines"></i> Show Source
+    </a>
+  </div>
+</div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../_static/scripts/bootstrap.js?digest=5b4479735964841361fd"></script>
+<script src="../../_static/scripts/pydata-sphinx-theme.js?digest=5b4479735964841361fd"></script>
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+
+  <p class="sphinx-version">
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.1.2.
+    <br/>
+  </p>
+</div>
+      
+    </div>
+  
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item">
+<p class="theme-version">
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.14.4.
+</p></div>
+      
+    </div>
+  
+</div>
+
+  </footer>
+  </body>
+</html>

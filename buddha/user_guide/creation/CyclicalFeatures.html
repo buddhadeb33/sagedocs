@@ -1,0 +1,1311 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>CyclicalFeatures &#8212; 3.1</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=5b4479735964841361fd" rel="stylesheet" />
+<link href="../../_static/styles/bootstrap.css?digest=5b4479735964841361fd" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=5b4479735964841361fd" rel="stylesheet" />
+
+  
+  <link href="../../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=5b4479735964841361fd" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/custom.css?v=30c166bc" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/custom.css?v=30c166bc" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=5b4479735964841361fd" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=5b4479735964841361fd" />
+  <script src="../../_static/vendor/fontawesome/6.1.2/js/all.min.js?digest=5b4479735964841361fd"></script>
+
+    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js?v=e1ce3931"></script>
+    <script src="../../_static/doctools.js?v=888ff710"></script>
+    <script src="../../_static/sphinx_highlight.js?v=4825356b"></script>
+    <script defer data-domain="feature-engine.readthedocs.io" src="https://plausible.io/js/plausible.js"></script>
+    <script src="../../_static/js/copybutton.js?v=84772c1c"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'user_guide/creation/CyclicalFeatures';</script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="MathFeatures" href="MathFeatures.html" />
+    <link rel="prev" title="Feature Creation" href="index.html" />
+    
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+
+    <!-- Cookie banner -->
+    <style>
+        /* Style for the cookie banner */
+        #cookie-banner {
+            position: fixed;
+            bottom: 0;
+            right: 0;
+            background-color: #ffe4e1; /* Light Pink */
+            color: #333;
+            padding: 15px;
+            max-width: 400px;
+            display: none;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            z-index: 1000; /* Set a higher z-index value */
+        }
+
+        #cookie-banner p {
+        font-size: 16px; /* Font size for the text */
+        color: #333 !important; /* Set link color to black */
+        line-height: 1.5; /* Increase line height for added spacing between sentences */
+        }
+
+        #cookie-banner a {
+            color: #333;
+            text-decoration: underline;
+        }
+    </style>
+
+    <div id="cookie-banner">
+        <h2 style="font-size: 20px; margin-bottom: 10px;">This site uses cookies</h2>
+        <p style="font-size: 16px;">We use cookies to recognize your visits and preferences, to measure the effectiveness of the documentation, and discover how people find us. With your consent, you're helping us make our documentation better. <br><a href="https://www.trainindata.com/p/privacy" target="_blank">Learn More</a>.</p>
+        <button id="cookie-accept">Accept</button>
+        <button id="cookie-decline">Decline</button>
+    </div>
+
+    <script>
+        // JavaScript to show the cookie banner and handle the accept button
+        document.addEventListener('DOMContentLoaded', function () {
+            var cookieBanner = document.getElementById('cookie-banner');
+            var acceptButton = document.getElementById('cookie-accept');
+            var declineButton = document.getElementById('cookie-decline');
+
+            // Check if the user has already accepted or declined cookies
+            var cookiesAccepted = localStorage.getItem('cookiesAccepted');
+
+            if (!cookiesAccepted) {
+                cookieBanner.style.display = 'block';
+
+                acceptButton.addEventListener('click', function () {
+                    localStorage.setItem('cookiesAccepted', 'true');
+                    loadGoogleAnalytics();
+                    cookieBanner.style.display = 'none';
+                });
+
+                declineButton.addEventListener('click', function () {
+                    localStorage.setItem('cookiesAccepted', 'false');
+                    cookieBanner.style.display = 'none';
+                });
+            } else if (cookiesAccepted === 'true') {
+                loadGoogleAnalytics();
+            }
+        });
+
+        function loadGoogleAnalytics() {
+            // Load Google Analytics only if consent is given
+            var script = document.createElement('script');
+            script.async = true;
+            script.src = 'https://www.googletagmanager.com/gtag/js?id=G-Z6MPCG673G';
+            document.head.appendChild(script);
+
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', 'G-Z6MPCG673G');
+        }
+    </script>
+    <!-- Cookie banner -->
+
+
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>
+    Back to top
+  </button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
+<div class="bd-header__inner bd-page-width">
+  <label class="sidebar-toggle primary-toggle" for="__primary">
+    <span class="fa-solid fa-bars"></span>
+  </label>
+  
+  
+  <div class="col-lg-3 navbar-header-items__start">
+    
+      <div class="navbar-item">
+
+  
+
+<a class="navbar-brand logo" href="../../index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../../_static/sageops_logo.png" class="logo__image only-light" alt="3.1 - Home"/>
+    <script>document.write(`<img src="../../_static/sageops_logo.png" class="logo__image only-dark" alt="3.1 - Home"/>`);</script>
+  
+  
+</a></div>
+    
+      <div class="navbar-item">
+<script>
+document.write(`
+  <div class="version-switcher__container dropdown">
+    <button id="pst-version-switcher-button-2"
+      type="button"
+      class="version-switcher__button btn btn-sm navbar-btn dropdown-toggle"
+      data-bs-toggle="dropdown"
+      aria-haspopup="listbox"
+      aria-controls="pst-version-switcher-list-2"
+      aria-label="Version switcher list"
+    >
+      Choose version  <!-- this text may get changed later by javascript -->
+      <span class="caret"></span>
+    </button>
+    <div id="pst-version-switcher-list-2"
+      class="version-switcher__menu dropdown-menu list-group-flush py-0"
+      role="listbox" aria-labelledby="pst-version-switcher-button-2">
+      <!-- dropdown will be populated by javascript on page load -->
+    </div>
+  </div>
+`);
+</script></div>
+    
+  </div>
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item">
+<nav class="navbar-nav">
+  <p class="sidebar-header-items__title"
+     role="heading"
+     aria-level="1"
+     aria-label="Site Navigation">
+    Site Navigation
+  </p>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../quickstart/index.html">
+                        Quick Start
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item current active">
+                      <a class="nav-link nav-internal" href="../index.html">
+                        SageOps User Guide
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../api_doc/index.html">
+                        API
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../example_notebooks/index.html">
+                        Example Notebooks
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../about/index.html">
+                        About
+                      </a>
+                    </li>
+                
+            <li class="nav-item dropdown">
+                <button class="btn dropdown-toggle nav-item" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-controls="pst-nav-more-links">
+                    More
+                </button>
+                <ul id="pst-nav-more-links" class="dropdown-menu">
+                    
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../../Support/index.html">
+                        Support
+                      </a>
+                    </li>
+                
+                </ul>
+            </li>
+            
+  </ul>
+</nav></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+ <script>
+ document.write(`
+   <button class="btn navbar-btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script>
+        </div>
+      
+      
+        <div class="navbar-item">
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  </button>
+`);
+</script></div>
+      
+        <div class="navbar-item"><ul class="navbar-icon-links navbar-nav"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/" title="GitHub" class="nav-link" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><span><i class="fab fa-github-square fa-lg" aria-hidden="true"></i></span>
+            <span class="sr-only">GitHub</span></a>
+        </li>
+</ul></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+ <script>
+ document.write(`
+   <button class="btn navbar-btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script>
+    </div>
+  
+
+  
+    <label class="sidebar-toggle secondary-toggle" for="__secondary" tabindex="0">
+      <span class="fa-solid fa-outdent"></span>
+    </label>
+  
+</div>
+
+    </nav>
+  
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          <div class="navbar-item">
+<nav class="navbar-nav">
+  <p class="sidebar-header-items__title"
+     role="heading"
+     aria-level="1"
+     aria-label="Site Navigation">
+    Site Navigation
+  </p>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../quickstart/index.html">
+                        Quick Start
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item current active">
+                      <a class="nav-link nav-internal" href="../index.html">
+                        SageOps User Guide
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../api_doc/index.html">
+                        API
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../example_notebooks/index.html">
+                        Example Notebooks
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../about/index.html">
+                        About
+                      </a>
+                    </li>
+                
+            <li class="nav-item dropdown">
+                <button class="btn dropdown-toggle nav-item" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-controls="pst-nav-more-links-2">
+                    More
+                </button>
+                <ul id="pst-nav-more-links-2" class="dropdown-menu">
+                    
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../../Support/index.html">
+                        Support
+                      </a>
+                    </li>
+                
+                </ul>
+            </li>
+            
+  </ul>
+</nav></div>
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  </button>
+`);
+</script></div>
+        
+          <div class="navbar-item"><ul class="navbar-icon-links navbar-nav"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/" title="GitHub" class="nav-link" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><span><i class="fab fa-github-square fa-lg" aria-hidden="true"></i></span>
+            <span class="sr-only">GitHub</span></a>
+        </li>
+</ul></div>
+        
+      </div>
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+<nav class="bd-docs-nav bd-links"
+     aria-label="Section Navigation">
+  <p class="bd-links__title" role="heading" aria-level="1">Section Navigation</p>
+  <div class="bd-toc-item navbar-nav"><ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../experiment/index.html">Experiment</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-1"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../experiment/overview.html">Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../experiment/experiment_setup.html">Experiment Setup</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../experiment/track.html">Tracking and Managing Experiments</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../experiment/api.html">Programmatic API Reference</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../experiment/trial.html">Trial &amp; Trial Components</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../experiment/logging_metrics.html">Logging Metrics and Parameters</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../experiment/troubleshoot.html">Troubleshooting</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../model_monitoring/index.html">Model Monitoring</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-2"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../model_monitoring/core_concepts.html">Core Concepts</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../model_monitoring/setting_up.html">Setting Up Model Monitoring</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../model_monitoring/visualization.html">Visualization and Reporting</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../encoding/index.html">Categorical Encoding</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-3"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../encoding/OneHotEncoder.html">OneHotEncoder</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../encoding/OrdinalEncoder.html">Ordinal Encoding</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../encoding/CountFrequencyEncoder.html">CountFrequencyEncoder</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../encoding/MeanEncoder.html">MeanEncoder</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../encoding/WoEEncoder.html">Weight of Evidence (WoE)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../encoding/DecisionTreeEncoder.html">DecisionTreeEncoder</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../encoding/RareLabelEncoder.html">RareLabelEncoder</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../encoding/StringSimilarityEncoder.html">StringSimilarityEncoder</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../discretisation/index.html">Discretisation</a><input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-4"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../discretisation/EqualFrequencyDiscretiser.html">EqualFrequencyDiscretiser</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../discretisation/EqualWidthDiscretiser.html">EqualWidthDiscretiser</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../discretisation/ArbitraryDiscretiser.html">ArbitraryDiscretiser</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../discretisation/DecisionTreeDiscretiser.html">DecisionTreeDiscretiser</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../discretisation/GeometricWidthDiscretiser.html">GeometricWidthDiscretiser</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../outliers/index.html">Outlier Handling</a><input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-5"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../outliers/Winsorizer.html">Winsorizer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../outliers/ArbitraryOutlierCapper.html">ArbitraryOutlierCapper</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../outliers/OutlierTrimmer.html">OutlierTrimmer</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../transformation/index.html">Variance Stabilizing Transformations</a><input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-6"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../transformation/LogTransformer.html">LogTransformer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../transformation/LogCpTransformer.html">LogCpTransformer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../transformation/ReciprocalTransformer.html">ReciprocalTransformer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../transformation/ArcsinTransformer.html">ArcsinTransformer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../transformation/PowerTransformer.html">PowerTransformer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../transformation/BoxCoxTransformer.html">BoxCoxTransformer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../transformation/YeoJohnsonTransformer.html">YeoJohnsonTransformer</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../scaling/index.html">Scaling</a><input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-7"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../scaling/MeanNormalizationScaler.html">MeanNormalizationScaler</a></li>
+</ul>
+</li>
+</ul>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="index.html">Feature Creation</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-8"><i class="fa-solid fa-chevron-down"></i></label><ul class="current">
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">CyclicalFeatures</a></li>
+<li class="toctree-l2"><a class="reference internal" href="MathFeatures.html">MathFeatures</a></li>
+<li class="toctree-l2"><a class="reference internal" href="RelativeFeatures.html">RelativeFeatures</a></li>
+<li class="toctree-l2"><a class="reference internal" href="DecisionTreeFeatures.html">DecisionTreeFeatures</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../datetime/index.html">Datetime Features</a><input class="toctree-checkbox" id="toctree-checkbox-9" name="toctree-checkbox-9" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-9"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../datetime/DatetimeFeatures.html">DatetimeFeatures</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../datetime/DatetimeSubtraction.html">DatetimeSubtraction</a></li>
+</ul>
+</li>
+</ul>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../selection/index.html">Feature Selection</a><input class="toctree-checkbox" id="toctree-checkbox-10" name="toctree-checkbox-10" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-10"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../selection/DropFeatures.html">DropFeatures</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../selection/DropConstantFeatures.html">DropConstantFeatures</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../selection/DropDuplicateFeatures.html">DropDuplicateFeatures</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../selection/DropCorrelatedFeatures.html">DropCorrelatedFeatures</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../selection/SmartCorrelatedSelection.html">SmartCorrelatedSelection</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../selection/SelectBySingleFeaturePerformance.html">SelectBySingleFeaturePerformance</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../selection/RecursiveFeatureElimination.html">RecursiveFeatureElimination</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../selection/RecursiveFeatureAddition.html">RecursiveFeatureAddition</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../selection/SelectByShuffling.html">SelectByShuffling</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../selection/SelectByTargetMeanPerformance.html">SelectByTargetMeanPerformance</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../selection/DropHighPSIFeatures.html">DropHighPSIFeatures</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../selection/SelectByInformationValue.html">SelectByInformationValue</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../selection/ProbeFeatureSelection.html">ProbeFeatureSelection</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../selection/MRMR.html">MRMR - Minimum Redundancy Maximum Relevance</a></li>
+</ul>
+</li>
+</ul>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../preprocessing/index.html">Preprocessing</a><input class="toctree-checkbox" id="toctree-checkbox-11" name="toctree-checkbox-11" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-11"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../preprocessing/MatchCategories.html">MatchCategories</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../preprocessing/MatchVariables.html">MatchVariables</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../wrappers/index.html">Scikit-learn Wrapper</a><input class="toctree-checkbox" id="toctree-checkbox-12" name="toctree-checkbox-12" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-12"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../wrappers/Wrapper.html">SklearnTransformerWrapper</a></li>
+</ul>
+</li>
+</ul>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../pipeline/index.html">Pipeline</a><input class="toctree-checkbox" id="toctree-checkbox-13" name="toctree-checkbox-13" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-13"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../pipeline/Pipeline.html">Pipeline</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../pipeline/make_pipeline.html">make_pipeline</a></li>
+</ul>
+</li>
+</ul>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../variable_handling/index.html">Variable handling functions</a><input class="toctree-checkbox" id="toctree-checkbox-14" name="toctree-checkbox-14" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-14"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../variable_handling/find_all_variables.html">find_all_variables</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../variable_handling/find_categorical_variables.html">find_categorical_variables</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../variable_handling/find_datetime_variables.html">find_datetime_variables</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../variable_handling/find_numerical_variables.html">find_numerical_variables</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../variable_handling/find_categorical_and_numerical_variables.html">find_categorical_and_numerical_variables</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../variable_handling/check_all_variables.html">check_all_variables</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../variable_handling/check_categorical_variables.html">check_categorical_variables</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../variable_handling/check_datetime_variables.html">check_datetime_variables</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../variable_handling/check_numerical_variables.html">check_numerical_variables</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../variable_handling/retain_variables_if_in_df.html">retain_variables_if_in_df</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+
+
+<nav aria-label="Breadcrumb">
+  <ul class="bd-breadcrumbs">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="../../index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    
+    <li class="breadcrumb-item"><a href="../index.html" class="nav-link">SageOps User Guide</a></li>
+    
+    
+    <li class="breadcrumb-item"><a href="index.html" class="nav-link">Feature Creation</a></li>
+    
+    <li class="breadcrumb-item active" aria-current="page">CyclicalFeatures</li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article" role="main">
+                  
+  <section id="cyclicalfeatures">
+<span id="cyclical-features"></span><h1>CyclicalFeatures<a class="headerlink" href="#cyclicalfeatures" title="Permalink to this heading">#</a></h1>
+<p>Some features are inherently cyclical. Clear examples are <strong>time features</strong>, i.e., those features
+derived from datetime variables like the <em>hours of the day</em>, the <em>days of the week</em>, or the
+<em>months of the year</em>.</p>
+<p>But that’s not the end of it. Many variables related to natural processes are also cyclical,
+like, for example, <em>tides</em>, <em>moon cycles</em>, or <em>solar energy generation</em> (which coincides with
+light periods, which are cyclical).</p>
+<p>In cyclical features, higher values of the variable are closer to lower values.
+For example, December (12) is closer to January (1) than to June (6).</p>
+<p>How can we convey to machine learning models like linear regression the cyclical nature
+of the features?</p>
+<p>In the article “Advanced machine learning techniques for building performance simulation,”
+the authors engineered cyclical variables by representing them as (x,y) coordinates on a
+circle. The idea was that, after preprocessing the cyclical data, the lowest value of every
+cyclical feature would appear right next to the largest value.</p>
+<p>To represent cyclical features in (x, y) coordinates, the authors created two new features,
+deriving the sine and cosine components of the cyclical variable. We call this procedure
+<strong>“cyclical encoding.”</strong></p>
+<section id="cyclical-encoding">
+<h2>Cyclical encoding<a class="headerlink" href="#cyclical-encoding" title="Permalink to this heading">#</a></h2>
+<p>The trigonometric functions sine and cosine are periodic and repeat their values every
+2 pi radians. Thus, to transform cyclical variables into (x, y) coordinates using these
+functions, first we need to normalize them to 2 pi radians.</p>
+<p>We achieve this by dividing the variables’ values by their maximum value. Thus, the two
+new features are derived as follows:</p>
+<ul class="simple">
+<li><p>var_sin = sin(variable * (2. * pi / max_value))</p></li>
+<li><p>var_cos = cos(variable * (2. * pi / max_value))</p></li>
+</ul>
+<p>In Python, we can encode cyclical features by using the Numpy functions <code class="docutils literal notranslate"><span class="pre">sin</span></code> and <code class="docutils literal notranslate"><span class="pre">cos</span></code>:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+<span class="n">X</span><span class="p">[</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">variable</span><span class="si">}</span><span class="s2">_sin&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">X</span><span class="p">[</span><span class="s2">&quot;variable&quot;</span><span class="p">]</span> <span class="o">*</span> <span class="p">(</span><span class="mf">2.0</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">/</span> <span class="n">X</span><span class="p">[</span><span class="s2">&quot;variable&quot;</span><span class="p">])</span><span class="o">.</span><span class="n">max</span><span class="p">())</span>
+<span class="n">X</span><span class="p">[</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">variable</span><span class="si">}</span><span class="s2">_cos&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">X</span><span class="p">[</span><span class="s2">&quot;variable&quot;</span><span class="p">]</span> <span class="o">*</span> <span class="p">(</span><span class="mf">2.0</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">/</span> <span class="n">X</span><span class="p">[</span><span class="s2">&quot;variable&quot;</span><span class="p">])</span><span class="o">.</span><span class="n">max</span><span class="p">())</span>
+</pre></div>
+</div>
+<p>We can also use Feature-engine to automate this process.</p>
+</section>
+<section id="cyclical-encoding-with-feature-engine">
+<h2>Cyclical encoding with Feature-engine<a class="headerlink" href="#cyclical-encoding-with-feature-engine" title="Permalink to this heading">#</a></h2>
+<p><code class="xref py py-class docutils literal notranslate"><span class="pre">CyclicalFeatures()</span></code> creates two new features from numerical variables to better
+capture the cyclical nature of the original variable. <code class="xref py py-class docutils literal notranslate"><span class="pre">CyclicalFeatures()</span></code> returns
+two new features per variable, according to:</p>
+<ul class="simple">
+<li><p>var_sin = sin(variable * (2. * pi / max_value))</p></li>
+<li><p>var_cos = cos(variable * (2. * pi / max_value))</p></li>
+</ul>
+<p>where max_value is the maximum value in the variable, and pi is 3.14…</p>
+<section id="finding-the-max-value">
+<h3>Finding the max_value<a class="headerlink" href="#finding-the-max-value" title="Permalink to this heading">#</a></h3>
+<p><code class="xref py py-class docutils literal notranslate"><span class="pre">CyclicalFeatures()</span></code> attempts to automate the process of cyclical encoding by
+automatically determining the value used to normalize the feature between
+0 and 2 * pi radians, which coincides with the cycle of the periodic functions sine and
+cosine.</p>
+<p>Hence, the values of the variable matter. For example, if the variable <code class="docutils literal notranslate"><span class="pre">hour</span></code> shows values
+ranging between 0 and 23, it will create the new features by dividing by 23. If instead,
+the variable varies between 1 and 24, it will create the new features by dividing by 24.</p>
+<p>If you want to use a specific period to rescale your variables, you can pass a dictionary
+containing the variable names as keys, and the values for the scaling as values. In this
+way, you can apply cyclical encoding while dividing by 24 to a variable that shows values
+between 0 and 23.</p>
+</section>
+</section>
+<section id="applying-cyclical-encoding">
+<h2>Applying cyclical encoding<a class="headerlink" href="#applying-cyclical-encoding" title="Permalink to this heading">#</a></h2>
+<p>We’ll start by applying cyclical encoding to a toy dataset to get familiar with how to
+use Feature-engine for cyclical encoding.</p>
+<p>In this example, we’ll encode the cyclical features <strong>days of the week</strong> and <strong>months</strong>.
+Let’s create a toy dataframe with the variables “days” and “months”:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">from</span> <span class="nn">feature_engine.creation</span> <span class="kn">import</span> <span class="n">CyclicalFeatures</span>
+
+<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span>
+    <span class="s1">&#39;day&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">6</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">],</span>
+    <span class="s1">&#39;months&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">9</span><span class="p">,</span> <span class="mi">12</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">12</span><span class="p">],</span>
+    <span class="p">})</span>
+</pre></div>
+</div>
+<p>In the following output we see the toy dataframe:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span>   <span class="n">day</span>  <span class="n">months</span>
+<span class="mi">0</span>    <span class="mi">6</span>       <span class="mi">3</span>
+<span class="mi">1</span>    <span class="mi">7</span>       <span class="mi">7</span>
+<span class="mi">2</span>    <span class="mi">5</span>       <span class="mi">9</span>
+<span class="mi">3</span>    <span class="mi">3</span>      <span class="mi">12</span>
+<span class="mi">4</span>    <span class="mi">1</span>       <span class="mi">4</span>
+<span class="mi">5</span>    <span class="mi">2</span>       <span class="mi">6</span>
+<span class="mi">6</span>    <span class="mi">4</span>      <span class="mi">12</span>
+</pre></div>
+</div>
+<p>Now we set up <code class="xref py py-class docutils literal notranslate"><span class="pre">CyclicalFeatures()</span></code> to find the maximum value of each variable
+automatically:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">cyclical</span> <span class="o">=</span> <span class="n">CyclicalFeatures</span><span class="p">(</span><span class="n">variables</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">drop_original</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+<span class="n">X</span> <span class="o">=</span> <span class="n">cyclical</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The maximum values used for the transformation are stored in the attribute
+<code class="docutils literal notranslate"><span class="pre">max_values_</span></code>:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">cyclical</span><span class="o">.</span><span class="n">max_values_</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="p">{</span><span class="s1">&#39;day&#39;</span><span class="p">:</span> <span class="mi">7</span><span class="p">,</span> <span class="s1">&#39;months&#39;</span><span class="p">:</span> <span class="mi">12</span><span class="p">}</span>
+</pre></div>
+</div>
+<p>Let’s have a look at the transformed dataframe:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">X</span><span class="o">.</span><span class="n">head</span><span class="p">())</span>
+</pre></div>
+</div>
+<p>We see that the new variables were added at the right of our dataframe.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span>   <span class="n">day</span>  <span class="n">months</span>       <span class="n">day_sin</span>   <span class="n">day_cos</span>    <span class="n">months_sin</span>    <span class="n">months_cos</span>
+<span class="mi">0</span>    <span class="mi">6</span>       <span class="mi">3</span> <span class="o">-</span><span class="mf">7.818315e-01</span>  <span class="mf">0.623490</span>  <span class="mf">1.000000e+00</span>  <span class="mf">6.123234e-17</span>
+<span class="mi">1</span>    <span class="mi">7</span>       <span class="mi">7</span> <span class="o">-</span><span class="mf">2.449294e-16</span>  <span class="mf">1.000000</span> <span class="o">-</span><span class="mf">5.000000e-01</span> <span class="o">-</span><span class="mf">8.660254e-01</span>
+<span class="mi">2</span>    <span class="mi">5</span>       <span class="mi">9</span> <span class="o">-</span><span class="mf">9.749279e-01</span> <span class="o">-</span><span class="mf">0.222521</span> <span class="o">-</span><span class="mf">1.000000e+00</span> <span class="o">-</span><span class="mf">1.836970e-16</span>
+<span class="mi">3</span>    <span class="mi">3</span>      <span class="mi">12</span>  <span class="mf">4.338837e-01</span> <span class="o">-</span><span class="mf">0.900969</span> <span class="o">-</span><span class="mf">2.449294e-16</span>  <span class="mf">1.000000e+00</span>
+<span class="mi">4</span>    <span class="mi">1</span>       <span class="mi">4</span>  <span class="mf">7.818315e-01</span>  <span class="mf">0.623490</span>  <span class="mf">8.660254e-01</span> <span class="o">-</span><span class="mf">5.000000e-01</span>
+</pre></div>
+</div>
+<section id="dropping-variables-after-encoding">
+<h3>Dropping variables after encoding<a class="headerlink" href="#dropping-variables-after-encoding" title="Permalink to this heading">#</a></h3>
+<p>In the previous section, we set the parameter <code class="docutils literal notranslate"><span class="pre">drop_original</span></code> to <code class="docutils literal notranslate"><span class="pre">False</span></code>, which means that
+we keep the original variables after the cyclical encoding. If we want them dropped after
+the feature creation, we can set the parameter to <code class="docutils literal notranslate"><span class="pre">True</span></code>:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">cyclical</span> <span class="o">=</span> <span class="n">CyclicalFeatures</span><span class="p">(</span><span class="n">variables</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">drop_original</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">X</span> <span class="o">=</span> <span class="n">cyclical</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">X</span><span class="o">.</span><span class="n">head</span><span class="p">())</span>
+</pre></div>
+</div>
+<p>The resulting dataframe contains only the cyclical encoded features; the original variables
+are removed:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span>        <span class="n">day_sin</span>   <span class="n">day_cos</span>    <span class="n">months_sin</span>    <span class="n">months_cos</span>
+<span class="mi">0</span> <span class="o">-</span><span class="mf">7.818315e-01</span>  <span class="mf">0.623490</span>  <span class="mf">1.000000e+00</span>  <span class="mf">6.123234e-17</span>
+<span class="mi">1</span> <span class="o">-</span><span class="mf">2.449294e-16</span>  <span class="mf">1.000000</span> <span class="o">-</span><span class="mf">5.000000e-01</span> <span class="o">-</span><span class="mf">8.660254e-01</span>
+<span class="mi">2</span> <span class="o">-</span><span class="mf">9.749279e-01</span> <span class="o">-</span><span class="mf">0.222521</span> <span class="o">-</span><span class="mf">1.000000e+00</span> <span class="o">-</span><span class="mf">1.836970e-16</span>
+<span class="mi">3</span>  <span class="mf">4.338837e-01</span> <span class="o">-</span><span class="mf">0.900969</span> <span class="o">-</span><span class="mf">2.449294e-16</span>  <span class="mf">1.000000e+00</span>
+<span class="mi">4</span>  <span class="mf">7.818315e-01</span>  <span class="mf">0.623490</span>  <span class="mf">8.660254e-01</span> <span class="o">-</span><span class="mf">5.000000e-01</span>
+</pre></div>
+</div>
+<p>We can now use the new features, which convey the cyclical nature of the data, to train
+machine learning algorithms, like linear or logistic regression.</p>
+</section>
+<section id="obtaining-the-name-of-the-resulting-features">
+<h3>Obtaining the name of the resulting features<a class="headerlink" href="#obtaining-the-name-of-the-resulting-features" title="Permalink to this heading">#</a></h3>
+<p>We can obtain the names of the variables in the transformed dataset as follows:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">cyclical</span><span class="o">.</span><span class="n">get_feature_names_out</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>This returns the name of all the variables in the final output:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="s1">&#39;day_sin&#39;</span><span class="p">,</span> <span class="s1">&#39;day_cos&#39;</span><span class="p">,</span> <span class="s1">&#39;months_sin&#39;</span><span class="p">,</span> <span class="s1">&#39;months_cos&#39;</span><span class="p">]</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="understanding-cyclical-encoding">
+<h2>Understanding cyclical encoding<a class="headerlink" href="#understanding-cyclical-encoding" title="Permalink to this heading">#</a></h2>
+<p>We now know how to convert cyclical variables into (x, y) coordinates of a circle by using
+the sine and cosine functions. Let’s now carry out some visualizations to better understand
+the effect of this transformation.</p>
+<p>Let’s create a toy dataframe:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+
+<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">([</span><span class="n">i</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">24</span><span class="p">)],</span> <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;hour&#39;</span><span class="p">])</span>
+</pre></div>
+</div>
+<p>If we execute <code class="docutils literal notranslate"><span class="pre">print(df)</span></code>, we’ll see the resulting dataframe:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span>    <span class="n">hour</span>
+<span class="mi">0</span>      <span class="mi">0</span>
+<span class="mi">1</span>      <span class="mi">1</span>
+<span class="mi">2</span>      <span class="mi">2</span>
+<span class="mi">3</span>      <span class="mi">3</span>
+<span class="mi">4</span>      <span class="mi">4</span>
+<span class="mi">5</span>      <span class="mi">5</span>
+<span class="mi">6</span>      <span class="mi">6</span>
+<span class="mi">7</span>      <span class="mi">7</span>
+<span class="mi">8</span>      <span class="mi">8</span>
+<span class="mi">9</span>      <span class="mi">9</span>
+<span class="mi">10</span>    <span class="mi">10</span>
+<span class="mi">11</span>    <span class="mi">11</span>
+<span class="mi">12</span>    <span class="mi">12</span>
+<span class="mi">13</span>    <span class="mi">13</span>
+<span class="mi">14</span>    <span class="mi">14</span>
+<span class="mi">15</span>    <span class="mi">15</span>
+<span class="mi">16</span>    <span class="mi">16</span>
+<span class="mi">17</span>    <span class="mi">17</span>
+<span class="mi">18</span>    <span class="mi">18</span>
+<span class="mi">19</span>    <span class="mi">19</span>
+<span class="mi">20</span>    <span class="mi">20</span>
+<span class="mi">21</span>    <span class="mi">21</span>
+<span class="mi">22</span>    <span class="mi">22</span>
+<span class="mi">23</span>    <span class="mi">23</span>
+</pre></div>
+</div>
+<p>Let’s now compute the sine and cosine features, and then display the resulting dataframe:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">cyclical</span> <span class="o">=</span> <span class="n">CyclicalFeatures</span><span class="p">(</span><span class="n">variables</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+
+<span class="n">df</span> <span class="o">=</span> <span class="n">cyclical</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">head</span><span class="p">())</span>
+</pre></div>
+</div>
+<p>These are the sine and cosine features that represent the hour:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span>   <span class="n">hour</span>  <span class="n">hour_sin</span>  <span class="n">hour_cos</span>
+<span class="mi">0</span>     <span class="mi">0</span>  <span class="mf">0.000000</span>  <span class="mf">1.000000</span>
+<span class="mi">1</span>     <span class="mi">1</span>  <span class="mf">0.269797</span>  <span class="mf">0.962917</span>
+<span class="mi">2</span>     <span class="mi">2</span>  <span class="mf">0.519584</span>  <span class="mf">0.854419</span>
+<span class="mi">3</span>     <span class="mi">3</span>  <span class="mf">0.730836</span>  <span class="mf">0.682553</span>
+<span class="mi">4</span>     <span class="mi">4</span>  <span class="mf">0.887885</span>  <span class="mf">0.460065</span>
+</pre></div>
+</div>
+<p>Let’s now plot the hour variable against its sine transformation. We add perpendicular
+lines to flag the hours 0 and 22.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s2">&quot;hour&quot;</span><span class="p">],</span> <span class="n">df</span><span class="p">[</span><span class="s2">&quot;hour_sin&quot;</span><span class="p">])</span>
+
+<span class="c1"># Axis labels</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Sine of hour&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Hour&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Sine transformation&#39;</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">vlines</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">ymin</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">ymax</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;g&#39;</span><span class="p">,</span> <span class="n">linestyles</span><span class="o">=</span><span class="s1">&#39;dashed&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">vlines</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="mi">22</span><span class="p">,</span> <span class="n">ymin</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">ymax</span><span class="o">=-</span><span class="mf">0.25</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;g&#39;</span><span class="p">,</span> <span class="n">linestyles</span><span class="o">=</span><span class="s1">&#39;dashed&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>After the transformation using the sine function, we see that the new values for the hours
+0 and 22 are closer to each other (follow the dashed lines), which is what we intended:</p>
+<img alt="../../_images/hour_sin.png" src="../../_images/hour_sin.png" />
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<p>The problem with trigonometric transformations, is that, because they are periodic,
+2 different observations can also return similar values after the transformation. Let’s
+explore that:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s2">&quot;hour&quot;</span><span class="p">],</span> <span class="n">df</span><span class="p">[</span><span class="s2">&quot;hour_sin&quot;</span><span class="p">])</span>
+
+<span class="c1"># Axis labels</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Sine of hour&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Hour&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Sine transformation&#39;</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">hlines</span><span class="p">(</span><span class="n">y</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">xmin</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">xmax</span><span class="o">=</span><span class="mf">11.5</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;r&#39;</span><span class="p">,</span> <span class="n">linestyles</span><span class="o">=</span><span class="s1">&#39;dashed&#39;</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">vlines</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">ymin</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">ymax</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;g&#39;</span><span class="p">,</span> <span class="n">linestyles</span><span class="o">=</span><span class="s1">&#39;dashed&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">vlines</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="mf">11.5</span><span class="p">,</span> <span class="n">ymin</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">ymax</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;g&#39;</span><span class="p">,</span> <span class="n">linestyles</span><span class="o">=</span><span class="s1">&#39;dashed&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>In the plot below, we see that the hours 0 and 11.5 obtain very similar values after the
+sine transformation, but they are not close to each other. So how can we differentiate them?</p>
+<img alt="../../_images/hour_sin2.png" src="../../_images/hour_sin2.png" />
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<p>To fully encode the information of the hour, we must use the sine and cosine trigonometric
+transformations together. Adding the cosine function, which is out of phase respect to the sine
+function, breaks the symmetry and assigns a unique codification to each hour.</p>
+<p>Let’s explore that:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s2">&quot;hour&quot;</span><span class="p">],</span> <span class="n">df</span><span class="p">[</span><span class="s2">&quot;hour_sin&quot;</span><span class="p">])</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s2">&quot;hour&quot;</span><span class="p">],</span> <span class="n">df</span><span class="p">[</span><span class="s2">&quot;hour_cos&quot;</span><span class="p">])</span>
+
+<span class="c1"># Axis labels</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Sine and cosine of hour&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Hour&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Sine and Cosine transformation&#39;</span><span class="p">)</span>
+
+
+<span class="n">plt</span><span class="o">.</span><span class="n">hlines</span><span class="p">(</span><span class="n">y</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">xmin</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">xmax</span><span class="o">=</span><span class="mf">11.5</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;r&#39;</span><span class="p">,</span> <span class="n">linestyles</span><span class="o">=</span><span class="s1">&#39;dashed&#39;</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">vlines</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">ymin</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">ymax</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;g&#39;</span><span class="p">,</span> <span class="n">linestyles</span><span class="o">=</span><span class="s1">&#39;dashed&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">vlines</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="mf">11.5</span><span class="p">,</span> <span class="n">ymin</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">ymax</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;g&#39;</span><span class="p">,</span> <span class="n">linestyles</span><span class="o">=</span><span class="s1">&#39;dashed&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The hour 0, after the transformation, takes the values of sine 0 and cosine 1, which makes
+it different from the hour 11.5, which takes the values of sine 0 and cosine -1. In other
+words, with the two functions together, we are able to distinguish all observations within
+our original variable.</p>
+<img alt="../../_images/hour_sin3.png" src="../../_images/hour_sin3.png" />
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<p>Finally, let’s vizualise the (x, y) circle coordinates generated by the sine and cosine
+features.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">7</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
+<span class="n">sp</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s2">&quot;hour_sin&quot;</span><span class="p">],</span> <span class="n">df</span><span class="p">[</span><span class="s2">&quot;hour_cos&quot;</span><span class="p">],</span> <span class="n">c</span><span class="o">=</span><span class="n">df</span><span class="p">[</span><span class="s2">&quot;hour&quot;</span><span class="p">])</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set</span><span class="p">(</span>
+    <span class="n">xlabel</span><span class="o">=</span><span class="s2">&quot;sin(hour)&quot;</span><span class="p">,</span>
+    <span class="n">ylabel</span><span class="o">=</span><span class="s2">&quot;cos(hour)&quot;</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="n">_</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">colorbar</span><span class="p">(</span><span class="n">sp</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The following plot conveys the intended effect resulting from applying cyclical encoding
+to periodic features.</p>
+<img alt="../../_images/hour_sin4.png" src="../../_images/hour_sin4.png" />
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<p>That’s it, you now know how to represent cyclical data through the use of trigonometric
+functions and cyclical encoding.</p>
+</section>
+<section id="feature-engine-vs-scikit-learn">
+<h2>Feature-engine vs Scikit-learn<a class="headerlink" href="#feature-engine-vs-scikit-learn" title="Permalink to this heading">#</a></h2>
+<p>Let’s compare the implementations of cyclical encoding between Feature-engine and Scikit-learn.
+We’ll work with the Bike sharing demand dataset, and we’ll follow the implementation of
+Cyclical encoding found in the <a class="reference external" href="https://scikit-learn.org/stable/auto_examples/applications/plot_cyclical_feature_engineering.html#trigonometric-features">Time related features documentation</a>
+from Scikit-learn.</p>
+<p>Let’s load the libraries and dataset:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+
+<span class="kn">from</span> <span class="nn">sklearn.compose</span> <span class="kn">import</span> <span class="n">ColumnTransformer</span>
+<span class="kn">from</span> <span class="nn">sklearn.datasets</span> <span class="kn">import</span> <span class="n">fetch_openml</span>
+<span class="kn">from</span> <span class="nn">sklearn.preprocessing</span> <span class="kn">import</span> <span class="n">FunctionTransformer</span>
+
+<span class="kn">from</span> <span class="nn">feature_engine.creation</span> <span class="kn">import</span> <span class="n">CyclicalFeatures</span>
+
+<span class="n">df</span> <span class="o">=</span> <span class="n">fetch_openml</span><span class="p">(</span><span class="s2">&quot;Bike_Sharing_Demand&quot;</span><span class="p">,</span> <span class="n">version</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">as_frame</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span><span class="o">.</span><span class="n">frame</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">head</span><span class="p">())</span>
+</pre></div>
+</div>
+<p>In the following output we see the bike sharing dataset:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span>   <span class="n">season</span>  <span class="n">year</span>  <span class="n">month</span>  <span class="n">hour</span> <span class="n">holiday</span>  <span class="n">weekday</span> <span class="n">workingday</span> <span class="n">weather</span>  <span class="n">temp</span>  \
+<span class="mi">0</span>  <span class="n">spring</span>     <span class="mi">0</span>      <span class="mi">1</span>     <span class="mi">0</span>   <span class="kc">False</span>        <span class="mi">6</span>      <span class="kc">False</span>   <span class="n">clear</span>  <span class="mf">9.84</span>
+<span class="mi">1</span>  <span class="n">spring</span>     <span class="mi">0</span>      <span class="mi">1</span>     <span class="mi">1</span>   <span class="kc">False</span>        <span class="mi">6</span>      <span class="kc">False</span>   <span class="n">clear</span>  <span class="mf">9.02</span>
+<span class="mi">2</span>  <span class="n">spring</span>     <span class="mi">0</span>      <span class="mi">1</span>     <span class="mi">2</span>   <span class="kc">False</span>        <span class="mi">6</span>      <span class="kc">False</span>   <span class="n">clear</span>  <span class="mf">9.02</span>
+<span class="mi">3</span>  <span class="n">spring</span>     <span class="mi">0</span>      <span class="mi">1</span>     <span class="mi">3</span>   <span class="kc">False</span>        <span class="mi">6</span>      <span class="kc">False</span>   <span class="n">clear</span>  <span class="mf">9.84</span>
+<span class="mi">4</span>  <span class="n">spring</span>     <span class="mi">0</span>      <span class="mi">1</span>     <span class="mi">4</span>   <span class="kc">False</span>        <span class="mi">6</span>      <span class="kc">False</span>   <span class="n">clear</span>  <span class="mf">9.84</span>
+
+   <span class="n">feel_temp</span>  <span class="n">humidity</span>  <span class="n">windspeed</span>  <span class="n">count</span>
+<span class="mi">0</span>     <span class="mf">14.395</span>      <span class="mf">0.81</span>        <span class="mf">0.0</span>     <span class="mi">16</span>
+<span class="mi">1</span>     <span class="mf">13.635</span>      <span class="mf">0.80</span>        <span class="mf">0.0</span>     <span class="mi">40</span>
+<span class="mi">2</span>     <span class="mf">13.635</span>      <span class="mf">0.80</span>        <span class="mf">0.0</span>     <span class="mi">32</span>
+<span class="mi">3</span>     <span class="mf">14.395</span>      <span class="mf">0.75</span>        <span class="mf">0.0</span>     <span class="mi">13</span>
+<span class="mi">4</span>     <span class="mf">14.395</span>      <span class="mf">0.75</span>        <span class="mf">0.0</span>      <span class="mi">1</span>
+</pre></div>
+</div>
+<p>To apply cyclical encoding with Scikit-learn, we can use the <code class="docutils literal notranslate"><span class="pre">FunctionTransformer</span></code>:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">sin_transformer</span><span class="p">(</span><span class="n">period</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">FunctionTransformer</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">x</span> <span class="o">/</span> <span class="n">period</span> <span class="o">*</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">))</span>
+
+<span class="k">def</span> <span class="nf">cos_transformer</span><span class="p">(</span><span class="n">period</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">FunctionTransformer</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">x</span> <span class="o">/</span> <span class="n">period</span> <span class="o">*</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">))</span>
+</pre></div>
+</div>
+<p>To apply this transformation to multiple variables with different maximum values, we
+can combine the transformers within an instance of the <code class="docutils literal notranslate"><span class="pre">ColumnTransformer</span></code>:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">cyclic_cossin_transformer</span> <span class="o">=</span> <span class="n">ColumnTransformer</span><span class="p">(</span>
+    <span class="n">transformers</span><span class="o">=</span><span class="p">[</span>
+        <span class="p">(</span><span class="s2">&quot;month_sin&quot;</span><span class="p">,</span> <span class="n">sin_transformer</span><span class="p">(</span><span class="mi">12</span><span class="p">),</span> <span class="p">[</span><span class="s2">&quot;month&quot;</span><span class="p">]),</span>
+        <span class="p">(</span><span class="s2">&quot;month_cos&quot;</span><span class="p">,</span> <span class="n">cos_transformer</span><span class="p">(</span><span class="mi">12</span><span class="p">),</span> <span class="p">[</span><span class="s2">&quot;month&quot;</span><span class="p">]),</span>
+        <span class="p">(</span><span class="s2">&quot;weekday_sin&quot;</span><span class="p">,</span> <span class="n">sin_transformer</span><span class="p">(</span><span class="mi">7</span><span class="p">),</span> <span class="p">[</span><span class="s2">&quot;weekday&quot;</span><span class="p">]),</span>
+        <span class="p">(</span><span class="s2">&quot;weekday_cos&quot;</span><span class="p">,</span> <span class="n">cos_transformer</span><span class="p">(</span><span class="mi">7</span><span class="p">),</span> <span class="p">[</span><span class="s2">&quot;weekday&quot;</span><span class="p">]),</span>
+        <span class="p">(</span><span class="s2">&quot;hour_sin&quot;</span><span class="p">,</span> <span class="n">sin_transformer</span><span class="p">(</span><span class="mi">24</span><span class="p">),</span> <span class="p">[</span><span class="s2">&quot;hour&quot;</span><span class="p">]),</span>
+        <span class="p">(</span><span class="s2">&quot;hour_cos&quot;</span><span class="p">,</span> <span class="n">cos_transformer</span><span class="p">(</span><span class="mi">24</span><span class="p">),</span> <span class="p">[</span><span class="s2">&quot;hour&quot;</span><span class="p">]),</span>
+    <span class="p">],</span>
+<span class="p">)</span><span class="o">.</span><span class="n">set_output</span><span class="p">(</span><span class="n">transform</span><span class="o">=</span><span class="s2">&quot;pandas&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Now we can obtain the cyclical encoded features:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">Xt</span> <span class="o">=</span> <span class="n">cyclic_cossin_transformer</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">Xt</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>In the following output we see the sine and cosine features of the variables month, weekday
+and hour:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span>       <span class="n">month_sin__month</span>  <span class="n">month_cos__month</span>  <span class="n">weekday_sin__weekday</span>  \
+<span class="mi">0</span>          <span class="mf">5.000000e-01</span>          <span class="mf">0.866025</span>             <span class="o">-</span><span class="mf">0.781831</span>
+<span class="mi">1</span>          <span class="mf">5.000000e-01</span>          <span class="mf">0.866025</span>             <span class="o">-</span><span class="mf">0.781831</span>
+<span class="mi">2</span>          <span class="mf">5.000000e-01</span>          <span class="mf">0.866025</span>             <span class="o">-</span><span class="mf">0.781831</span>
+<span class="mi">3</span>          <span class="mf">5.000000e-01</span>          <span class="mf">0.866025</span>             <span class="o">-</span><span class="mf">0.781831</span>
+<span class="mi">4</span>          <span class="mf">5.000000e-01</span>          <span class="mf">0.866025</span>             <span class="o">-</span><span class="mf">0.781831</span>
+<span class="o">...</span>                 <span class="o">...</span>               <span class="o">...</span>                   <span class="o">...</span>
+<span class="mi">17374</span>     <span class="o">-</span><span class="mf">2.449294e-16</span>          <span class="mf">1.000000</span>              <span class="mf">0.781831</span>
+<span class="mi">17375</span>     <span class="o">-</span><span class="mf">2.449294e-16</span>          <span class="mf">1.000000</span>              <span class="mf">0.781831</span>
+<span class="mi">17376</span>     <span class="o">-</span><span class="mf">2.449294e-16</span>          <span class="mf">1.000000</span>              <span class="mf">0.781831</span>
+<span class="mi">17377</span>     <span class="o">-</span><span class="mf">2.449294e-16</span>          <span class="mf">1.000000</span>              <span class="mf">0.781831</span>
+<span class="mi">17378</span>     <span class="o">-</span><span class="mf">2.449294e-16</span>          <span class="mf">1.000000</span>              <span class="mf">0.781831</span>
+
+       <span class="n">weekday_cos__weekday</span>  <span class="n">hour_sin__hour</span>  <span class="n">hour_cos__hour</span>
+<span class="mi">0</span>                   <span class="mf">0.62349</span>        <span class="mf">0.000000</span>        <span class="mf">1.000000</span>
+<span class="mi">1</span>                   <span class="mf">0.62349</span>        <span class="mf">0.258819</span>        <span class="mf">0.965926</span>
+<span class="mi">2</span>                   <span class="mf">0.62349</span>        <span class="mf">0.500000</span>        <span class="mf">0.866025</span>
+<span class="mi">3</span>                   <span class="mf">0.62349</span>        <span class="mf">0.707107</span>        <span class="mf">0.707107</span>
+<span class="mi">4</span>                   <span class="mf">0.62349</span>        <span class="mf">0.866025</span>        <span class="mf">0.500000</span>
+<span class="o">...</span>                     <span class="o">...</span>             <span class="o">...</span>             <span class="o">...</span>
+<span class="mi">17374</span>               <span class="mf">0.62349</span>       <span class="o">-</span><span class="mf">0.965926</span>        <span class="mf">0.258819</span>
+<span class="mi">17375</span>               <span class="mf">0.62349</span>       <span class="o">-</span><span class="mf">0.866025</span>        <span class="mf">0.500000</span>
+<span class="mi">17376</span>               <span class="mf">0.62349</span>       <span class="o">-</span><span class="mf">0.707107</span>        <span class="mf">0.707107</span>
+<span class="mi">17377</span>               <span class="mf">0.62349</span>       <span class="o">-</span><span class="mf">0.500000</span>        <span class="mf">0.866025</span>
+<span class="mi">17378</span>               <span class="mf">0.62349</span>       <span class="o">-</span><span class="mf">0.258819</span>        <span class="mf">0.965926</span>
+
+<span class="p">[</span><span class="mi">17379</span> <span class="n">rows</span> <span class="n">x</span> <span class="mi">6</span> <span class="n">columns</span><span class="p">]</span>
+</pre></div>
+</div>
+<p>With Feature-engine, we can do the same as follows:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">tr</span> <span class="o">=</span> <span class="n">CyclicalFeatures</span><span class="p">(</span><span class="n">drop_original</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">Xt</span> <span class="o">=</span> <span class="n">tr</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">df</span><span class="p">[[</span><span class="s2">&quot;month&quot;</span><span class="p">,</span> <span class="s2">&quot;weekday&quot;</span><span class="p">,</span> <span class="s2">&quot;hour&quot;</span><span class="p">]])</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">Xt</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Note that with less lines of code we obtained a similar result:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span>          <span class="n">month_sin</span>  <span class="n">month_cos</span>   <span class="n">weekday_sin</span>  <span class="n">weekday_cos</span>      <span class="n">hour_sin</span>  \
+<span class="mi">0</span>      <span class="mf">5.000000e-01</span>   <span class="mf">0.866025</span> <span class="o">-</span><span class="mf">2.449294e-16</span>          <span class="mf">1.0</span>  <span class="mf">0.000000e+00</span>
+<span class="mi">1</span>      <span class="mf">5.000000e-01</span>   <span class="mf">0.866025</span> <span class="o">-</span><span class="mf">2.449294e-16</span>          <span class="mf">1.0</span>  <span class="mf">2.697968e-01</span>
+<span class="mi">2</span>      <span class="mf">5.000000e-01</span>   <span class="mf">0.866025</span> <span class="o">-</span><span class="mf">2.449294e-16</span>          <span class="mf">1.0</span>  <span class="mf">5.195840e-01</span>
+<span class="mi">3</span>      <span class="mf">5.000000e-01</span>   <span class="mf">0.866025</span> <span class="o">-</span><span class="mf">2.449294e-16</span>          <span class="mf">1.0</span>  <span class="mf">7.308360e-01</span>
+<span class="mi">4</span>      <span class="mf">5.000000e-01</span>   <span class="mf">0.866025</span> <span class="o">-</span><span class="mf">2.449294e-16</span>          <span class="mf">1.0</span>  <span class="mf">8.878852e-01</span>
+<span class="o">...</span>             <span class="o">...</span>        <span class="o">...</span>           <span class="o">...</span>          <span class="o">...</span>           <span class="o">...</span>
+<span class="mi">17374</span> <span class="o">-</span><span class="mf">2.449294e-16</span>   <span class="mf">1.000000</span>  <span class="mf">8.660254e-01</span>          <span class="mf">0.5</span> <span class="o">-</span><span class="mf">8.878852e-01</span>
+<span class="mi">17375</span> <span class="o">-</span><span class="mf">2.449294e-16</span>   <span class="mf">1.000000</span>  <span class="mf">8.660254e-01</span>          <span class="mf">0.5</span> <span class="o">-</span><span class="mf">7.308360e-01</span>
+<span class="mi">17376</span> <span class="o">-</span><span class="mf">2.449294e-16</span>   <span class="mf">1.000000</span>  <span class="mf">8.660254e-01</span>          <span class="mf">0.5</span> <span class="o">-</span><span class="mf">5.195840e-01</span>
+<span class="mi">17377</span> <span class="o">-</span><span class="mf">2.449294e-16</span>   <span class="mf">1.000000</span>  <span class="mf">8.660254e-01</span>          <span class="mf">0.5</span> <span class="o">-</span><span class="mf">2.697968e-01</span>
+<span class="mi">17378</span> <span class="o">-</span><span class="mf">2.449294e-16</span>   <span class="mf">1.000000</span>  <span class="mf">8.660254e-01</span>          <span class="mf">0.5</span> <span class="o">-</span><span class="mf">2.449294e-16</span>
+
+       <span class="n">hour_cos</span>
+<span class="mi">0</span>      <span class="mf">1.000000</span>
+<span class="mi">1</span>      <span class="mf">0.962917</span>
+<span class="mi">2</span>      <span class="mf">0.854419</span>
+<span class="mi">3</span>      <span class="mf">0.682553</span>
+<span class="mi">4</span>      <span class="mf">0.460065</span>
+<span class="o">...</span>         <span class="o">...</span>
+<span class="mi">17374</span>  <span class="mf">0.460065</span>
+<span class="mi">17375</span>  <span class="mf">0.682553</span>
+<span class="mi">17376</span>  <span class="mf">0.854419</span>
+<span class="mi">17377</span>  <span class="mf">0.962917</span>
+<span class="mi">17378</span>  <span class="mf">1.000000</span>
+
+<span class="p">[</span><span class="mi">17379</span> <span class="n">rows</span> <span class="n">x</span> <span class="mi">6</span> <span class="n">columns</span><span class="p">]</span>
+</pre></div>
+</div>
+<p>Note, however, that the dataframes are not identical, because by default, <code class="xref py py-class docutils literal notranslate"><span class="pre">CyclicalFeatures()</span></code>
+divides the variables by their maximum values:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">tr</span><span class="o">.</span><span class="n">max_values_</span>
+</pre></div>
+</div>
+<p>With the default implementation, we divided the variable weekday by 6, instead of 7, and
+the variable hour by 23, instead of 24, because the values of these variables vary between
+0 and 6, and 0 and 23, respectively.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="p">{</span><span class="s1">&#39;month&#39;</span><span class="p">:</span> <span class="mi">12</span><span class="p">,</span> <span class="s1">&#39;weekday&#39;</span><span class="p">:</span> <span class="mi">6</span><span class="p">,</span> <span class="s1">&#39;hour&#39;</span><span class="p">:</span> <span class="mi">23</span><span class="p">}</span>
+</pre></div>
+</div>
+<p>Practically, there isn’t a big difference between the values of the dataframes returned by
+Scikit-learn and Feature-engine, and I doubt that this subtle difference will incur in a big
+change in model performance.</p>
+<p>However, if you want to divide the varibles weekday and hour by 7 and 24 respectively, you can
+do so like this:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">tr</span> <span class="o">=</span> <span class="n">CyclicalFeatures</span><span class="p">(</span>
+    <span class="n">max_values</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;month&quot;</span><span class="p">:</span> <span class="mi">12</span><span class="p">,</span> <span class="s2">&quot;weekday&quot;</span><span class="p">:</span> <span class="mi">7</span><span class="p">,</span> <span class="s2">&quot;hour&quot;</span><span class="p">:</span> <span class="mi">24</span><span class="p">},</span>
+    <span class="n">drop_original</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="n">Xt</span> <span class="o">=</span> <span class="n">tr</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">df</span><span class="p">[[</span><span class="s2">&quot;month&quot;</span><span class="p">,</span> <span class="s2">&quot;weekday&quot;</span><span class="p">,</span> <span class="s2">&quot;hour&quot;</span><span class="p">]])</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">Xt</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>And now, the values of the dataframes are identical:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span>          <span class="n">month_sin</span>  <span class="n">month_cos</span>  <span class="n">weekday_sin</span>  <span class="n">weekday_cos</span>  <span class="n">hour_sin</span>  <span class="n">hour_cos</span>
+<span class="mi">0</span>      <span class="mf">5.000000e-01</span>   <span class="mf">0.866025</span>    <span class="o">-</span><span class="mf">0.781831</span>      <span class="mf">0.62349</span>  <span class="mf">0.000000</span>  <span class="mf">1.000000</span>
+<span class="mi">1</span>      <span class="mf">5.000000e-01</span>   <span class="mf">0.866025</span>    <span class="o">-</span><span class="mf">0.781831</span>      <span class="mf">0.62349</span>  <span class="mf">0.258819</span>  <span class="mf">0.965926</span>
+<span class="mi">2</span>      <span class="mf">5.000000e-01</span>   <span class="mf">0.866025</span>    <span class="o">-</span><span class="mf">0.781831</span>      <span class="mf">0.62349</span>  <span class="mf">0.500000</span>  <span class="mf">0.866025</span>
+<span class="mi">3</span>      <span class="mf">5.000000e-01</span>   <span class="mf">0.866025</span>    <span class="o">-</span><span class="mf">0.781831</span>      <span class="mf">0.62349</span>  <span class="mf">0.707107</span>  <span class="mf">0.707107</span>
+<span class="mi">4</span>      <span class="mf">5.000000e-01</span>   <span class="mf">0.866025</span>    <span class="o">-</span><span class="mf">0.781831</span>      <span class="mf">0.62349</span>  <span class="mf">0.866025</span>  <span class="mf">0.500000</span>
+<span class="o">...</span>             <span class="o">...</span>        <span class="o">...</span>          <span class="o">...</span>          <span class="o">...</span>       <span class="o">...</span>       <span class="o">...</span>
+<span class="mi">17374</span> <span class="o">-</span><span class="mf">2.449294e-16</span>   <span class="mf">1.000000</span>     <span class="mf">0.781831</span>      <span class="mf">0.62349</span> <span class="o">-</span><span class="mf">0.965926</span>  <span class="mf">0.258819</span>
+<span class="mi">17375</span> <span class="o">-</span><span class="mf">2.449294e-16</span>   <span class="mf">1.000000</span>     <span class="mf">0.781831</span>      <span class="mf">0.62349</span> <span class="o">-</span><span class="mf">0.866025</span>  <span class="mf">0.500000</span>
+<span class="mi">17376</span> <span class="o">-</span><span class="mf">2.449294e-16</span>   <span class="mf">1.000000</span>     <span class="mf">0.781831</span>      <span class="mf">0.62349</span> <span class="o">-</span><span class="mf">0.707107</span>  <span class="mf">0.707107</span>
+<span class="mi">17377</span> <span class="o">-</span><span class="mf">2.449294e-16</span>   <span class="mf">1.000000</span>     <span class="mf">0.781831</span>      <span class="mf">0.62349</span> <span class="o">-</span><span class="mf">0.500000</span>  <span class="mf">0.866025</span>
+<span class="mi">17378</span> <span class="o">-</span><span class="mf">2.449294e-16</span>   <span class="mf">1.000000</span>     <span class="mf">0.781831</span>      <span class="mf">0.62349</span> <span class="o">-</span><span class="mf">0.258819</span>  <span class="mf">0.965926</span>
+
+<span class="p">[</span><span class="mi">17379</span> <span class="n">rows</span> <span class="n">x</span> <span class="mi">6</span> <span class="n">columns</span><span class="p">]</span>
+</pre></div>
+</div>
+<p>Ultimately, choosing the right period for the cyclical encoding is the responsibility of
+the user, with automation, we can only go that far.</p>
+</section>
+<section id="additional-resources">
+<h2>Additional resources<a class="headerlink" href="#additional-resources" title="Permalink to this heading">#</a></h2>
+<p>For tutorials on how to create cyclical features, check out the following courses:</p>
+<figure class="align-center align-left" id="id1">
+<a class="reference external image-reference" href="https://www.trainindata.com/p/feature-engineering-for-machine-learning"><img alt="../../_images/feml.png" src="../../_images/feml.png" style="width: 300px;" /></a>
+<figcaption>
+<p><span class="caption-text">Feature Engineering for Machine Learning</span><a class="headerlink" href="#id1" title="Permalink to this image">#</a></p>
+</figcaption>
+</figure>
+<figure class="align-center align-right" id="id2">
+<a class="reference external image-reference" href="https://www.trainindata.com/p/feature-engineering-for-forecasting"><img alt="../../_images/fetsf.png" src="../../_images/fetsf.png" style="width: 300px;" /></a>
+<figcaption>
+<p><span class="caption-text">Feature Engineering for Time Series Forecasting</span><a class="headerlink" href="#id2" title="Permalink to this image">#</a></p>
+</figcaption>
+</figure>
+<div class="line-block">
+<div class="line"><br /></div>
+<div class="line"><br /></div>
+<div class="line"><br /></div>
+<div class="line"><br /></div>
+<div class="line"><br /></div>
+<div class="line"><br /></div>
+<div class="line"><br /></div>
+<div class="line"><br /></div>
+<div class="line"><br /></div>
+<div class="line"><br /></div>
+</div>
+<p>For a comparison between one-hot encoding, ordinal encoding, cyclical encoding and spline
+encoding of cyclical features check out the following
+<a class="reference external" href="https://scikit-learn.org/stable/auto_examples/applications/plot_cyclical_feature_engineering.html">sklearn demo</a>.</p>
+<p>Check also these Kaggle demo on the use of cyclical encoding with neural networks:</p>
+<ul class="simple">
+<li><p><a class="reference external" href="https://www.kaggle.com/code/avanwyk/encoding-cyclical-features-for-deep-learning">Encoding Cyclical Features for Deep Learning</a>.</p></li>
+</ul>
+</section>
+</section>
+
+
+                </article>
+              
+              
+              
+              
+              
+                <footer class="prev-next-footer">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="index.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Feature Creation</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="MathFeatures.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">MathFeatures</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+  <div class="sidebar-secondary-item">
+
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> On this page
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#cyclical-encoding">Cyclical encoding</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#cyclical-encoding-with-feature-engine">Cyclical encoding with Feature-engine</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#finding-the-max-value">Finding the max_value</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#applying-cyclical-encoding">Applying cyclical encoding</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#dropping-variables-after-encoding">Dropping variables after encoding</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#obtaining-the-name-of-the-resulting-features">Obtaining the name of the resulting features</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#understanding-cyclical-encoding">Understanding cyclical encoding</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#feature-engine-vs-scikit-learn">Feature-engine vs Scikit-learn</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#additional-resources">Additional resources</a></li>
+</ul>
+  </nav></div>
+
+  <div class="sidebar-secondary-item">
+
+  <div class="tocsection sourcelink">
+    <a href="../../_sources/user_guide/creation/CyclicalFeatures.rst.txt">
+      <i class="fa-solid fa-file-lines"></i> Show Source
+    </a>
+  </div>
+</div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../_static/scripts/bootstrap.js?digest=5b4479735964841361fd"></script>
+<script src="../../_static/scripts/pydata-sphinx-theme.js?digest=5b4479735964841361fd"></script>
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+
+  <p class="sphinx-version">
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.1.2.
+    <br/>
+  </p>
+</div>
+      
+    </div>
+  
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item">
+<p class="theme-version">
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.14.4.
+</p></div>
+      
+    </div>
+  
+</div>
+
+  </footer>
+  </body>
+</html>

@@ -1,0 +1,1520 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>DatetimeFeatures &#8212; 3.1</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=5b4479735964841361fd" rel="stylesheet" />
+<link href="../../_static/styles/bootstrap.css?digest=5b4479735964841361fd" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=5b4479735964841361fd" rel="stylesheet" />
+
+  
+  <link href="../../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=5b4479735964841361fd" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/custom.css?v=30c166bc" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/custom.css?v=30c166bc" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=5b4479735964841361fd" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=5b4479735964841361fd" />
+  <script src="../../_static/vendor/fontawesome/6.1.2/js/all.min.js?digest=5b4479735964841361fd"></script>
+
+    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js?v=e1ce3931"></script>
+    <script src="../../_static/doctools.js?v=888ff710"></script>
+    <script src="../../_static/sphinx_highlight.js?v=4825356b"></script>
+    <script defer data-domain="feature-engine.readthedocs.io" src="https://plausible.io/js/plausible.js"></script>
+    <script src="../../_static/js/copybutton.js?v=84772c1c"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'user_guide/datetime/DatetimeFeatures';</script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="DatetimeSubtraction" href="DatetimeSubtraction.html" />
+    <link rel="prev" title="Datetime Features" href="index.html" />
+    
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+
+    <!-- Cookie banner -->
+    <style>
+        /* Style for the cookie banner */
+        #cookie-banner {
+            position: fixed;
+            bottom: 0;
+            right: 0;
+            background-color: #ffe4e1; /* Light Pink */
+            color: #333;
+            padding: 15px;
+            max-width: 400px;
+            display: none;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            z-index: 1000; /* Set a higher z-index value */
+        }
+
+        #cookie-banner p {
+        font-size: 16px; /* Font size for the text */
+        color: #333 !important; /* Set link color to black */
+        line-height: 1.5; /* Increase line height for added spacing between sentences */
+        }
+
+        #cookie-banner a {
+            color: #333;
+            text-decoration: underline;
+        }
+    </style>
+
+    <div id="cookie-banner">
+        <h2 style="font-size: 20px; margin-bottom: 10px;">This site uses cookies</h2>
+        <p style="font-size: 16px;">We use cookies to recognize your visits and preferences, to measure the effectiveness of the documentation, and discover how people find us. With your consent, you're helping us make our documentation better. <br><a href="https://www.trainindata.com/p/privacy" target="_blank">Learn More</a>.</p>
+        <button id="cookie-accept">Accept</button>
+        <button id="cookie-decline">Decline</button>
+    </div>
+
+    <script>
+        // JavaScript to show the cookie banner and handle the accept button
+        document.addEventListener('DOMContentLoaded', function () {
+            var cookieBanner = document.getElementById('cookie-banner');
+            var acceptButton = document.getElementById('cookie-accept');
+            var declineButton = document.getElementById('cookie-decline');
+
+            // Check if the user has already accepted or declined cookies
+            var cookiesAccepted = localStorage.getItem('cookiesAccepted');
+
+            if (!cookiesAccepted) {
+                cookieBanner.style.display = 'block';
+
+                acceptButton.addEventListener('click', function () {
+                    localStorage.setItem('cookiesAccepted', 'true');
+                    loadGoogleAnalytics();
+                    cookieBanner.style.display = 'none';
+                });
+
+                declineButton.addEventListener('click', function () {
+                    localStorage.setItem('cookiesAccepted', 'false');
+                    cookieBanner.style.display = 'none';
+                });
+            } else if (cookiesAccepted === 'true') {
+                loadGoogleAnalytics();
+            }
+        });
+
+        function loadGoogleAnalytics() {
+            // Load Google Analytics only if consent is given
+            var script = document.createElement('script');
+            script.async = true;
+            script.src = 'https://www.googletagmanager.com/gtag/js?id=G-Z6MPCG673G';
+            document.head.appendChild(script);
+
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', 'G-Z6MPCG673G');
+        }
+    </script>
+    <!-- Cookie banner -->
+
+
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>
+    Back to top
+  </button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
+<div class="bd-header__inner bd-page-width">
+  <label class="sidebar-toggle primary-toggle" for="__primary">
+    <span class="fa-solid fa-bars"></span>
+  </label>
+  
+  
+  <div class="col-lg-3 navbar-header-items__start">
+    
+      <div class="navbar-item">
+
+  
+
+<a class="navbar-brand logo" href="../../index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../../_static/sageops_logo.png" class="logo__image only-light" alt="3.1 - Home"/>
+    <script>document.write(`<img src="../../_static/sageops_logo.png" class="logo__image only-dark" alt="3.1 - Home"/>`);</script>
+  
+  
+</a></div>
+    
+      <div class="navbar-item">
+<script>
+document.write(`
+  <div class="version-switcher__container dropdown">
+    <button id="pst-version-switcher-button-2"
+      type="button"
+      class="version-switcher__button btn btn-sm navbar-btn dropdown-toggle"
+      data-bs-toggle="dropdown"
+      aria-haspopup="listbox"
+      aria-controls="pst-version-switcher-list-2"
+      aria-label="Version switcher list"
+    >
+      Choose version  <!-- this text may get changed later by javascript -->
+      <span class="caret"></span>
+    </button>
+    <div id="pst-version-switcher-list-2"
+      class="version-switcher__menu dropdown-menu list-group-flush py-0"
+      role="listbox" aria-labelledby="pst-version-switcher-button-2">
+      <!-- dropdown will be populated by javascript on page load -->
+    </div>
+  </div>
+`);
+</script></div>
+    
+  </div>
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item">
+<nav class="navbar-nav">
+  <p class="sidebar-header-items__title"
+     role="heading"
+     aria-level="1"
+     aria-label="Site Navigation">
+    Site Navigation
+  </p>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../quickstart/index.html">
+                        Quick Start
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item current active">
+                      <a class="nav-link nav-internal" href="../index.html">
+                        SageOps User Guide
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../api_doc/index.html">
+                        API
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../example_notebooks/index.html">
+                        Example Notebooks
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../about/index.html">
+                        About
+                      </a>
+                    </li>
+                
+            <li class="nav-item dropdown">
+                <button class="btn dropdown-toggle nav-item" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-controls="pst-nav-more-links">
+                    More
+                </button>
+                <ul id="pst-nav-more-links" class="dropdown-menu">
+                    
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../../Support/index.html">
+                        Support
+                      </a>
+                    </li>
+                
+                </ul>
+            </li>
+            
+  </ul>
+</nav></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+ <script>
+ document.write(`
+   <button class="btn navbar-btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script>
+        </div>
+      
+      
+        <div class="navbar-item">
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  </button>
+`);
+</script></div>
+      
+        <div class="navbar-item"><ul class="navbar-icon-links navbar-nav"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/" title="GitHub" class="nav-link" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><span><i class="fab fa-github-square fa-lg" aria-hidden="true"></i></span>
+            <span class="sr-only">GitHub</span></a>
+        </li>
+</ul></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+ <script>
+ document.write(`
+   <button class="btn navbar-btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script>
+    </div>
+  
+
+  
+    <label class="sidebar-toggle secondary-toggle" for="__secondary" tabindex="0">
+      <span class="fa-solid fa-outdent"></span>
+    </label>
+  
+</div>
+
+    </nav>
+  
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          <div class="navbar-item">
+<nav class="navbar-nav">
+  <p class="sidebar-header-items__title"
+     role="heading"
+     aria-level="1"
+     aria-label="Site Navigation">
+    Site Navigation
+  </p>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../quickstart/index.html">
+                        Quick Start
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item current active">
+                      <a class="nav-link nav-internal" href="../index.html">
+                        SageOps User Guide
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../api_doc/index.html">
+                        API
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../example_notebooks/index.html">
+                        Example Notebooks
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../about/index.html">
+                        About
+                      </a>
+                    </li>
+                
+            <li class="nav-item dropdown">
+                <button class="btn dropdown-toggle nav-item" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-controls="pst-nav-more-links-2">
+                    More
+                </button>
+                <ul id="pst-nav-more-links-2" class="dropdown-menu">
+                    
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../../Support/index.html">
+                        Support
+                      </a>
+                    </li>
+                
+                </ul>
+            </li>
+            
+  </ul>
+</nav></div>
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  </button>
+`);
+</script></div>
+        
+          <div class="navbar-item"><ul class="navbar-icon-links navbar-nav"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/" title="GitHub" class="nav-link" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><span><i class="fab fa-github-square fa-lg" aria-hidden="true"></i></span>
+            <span class="sr-only">GitHub</span></a>
+        </li>
+</ul></div>
+        
+      </div>
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+<nav class="bd-docs-nav bd-links"
+     aria-label="Section Navigation">
+  <p class="bd-links__title" role="heading" aria-level="1">Section Navigation</p>
+  <div class="bd-toc-item navbar-nav"><ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../experiment/index.html">Experiment</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-1"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../experiment/overview.html">Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../experiment/experiment_setup.html">Experiment Setup</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../experiment/track.html">Tracking and Managing Experiments</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../experiment/api.html">Programmatic API Reference</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../experiment/trial.html">Trial &amp; Trial Components</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../experiment/logging_metrics.html">Logging Metrics and Parameters</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../experiment/troubleshoot.html">Troubleshooting</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../model_monitoring/index.html">Model Monitoring</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-2"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../model_monitoring/core_concepts.html">Core Concepts</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../model_monitoring/setting_up.html">Setting Up Model Monitoring</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../model_monitoring/visualization.html">Visualization and Reporting</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../encoding/index.html">Categorical Encoding</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-3"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../encoding/OneHotEncoder.html">OneHotEncoder</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../encoding/OrdinalEncoder.html">Ordinal Encoding</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../encoding/CountFrequencyEncoder.html">CountFrequencyEncoder</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../encoding/MeanEncoder.html">MeanEncoder</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../encoding/WoEEncoder.html">Weight of Evidence (WoE)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../encoding/DecisionTreeEncoder.html">DecisionTreeEncoder</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../encoding/RareLabelEncoder.html">RareLabelEncoder</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../encoding/StringSimilarityEncoder.html">StringSimilarityEncoder</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../discretisation/index.html">Discretisation</a><input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-4"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../discretisation/EqualFrequencyDiscretiser.html">EqualFrequencyDiscretiser</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../discretisation/EqualWidthDiscretiser.html">EqualWidthDiscretiser</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../discretisation/ArbitraryDiscretiser.html">ArbitraryDiscretiser</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../discretisation/DecisionTreeDiscretiser.html">DecisionTreeDiscretiser</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../discretisation/GeometricWidthDiscretiser.html">GeometricWidthDiscretiser</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../outliers/index.html">Outlier Handling</a><input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-5"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../outliers/Winsorizer.html">Winsorizer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../outliers/ArbitraryOutlierCapper.html">ArbitraryOutlierCapper</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../outliers/OutlierTrimmer.html">OutlierTrimmer</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../transformation/index.html">Variance Stabilizing Transformations</a><input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-6"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../transformation/LogTransformer.html">LogTransformer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../transformation/LogCpTransformer.html">LogCpTransformer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../transformation/ReciprocalTransformer.html">ReciprocalTransformer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../transformation/ArcsinTransformer.html">ArcsinTransformer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../transformation/PowerTransformer.html">PowerTransformer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../transformation/BoxCoxTransformer.html">BoxCoxTransformer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../transformation/YeoJohnsonTransformer.html">YeoJohnsonTransformer</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../scaling/index.html">Scaling</a><input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-7"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../scaling/MeanNormalizationScaler.html">MeanNormalizationScaler</a></li>
+</ul>
+</li>
+</ul>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../creation/index.html">Feature Creation</a><input class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-8"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../creation/CyclicalFeatures.html">CyclicalFeatures</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../creation/MathFeatures.html">MathFeatures</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../creation/RelativeFeatures.html">RelativeFeatures</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../creation/DecisionTreeFeatures.html">DecisionTreeFeatures</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="index.html">Datetime Features</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-9" name="toctree-checkbox-9" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-9"><i class="fa-solid fa-chevron-down"></i></label><ul class="current">
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">DatetimeFeatures</a></li>
+<li class="toctree-l2"><a class="reference internal" href="DatetimeSubtraction.html">DatetimeSubtraction</a></li>
+</ul>
+</li>
+</ul>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../selection/index.html">Feature Selection</a><input class="toctree-checkbox" id="toctree-checkbox-10" name="toctree-checkbox-10" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-10"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../selection/DropFeatures.html">DropFeatures</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../selection/DropConstantFeatures.html">DropConstantFeatures</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../selection/DropDuplicateFeatures.html">DropDuplicateFeatures</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../selection/DropCorrelatedFeatures.html">DropCorrelatedFeatures</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../selection/SmartCorrelatedSelection.html">SmartCorrelatedSelection</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../selection/SelectBySingleFeaturePerformance.html">SelectBySingleFeaturePerformance</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../selection/RecursiveFeatureElimination.html">RecursiveFeatureElimination</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../selection/RecursiveFeatureAddition.html">RecursiveFeatureAddition</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../selection/SelectByShuffling.html">SelectByShuffling</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../selection/SelectByTargetMeanPerformance.html">SelectByTargetMeanPerformance</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../selection/DropHighPSIFeatures.html">DropHighPSIFeatures</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../selection/SelectByInformationValue.html">SelectByInformationValue</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../selection/ProbeFeatureSelection.html">ProbeFeatureSelection</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../selection/MRMR.html">MRMR - Minimum Redundancy Maximum Relevance</a></li>
+</ul>
+</li>
+</ul>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../preprocessing/index.html">Preprocessing</a><input class="toctree-checkbox" id="toctree-checkbox-11" name="toctree-checkbox-11" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-11"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../preprocessing/MatchCategories.html">MatchCategories</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../preprocessing/MatchVariables.html">MatchVariables</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../wrappers/index.html">Scikit-learn Wrapper</a><input class="toctree-checkbox" id="toctree-checkbox-12" name="toctree-checkbox-12" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-12"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../wrappers/Wrapper.html">SklearnTransformerWrapper</a></li>
+</ul>
+</li>
+</ul>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../pipeline/index.html">Pipeline</a><input class="toctree-checkbox" id="toctree-checkbox-13" name="toctree-checkbox-13" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-13"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../pipeline/Pipeline.html">Pipeline</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../pipeline/make_pipeline.html">make_pipeline</a></li>
+</ul>
+</li>
+</ul>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../variable_handling/index.html">Variable handling functions</a><input class="toctree-checkbox" id="toctree-checkbox-14" name="toctree-checkbox-14" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-14"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../variable_handling/find_all_variables.html">find_all_variables</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../variable_handling/find_categorical_variables.html">find_categorical_variables</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../variable_handling/find_datetime_variables.html">find_datetime_variables</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../variable_handling/find_numerical_variables.html">find_numerical_variables</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../variable_handling/find_categorical_and_numerical_variables.html">find_categorical_and_numerical_variables</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../variable_handling/check_all_variables.html">check_all_variables</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../variable_handling/check_categorical_variables.html">check_categorical_variables</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../variable_handling/check_datetime_variables.html">check_datetime_variables</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../variable_handling/check_numerical_variables.html">check_numerical_variables</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../variable_handling/retain_variables_if_in_df.html">retain_variables_if_in_df</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+
+
+<nav aria-label="Breadcrumb">
+  <ul class="bd-breadcrumbs">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="../../index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    
+    <li class="breadcrumb-item"><a href="../index.html" class="nav-link">SageOps User Guide</a></li>
+    
+    
+    <li class="breadcrumb-item"><a href="index.html" class="nav-link">Datetime Features</a></li>
+    
+    <li class="breadcrumb-item active" aria-current="page">DatetimeFeatures</li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article" role="main">
+                  
+  <section id="datetimefeatures">
+<span id="datetime-features"></span><h1>DatetimeFeatures<a class="headerlink" href="#datetimefeatures" title="Permalink to this heading">#</a></h1>
+<p>In datasets commonly used in data science and machine learning projects, the variables very
+often contain information about date and time. <strong>Date of birth</strong> and <strong>time of purchase</strong> are two
+examples of these variables. They are commonly referred to as “datetime features”, that is,
+data whose data type is date and time.</p>
+<p>We don’t normally use datetime variables in their raw format to train machine learning models,
+like those for regression, classification, or clustering. Instead, we can extract a lot of information
+from these variables by extracting the different date and time components of the datetime
+variable.</p>
+<p>Examples of date and time components are the year, the month, the week_of_year, the day
+of the week, the hour, the minutes, and the seconds.</p>
+<section id="datetime-features-with-pandas">
+<h2>Datetime features with pandas<a class="headerlink" href="#datetime-features-with-pandas" title="Permalink to this heading">#</a></h2>
+<p>In Python, we can extract date and time components through the <code class="docutils literal notranslate"><span class="pre">dt</span></code> module of the open-source
+library pandas. For example, by executing the following:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">data</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s2">&quot;date&quot;</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">date_range</span><span class="p">(</span><span class="s2">&quot;2019-03-05&quot;</span><span class="p">,</span> <span class="n">periods</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">freq</span><span class="o">=</span><span class="s2">&quot;D&quot;</span><span class="p">)})</span>
+
+<span class="n">data</span><span class="p">[</span><span class="s2">&quot;year&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s2">&quot;date&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">dt</span><span class="o">.</span><span class="n">year</span>
+<span class="n">data</span><span class="p">[</span><span class="s2">&quot;quarter&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s2">&quot;date&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">dt</span><span class="o">.</span><span class="n">quarter</span>
+<span class="n">data</span><span class="p">[</span><span class="s2">&quot;month&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s2">&quot;date&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">dt</span><span class="o">.</span><span class="n">month</span>
+</pre></div>
+</div>
+<p>In the former code block we created 3 features from the timestamp variable: the <em>year</em>, the
+<em>quarter</em> and the <em>month</em>.</p>
+</section>
+<section id="datetime-features-with-feature-engine">
+<h2>Datetime features with Feature-engine<a class="headerlink" href="#datetime-features-with-feature-engine" title="Permalink to this heading">#</a></h2>
+<p><code class="xref py py-class docutils literal notranslate"><span class="pre">DatetimeFeatures()</span></code> automatically extracts several date and time features from
+datetime variables. It works with variables whose dtype is datetime, as well as with
+object-like and categorical variables, provided that they can be parsed into datetime
+format. It <em>cannot</em> extract features from numerical variables.</p>
+<p><code class="xref py py-class docutils literal notranslate"><span class="pre">DatetimeFeatures()</span></code> uses the pandas <code class="docutils literal notranslate"><span class="pre">dt</span></code> module under the hood, therefore automating
+datetime feature engineering. In two lines of code and by specifying which features we
+want to create with <code class="xref py py-class docutils literal notranslate"><span class="pre">DatetimeFeatures()</span></code>, we can create multiple date and time variables
+from various variables simultaneously.</p>
+<p><code class="xref py py-class docutils literal notranslate"><span class="pre">DatetimeFeatures()</span></code> can automatically create all features supported by pandas <code class="docutils literal notranslate"><span class="pre">dt</span></code>
+and a few more, like, for example, a binary feature indicating if the event occurred on
+a weekend and also the semester.</p>
+<p>With <code class="xref py py-class docutils literal notranslate"><span class="pre">DatetimeFeatures()</span></code> we can choose which date and time features to extract
+from the datetime variables. We can also extract date and time features from one or more
+datetime variables at the same time.</p>
+<p>Through the following examples we highlight the functionality and versatility of <code class="xref py py-class docutils literal notranslate"><span class="pre">DatetimeFeatures()</span></code>
+for tabular data.</p>
+<section id="extract-date-features">
+<h3>Extract date features<a class="headerlink" href="#extract-date-features" title="Permalink to this heading">#</a></h3>
+<p>In this example, we are going to extract three <strong>date features</strong> from a
+specific variable in the dataframe. In particular, we are interested
+in the <em>month</em>, the <em>day of the year</em>, and whether that day was the <em>last
+day the month</em>.</p>
+<p>First, we will create a toy dataframe with 2 date variables:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">from</span> <span class="nn">feature_engine.datetime</span> <span class="kn">import</span> <span class="n">DatetimeFeatures</span>
+
+<span class="n">toy_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span>
+    <span class="s2">&quot;var_date1&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;May-1989&#39;</span><span class="p">,</span> <span class="s1">&#39;Dec-2020&#39;</span><span class="p">,</span> <span class="s1">&#39;Jan-1999&#39;</span><span class="p">,</span> <span class="s1">&#39;Feb-2002&#39;</span><span class="p">],</span>
+    <span class="s2">&quot;var_date2&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;06/21/2012&#39;</span><span class="p">,</span> <span class="s1">&#39;02/10/1998&#39;</span><span class="p">,</span> <span class="s1">&#39;08/03/2010&#39;</span><span class="p">,</span> <span class="s1">&#39;10/31/2020&#39;</span><span class="p">],</span>
+<span class="p">})</span>
+</pre></div>
+</div>
+<p>Now, we will extract the variables month, month-end and the day of the year from the
+second datetime variable in our dataset.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">dtfs</span> <span class="o">=</span> <span class="n">DatetimeFeatures</span><span class="p">(</span>
+    <span class="n">variables</span><span class="o">=</span><span class="s2">&quot;var_date2&quot;</span><span class="p">,</span>
+    <span class="n">features_to_extract</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;month&quot;</span><span class="p">,</span> <span class="s2">&quot;month_end&quot;</span><span class="p">,</span> <span class="s2">&quot;day_of_year&quot;</span><span class="p">]</span>
+<span class="p">)</span>
+
+<span class="n">df_transf</span> <span class="o">=</span> <span class="n">dtfs</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">toy_df</span><span class="p">)</span>
+
+<span class="n">df_transf</span>
+</pre></div>
+</div>
+<p>With <code class="docutils literal notranslate"><span class="pre">transform()</span></code>, the features extracted from the datetime variable are added to the
+dataframe.</p>
+<p>We see the new features in the following output:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span>  <span class="n">var_date1</span>  <span class="n">var_date2_month</span>  <span class="n">var_date2_month_end</span>  <span class="n">var_date2_day_of_year</span>
+<span class="mi">0</span>  <span class="n">May</span><span class="o">-</span><span class="mi">1989</span>                <span class="mi">6</span>                    <span class="mi">0</span>                    <span class="mi">173</span>
+<span class="mi">1</span>  <span class="n">Dec</span><span class="o">-</span><span class="mi">2020</span>                <span class="mi">2</span>                    <span class="mi">0</span>                     <span class="mi">41</span>
+<span class="mi">2</span>  <span class="n">Jan</span><span class="o">-</span><span class="mi">1999</span>                <span class="mi">8</span>                    <span class="mi">0</span>                    <span class="mi">215</span>
+<span class="mi">3</span>  <span class="n">Feb</span><span class="o">-</span><span class="mi">2002</span>               <span class="mi">10</span>                    <span class="mi">1</span>                    <span class="mi">305</span>
+</pre></div>
+</div>
+<p>By default, <code class="xref py py-class docutils literal notranslate"><span class="pre">DatetimeFeatures()</span></code> drops the variable from which the date and time
+features were extracted, in this case, <em>var_date2</em>. To keep the variable, we just need
+to indicate <code class="docutils literal notranslate"><span class="pre">drop_original=False</span></code> when initializing the transformer.</p>
+<p>Finally, we can obtain the name of the variables in the returned data as follows:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">dtfs</span><span class="o">.</span><span class="n">get_feature_names_out</span><span class="p">()</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="s1">&#39;var_date1&#39;</span><span class="p">,</span>
+ <span class="s1">&#39;var_date2_month&#39;</span><span class="p">,</span>
+ <span class="s1">&#39;var_date2_month_end&#39;</span><span class="p">,</span>
+ <span class="s1">&#39;var_date2_day_of_year&#39;</span><span class="p">]</span>
+</pre></div>
+</div>
+</section>
+<section id="extract-time-features">
+<h3>Extract time features<a class="headerlink" href="#extract-time-features" title="Permalink to this heading">#</a></h3>
+<p>In this example, we are going to extract the feature <em>minute</em> from the two time
+variables in our dataset.</p>
+<p>First, let’s create a toy dataset with 2 time variables and an object variable.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">from</span> <span class="nn">feature_engine.datetime</span> <span class="kn">import</span> <span class="n">DatetimeFeatures</span>
+
+<span class="n">toy_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span>
+    <span class="s2">&quot;not_a_dt&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;not&#39;</span><span class="p">,</span> <span class="s1">&#39;a&#39;</span><span class="p">,</span> <span class="s1">&#39;date&#39;</span><span class="p">,</span> <span class="s1">&#39;time&#39;</span><span class="p">],</span>
+    <span class="s2">&quot;var_time1&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;12:34:45&#39;</span><span class="p">,</span> <span class="s1">&#39;23:01:02&#39;</span><span class="p">,</span> <span class="s1">&#39;11:59:21&#39;</span><span class="p">,</span> <span class="s1">&#39;08:44:23&#39;</span><span class="p">],</span>
+    <span class="s2">&quot;var_time2&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;02:27:26&#39;</span><span class="p">,</span> <span class="s1">&#39;10:10:55&#39;</span><span class="p">,</span> <span class="s1">&#39;17:30:00&#39;</span><span class="p">,</span> <span class="s1">&#39;18:11:18&#39;</span><span class="p">],</span>
+<span class="p">})</span>
+</pre></div>
+</div>
+<p><code class="xref py py-class docutils literal notranslate"><span class="pre">DatetimeFeatures()</span></code> automatically finds all variables that can be parsed to
+datetime. So if we want to extract time features from all our datetime variables, we
+don’t need to specify them.</p>
+<p>Note that from version 2.0.0 pandas deprecated the parameter <code class="docutils literal notranslate"><span class="pre">infer_datetime_format</span></code>.
+Hence, if you want pandas to infer the datetime format and you have different formats,
+you need to explicitly say so by passing <code class="docutils literal notranslate"><span class="pre">&quot;mixed&quot;</span></code> to the <code class="docutils literal notranslate"><span class="pre">format</span></code> parameter as shown
+below.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">dfts</span> <span class="o">=</span> <span class="n">DatetimeFeatures</span><span class="p">(</span><span class="n">features_to_extract</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;minute&quot;</span><span class="p">],</span> <span class="nb">format</span><span class="o">=</span><span class="s2">&quot;mixed&quot;</span><span class="p">)</span>
+
+<span class="n">df_transf</span> <span class="o">=</span> <span class="n">dfts</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">toy_df</span><span class="p">)</span>
+
+<span class="n">df_transf</span>
+</pre></div>
+</div>
+<p>We see the new features in the following output:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span>  <span class="n">not_a_dt</span>  <span class="n">var_time1_minute</span>  <span class="n">var_time2_minute</span>
+<span class="mi">0</span>      <span class="ow">not</span>                <span class="mi">34</span>                <span class="mi">27</span>
+<span class="mi">1</span>        <span class="n">a</span>                 <span class="mi">1</span>                <span class="mi">10</span>
+<span class="mi">2</span>     <span class="n">date</span>                <span class="mi">59</span>                <span class="mi">30</span>
+<span class="mi">3</span>     <span class="n">time</span>                <span class="mi">44</span>                <span class="mi">11</span>
+</pre></div>
+</div>
+<p>The transformer found two variables in the dataframe that can be cast to datetime and
+proceeded to extract the requested feature from them.</p>
+<p>The variables detected as datetime are stored in the transformer’s <code class="docutils literal notranslate"><span class="pre">variables_</span></code> attribute:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">dfts</span><span class="o">.</span><span class="n">variables_</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="s1">&#39;var_time1&#39;</span><span class="p">,</span> <span class="s1">&#39;var_time2&#39;</span><span class="p">]</span>
+</pre></div>
+</div>
+<p>The original datetime variables are dropped from the data by default. This leaves the
+dataset ready to train machine learning algorithms like linear regression or random forests.</p>
+<p>If we want to keep the datetime variables, we just need to indicate <code class="docutils literal notranslate"><span class="pre">drop_original=False</span></code>
+when initializing the transformer.</p>
+<p>Finally, if we want to obtain the names of the variables in the output data, we can use:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">dfts</span><span class="o">.</span><span class="n">get_feature_names_out</span><span class="p">()</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="s1">&#39;not_a_dt&#39;</span><span class="p">,</span> <span class="s1">&#39;var_time1_minute&#39;</span><span class="p">,</span> <span class="s1">&#39;var_time2_minute&#39;</span><span class="p">]</span>
+</pre></div>
+</div>
+</section>
+<section id="extract-date-and-time-features">
+<h3>Extract date and time features<a class="headerlink" href="#extract-date-and-time-features" title="Permalink to this heading">#</a></h3>
+<p>In this example, we will combine what we have seen in the previous two examples
+and extract a date feature - <em>year</em> - and time feature - <em>hour</em> -
+from two variables that contain both date and time information.</p>
+<p>Let’s go ahead and create a toy dataset with 3 datetime variables.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">from</span> <span class="nn">feature_engine.datetime</span> <span class="kn">import</span> <span class="n">DatetimeFeatures</span>
+
+<span class="n">toy_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span>
+    <span class="s2">&quot;var_dt1&quot;</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">date_range</span><span class="p">(</span><span class="s2">&quot;2018-01-01&quot;</span><span class="p">,</span> <span class="n">periods</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">freq</span><span class="o">=</span><span class="s2">&quot;H&quot;</span><span class="p">),</span>
+    <span class="s2">&quot;var_dt2&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;08/31/00 12:34:45&#39;</span><span class="p">,</span> <span class="s1">&#39;12/01/90 23:01:02&#39;</span><span class="p">,</span> <span class="s1">&#39;04/25/01 11:59:21&#39;</span><span class="p">],</span>
+    <span class="s2">&quot;var_dt3&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;03/02/15 02:27:26&#39;</span><span class="p">,</span> <span class="s1">&#39;02/28/97 10:10:55&#39;</span><span class="p">,</span> <span class="s1">&#39;11/11/03 17:30:00&#39;</span><span class="p">],</span>
+<span class="p">})</span>
+</pre></div>
+</div>
+<p>Now, we set up the <code class="xref py py-class docutils literal notranslate"><span class="pre">DatetimeFeatures()</span></code> to extract features from 2 of the datetime
+variables. In this case, we do not want to drop the datetime variable after extracting
+the features.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">dfts</span> <span class="o">=</span> <span class="n">DatetimeFeatures</span><span class="p">(</span>
+    <span class="n">variables</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;var_dt1&quot;</span><span class="p">,</span> <span class="s2">&quot;var_dt3&quot;</span><span class="p">],</span>
+    <span class="n">features_to_extract</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;year&quot;</span><span class="p">,</span> <span class="s2">&quot;hour&quot;</span><span class="p">],</span>
+    <span class="n">drop_original</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="nb">format</span><span class="o">=</span><span class="s2">&quot;mixed&quot;</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="n">df_transf</span> <span class="o">=</span> <span class="n">dfts</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">toy_df</span><span class="p">)</span>
+
+<span class="n">df_transf</span>
+</pre></div>
+</div>
+<p>We can see the resulting dataframe in the following output:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span>              <span class="n">var_dt1</span>            <span class="n">var_dt2</span>            <span class="n">var_dt3</span>  <span class="n">var_dt1_year</span>  \
+<span class="mi">0</span> <span class="mi">2018</span><span class="o">-</span><span class="mi">01</span><span class="o">-</span><span class="mi">01</span> <span class="mi">00</span><span class="p">:</span><span class="mi">00</span><span class="p">:</span><span class="mi">00</span>  <span class="mi">08</span><span class="o">/</span><span class="mi">31</span><span class="o">/</span><span class="mi">00</span> <span class="mi">12</span><span class="p">:</span><span class="mi">34</span><span class="p">:</span><span class="mi">45</span>  <span class="mi">03</span><span class="o">/</span><span class="mi">02</span><span class="o">/</span><span class="mi">15</span> <span class="mi">02</span><span class="p">:</span><span class="mi">27</span><span class="p">:</span><span class="mi">26</span>          <span class="mi">2018</span>
+<span class="mi">1</span> <span class="mi">2018</span><span class="o">-</span><span class="mi">01</span><span class="o">-</span><span class="mi">01</span> <span class="mi">01</span><span class="p">:</span><span class="mi">00</span><span class="p">:</span><span class="mi">00</span>  <span class="mi">12</span><span class="o">/</span><span class="mi">01</span><span class="o">/</span><span class="mi">90</span> <span class="mi">23</span><span class="p">:</span><span class="mi">01</span><span class="p">:</span><span class="mi">02</span>  <span class="mi">02</span><span class="o">/</span><span class="mi">28</span><span class="o">/</span><span class="mi">97</span> <span class="mi">10</span><span class="p">:</span><span class="mi">10</span><span class="p">:</span><span class="mi">55</span>          <span class="mi">2018</span>
+<span class="mi">2</span> <span class="mi">2018</span><span class="o">-</span><span class="mi">01</span><span class="o">-</span><span class="mi">01</span> <span class="mi">02</span><span class="p">:</span><span class="mi">00</span><span class="p">:</span><span class="mi">00</span>  <span class="mi">04</span><span class="o">/</span><span class="mi">25</span><span class="o">/</span><span class="mi">01</span> <span class="mi">11</span><span class="p">:</span><span class="mi">59</span><span class="p">:</span><span class="mi">21</span>  <span class="mi">11</span><span class="o">/</span><span class="mi">11</span><span class="o">/</span><span class="mi">03</span> <span class="mi">17</span><span class="p">:</span><span class="mi">30</span><span class="p">:</span><span class="mi">00</span>          <span class="mi">2018</span>
+
+   <span class="n">var_dt1_hour</span>  <span class="n">var_dt3_year</span>  <span class="n">var_dt3_hour</span>
+<span class="mi">0</span>             <span class="mi">0</span>          <span class="mi">2015</span>             <span class="mi">2</span>
+<span class="mi">1</span>             <span class="mi">1</span>          <span class="mi">1997</span>            <span class="mi">10</span>
+<span class="mi">2</span>             <span class="mi">2</span>          <span class="mi">2003</span>            <span class="mi">17</span>
+</pre></div>
+</div>
+<p>And that is it. The new features are now added to the dataframe.</p>
+</section>
+<section id="time-series">
+<h3>Time series<a class="headerlink" href="#time-series" title="Permalink to this heading">#</a></h3>
+<p>Time series data consists of datapoints indexed in time order. The time is usually in
+the index of the dataframe. We can extract features from the timestamp index and use them
+for time series regression or classification, as well as for time series forecasting.</p>
+<p>With <code class="xref py py-class docutils literal notranslate"><span class="pre">DatetimeFeatures()</span></code> we can also create date and time features from the
+dataframe index.</p>
+<p>Let’s create a toy dataframe with datetime in the index.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+
+<span class="n">X</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;ambient_temp&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mf">31.31</span><span class="p">,</span> <span class="mf">31.51</span><span class="p">,</span> <span class="mf">32.15</span><span class="p">,</span> <span class="mf">32.39</span><span class="p">,</span> <span class="mf">32.62</span><span class="p">,</span> <span class="mf">32.5</span><span class="p">,</span> <span class="mf">32.52</span><span class="p">,</span> <span class="mf">32.68</span><span class="p">],</span>
+     <span class="s2">&quot;module_temp&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mf">49.18</span><span class="p">,</span> <span class="mf">49.84</span><span class="p">,</span> <span class="mf">52.35</span><span class="p">,</span> <span class="mf">50.63</span><span class="p">,</span> <span class="mf">49.61</span><span class="p">,</span> <span class="mf">47.01</span><span class="p">,</span> <span class="mf">46.67</span><span class="p">,</span> <span class="mf">47.52</span><span class="p">],</span>
+     <span class="s2">&quot;irradiation&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mf">0.51</span><span class="p">,</span> <span class="mf">0.79</span><span class="p">,</span> <span class="mf">0.65</span><span class="p">,</span> <span class="mf">0.76</span><span class="p">,</span> <span class="mf">0.42</span><span class="p">,</span> <span class="mf">0.49</span><span class="p">,</span> <span class="mf">0.57</span><span class="p">,</span> <span class="mf">0.56</span><span class="p">],</span>
+     <span class="s2">&quot;color&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;green&quot;</span><span class="p">]</span> <span class="o">*</span> <span class="mi">4</span> <span class="o">+</span> <span class="p">[</span><span class="s2">&quot;blue&quot;</span><span class="p">]</span> <span class="o">*</span> <span class="mi">4</span><span class="p">,</span>
+     <span class="p">}</span>
+
+<span class="n">X</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+<span class="n">X</span><span class="o">.</span><span class="n">index</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">date_range</span><span class="p">(</span><span class="s2">&quot;2020-05-15 12:00:00&quot;</span><span class="p">,</span> <span class="n">periods</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span> <span class="n">freq</span><span class="o">=</span><span class="s2">&quot;15min&quot;</span><span class="p">)</span>
+
+<span class="n">X</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>Below we see the output of our toy dataframe:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span>                     <span class="n">ambient_temp</span>  <span class="n">module_temp</span>  <span class="n">irradiation</span>  <span class="n">color</span>
+<span class="mi">2020</span><span class="o">-</span><span class="mi">05</span><span class="o">-</span><span class="mi">15</span> <span class="mi">12</span><span class="p">:</span><span class="mi">00</span><span class="p">:</span><span class="mi">00</span>         <span class="mf">31.31</span>        <span class="mf">49.18</span>         <span class="mf">0.51</span>  <span class="n">green</span>
+<span class="mi">2020</span><span class="o">-</span><span class="mi">05</span><span class="o">-</span><span class="mi">15</span> <span class="mi">12</span><span class="p">:</span><span class="mi">15</span><span class="p">:</span><span class="mi">00</span>         <span class="mf">31.51</span>        <span class="mf">49.84</span>         <span class="mf">0.79</span>  <span class="n">green</span>
+<span class="mi">2020</span><span class="o">-</span><span class="mi">05</span><span class="o">-</span><span class="mi">15</span> <span class="mi">12</span><span class="p">:</span><span class="mi">30</span><span class="p">:</span><span class="mi">00</span>         <span class="mf">32.15</span>        <span class="mf">52.35</span>         <span class="mf">0.65</span>  <span class="n">green</span>
+<span class="mi">2020</span><span class="o">-</span><span class="mi">05</span><span class="o">-</span><span class="mi">15</span> <span class="mi">12</span><span class="p">:</span><span class="mi">45</span><span class="p">:</span><span class="mi">00</span>         <span class="mf">32.39</span>        <span class="mf">50.63</span>         <span class="mf">0.76</span>  <span class="n">green</span>
+<span class="mi">2020</span><span class="o">-</span><span class="mi">05</span><span class="o">-</span><span class="mi">15</span> <span class="mi">13</span><span class="p">:</span><span class="mi">00</span><span class="p">:</span><span class="mi">00</span>         <span class="mf">32.62</span>        <span class="mf">49.61</span>         <span class="mf">0.42</span>   <span class="n">blue</span>
+</pre></div>
+</div>
+<p>We can extract features from the index as follows:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">feature_engine.datetime</span> <span class="kn">import</span> <span class="n">DatetimeFeatures</span>
+
+<span class="n">dtf</span> <span class="o">=</span> <span class="n">DatetimeFeatures</span><span class="p">(</span><span class="n">variables</span><span class="o">=</span><span class="s2">&quot;index&quot;</span><span class="p">)</span>
+
+<span class="n">Xtr</span> <span class="o">=</span> <span class="n">dtf</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+
+<span class="n">Xtr</span>
+</pre></div>
+</div>
+<p>We can see that the transformer created the default time features and added them at
+the end of the dataframe.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span>                     <span class="n">ambient_temp</span>  <span class="n">module_temp</span>  <span class="n">irradiation</span>  <span class="n">color</span>  <span class="n">month</span>  \
+<span class="mi">2020</span><span class="o">-</span><span class="mi">05</span><span class="o">-</span><span class="mi">15</span> <span class="mi">12</span><span class="p">:</span><span class="mi">00</span><span class="p">:</span><span class="mi">00</span>         <span class="mf">31.31</span>        <span class="mf">49.18</span>         <span class="mf">0.51</span>  <span class="n">green</span>      <span class="mi">5</span>
+<span class="mi">2020</span><span class="o">-</span><span class="mi">05</span><span class="o">-</span><span class="mi">15</span> <span class="mi">12</span><span class="p">:</span><span class="mi">15</span><span class="p">:</span><span class="mi">00</span>         <span class="mf">31.51</span>        <span class="mf">49.84</span>         <span class="mf">0.79</span>  <span class="n">green</span>      <span class="mi">5</span>
+<span class="mi">2020</span><span class="o">-</span><span class="mi">05</span><span class="o">-</span><span class="mi">15</span> <span class="mi">12</span><span class="p">:</span><span class="mi">30</span><span class="p">:</span><span class="mi">00</span>         <span class="mf">32.15</span>        <span class="mf">52.35</span>         <span class="mf">0.65</span>  <span class="n">green</span>      <span class="mi">5</span>
+<span class="mi">2020</span><span class="o">-</span><span class="mi">05</span><span class="o">-</span><span class="mi">15</span> <span class="mi">12</span><span class="p">:</span><span class="mi">45</span><span class="p">:</span><span class="mi">00</span>         <span class="mf">32.39</span>        <span class="mf">50.63</span>         <span class="mf">0.76</span>  <span class="n">green</span>      <span class="mi">5</span>
+<span class="mi">2020</span><span class="o">-</span><span class="mi">05</span><span class="o">-</span><span class="mi">15</span> <span class="mi">13</span><span class="p">:</span><span class="mi">00</span><span class="p">:</span><span class="mi">00</span>         <span class="mf">32.62</span>        <span class="mf">49.61</span>         <span class="mf">0.42</span>   <span class="n">blue</span>      <span class="mi">5</span>
+<span class="mi">2020</span><span class="o">-</span><span class="mi">05</span><span class="o">-</span><span class="mi">15</span> <span class="mi">13</span><span class="p">:</span><span class="mi">15</span><span class="p">:</span><span class="mi">00</span>         <span class="mf">32.50</span>        <span class="mf">47.01</span>         <span class="mf">0.49</span>   <span class="n">blue</span>      <span class="mi">5</span>
+<span class="mi">2020</span><span class="o">-</span><span class="mi">05</span><span class="o">-</span><span class="mi">15</span> <span class="mi">13</span><span class="p">:</span><span class="mi">30</span><span class="p">:</span><span class="mi">00</span>         <span class="mf">32.52</span>        <span class="mf">46.67</span>         <span class="mf">0.57</span>   <span class="n">blue</span>      <span class="mi">5</span>
+<span class="mi">2020</span><span class="o">-</span><span class="mi">05</span><span class="o">-</span><span class="mi">15</span> <span class="mi">13</span><span class="p">:</span><span class="mi">45</span><span class="p">:</span><span class="mi">00</span>         <span class="mf">32.68</span>        <span class="mf">47.52</span>         <span class="mf">0.56</span>   <span class="n">blue</span>      <span class="mi">5</span>
+
+                     <span class="n">year</span>  <span class="n">day_of_week</span>  <span class="n">day_of_month</span>  <span class="n">hour</span>  <span class="n">minute</span>  <span class="n">second</span>
+<span class="mi">2020</span><span class="o">-</span><span class="mi">05</span><span class="o">-</span><span class="mi">15</span> <span class="mi">12</span><span class="p">:</span><span class="mi">00</span><span class="p">:</span><span class="mi">00</span>  <span class="mi">2020</span>            <span class="mi">4</span>            <span class="mi">15</span>    <span class="mi">12</span>       <span class="mi">0</span>       <span class="mi">0</span>
+<span class="mi">2020</span><span class="o">-</span><span class="mi">05</span><span class="o">-</span><span class="mi">15</span> <span class="mi">12</span><span class="p">:</span><span class="mi">15</span><span class="p">:</span><span class="mi">00</span>  <span class="mi">2020</span>            <span class="mi">4</span>            <span class="mi">15</span>    <span class="mi">12</span>      <span class="mi">15</span>       <span class="mi">0</span>
+<span class="mi">2020</span><span class="o">-</span><span class="mi">05</span><span class="o">-</span><span class="mi">15</span> <span class="mi">12</span><span class="p">:</span><span class="mi">30</span><span class="p">:</span><span class="mi">00</span>  <span class="mi">2020</span>            <span class="mi">4</span>            <span class="mi">15</span>    <span class="mi">12</span>      <span class="mi">30</span>       <span class="mi">0</span>
+<span class="mi">2020</span><span class="o">-</span><span class="mi">05</span><span class="o">-</span><span class="mi">15</span> <span class="mi">12</span><span class="p">:</span><span class="mi">45</span><span class="p">:</span><span class="mi">00</span>  <span class="mi">2020</span>            <span class="mi">4</span>            <span class="mi">15</span>    <span class="mi">12</span>      <span class="mi">45</span>       <span class="mi">0</span>
+<span class="mi">2020</span><span class="o">-</span><span class="mi">05</span><span class="o">-</span><span class="mi">15</span> <span class="mi">13</span><span class="p">:</span><span class="mi">00</span><span class="p">:</span><span class="mi">00</span>  <span class="mi">2020</span>            <span class="mi">4</span>            <span class="mi">15</span>    <span class="mi">13</span>       <span class="mi">0</span>       <span class="mi">0</span>
+<span class="mi">2020</span><span class="o">-</span><span class="mi">05</span><span class="o">-</span><span class="mi">15</span> <span class="mi">13</span><span class="p">:</span><span class="mi">15</span><span class="p">:</span><span class="mi">00</span>  <span class="mi">2020</span>            <span class="mi">4</span>            <span class="mi">15</span>    <span class="mi">13</span>      <span class="mi">15</span>       <span class="mi">0</span>
+<span class="mi">2020</span><span class="o">-</span><span class="mi">05</span><span class="o">-</span><span class="mi">15</span> <span class="mi">13</span><span class="p">:</span><span class="mi">30</span><span class="p">:</span><span class="mi">00</span>  <span class="mi">2020</span>            <span class="mi">4</span>            <span class="mi">15</span>    <span class="mi">13</span>      <span class="mi">30</span>       <span class="mi">0</span>
+<span class="mi">2020</span><span class="o">-</span><span class="mi">05</span><span class="o">-</span><span class="mi">15</span> <span class="mi">13</span><span class="p">:</span><span class="mi">45</span><span class="p">:</span><span class="mi">00</span>  <span class="mi">2020</span>            <span class="mi">4</span>            <span class="mi">15</span>    <span class="mi">13</span>      <span class="mi">45</span>       <span class="mi">0</span>
+</pre></div>
+</div>
+<p>We can obtain the name of all the variables in the output dataframe as follows:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">dtf</span><span class="o">.</span><span class="n">get_feature_names_out</span><span class="p">()</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="s1">&#39;ambient_temp&#39;</span><span class="p">,</span>
+ <span class="s1">&#39;module_temp&#39;</span><span class="p">,</span>
+ <span class="s1">&#39;irradiation&#39;</span><span class="p">,</span>
+ <span class="s1">&#39;color&#39;</span><span class="p">,</span>
+ <span class="s1">&#39;month&#39;</span><span class="p">,</span>
+ <span class="s1">&#39;year&#39;</span><span class="p">,</span>
+ <span class="s1">&#39;day_of_week&#39;</span><span class="p">,</span>
+ <span class="s1">&#39;day_of_month&#39;</span><span class="p">,</span>
+ <span class="s1">&#39;hour&#39;</span><span class="p">,</span>
+ <span class="s1">&#39;minute&#39;</span><span class="p">,</span>
+ <span class="s1">&#39;second&#39;</span><span class="p">]</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="important">
+<h2>Important<a class="headerlink" href="#important" title="Permalink to this heading">#</a></h2>
+<p>We highly recommend specifying the date and time features that you would like to extract
+from your datetime variables.</p>
+<p>If you have too many time variables, this might not be possible. In this case, keep in
+mind that if you extract date features from variables that have only time, or time features
+from variables that have only dates, your features will be meaningless.</p>
+<p>Let’s explore the outcome with an example. We create a dataset with only time variables.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">from</span> <span class="nn">feature_engine.datetime</span> <span class="kn">import</span> <span class="n">DatetimeFeatures</span>
+
+<span class="n">toy_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span>
+    <span class="s2">&quot;not_a_dt&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;not&#39;</span><span class="p">,</span> <span class="s1">&#39;a&#39;</span><span class="p">,</span> <span class="s1">&#39;date&#39;</span><span class="p">,</span> <span class="s1">&#39;time&#39;</span><span class="p">],</span>
+    <span class="s2">&quot;var_time1&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;12:34:45&#39;</span><span class="p">,</span> <span class="s1">&#39;23:01:02&#39;</span><span class="p">,</span> <span class="s1">&#39;11:59:21&#39;</span><span class="p">,</span> <span class="s1">&#39;08:44:23&#39;</span><span class="p">],</span>
+    <span class="s2">&quot;var_time2&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;02:27:26&#39;</span><span class="p">,</span> <span class="s1">&#39;10:10:55&#39;</span><span class="p">,</span> <span class="s1">&#39;17:30:00&#39;</span><span class="p">,</span> <span class="s1">&#39;18:11:18&#39;</span><span class="p">],</span>
+<span class="p">})</span>
+</pre></div>
+</div>
+<p>And now we mistakenly extract only date features:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">dfts</span> <span class="o">=</span> <span class="n">DatetimeFeatures</span><span class="p">(</span>
+    <span class="n">features_to_extract</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;year&quot;</span><span class="p">,</span> <span class="s2">&quot;month&quot;</span><span class="p">,</span> <span class="s2">&quot;day_of_week&quot;</span><span class="p">],</span>
+    <span class="nb">format</span><span class="o">=</span><span class="s2">&quot;mixed&quot;</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="n">df_transf</span> <span class="o">=</span> <span class="n">dfts</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">toy_df</span><span class="p">)</span>
+
+<span class="n">df_transf</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span>  <span class="n">not_a_dt</span>  <span class="n">var_time1_year</span>  <span class="n">var_time1_month</span>  <span class="n">var_time1_day_of_week</span>  <span class="n">var_time2_year</span> \
+<span class="mi">0</span>      <span class="ow">not</span>            <span class="mi">2021</span>               <span class="mi">12</span>                      <span class="mi">2</span>            <span class="mi">2021</span>
+<span class="mi">1</span>        <span class="n">a</span>            <span class="mi">2021</span>               <span class="mi">12</span>                      <span class="mi">2</span>            <span class="mi">2021</span>
+<span class="mi">2</span>     <span class="n">date</span>            <span class="mi">2021</span>               <span class="mi">12</span>                      <span class="mi">2</span>            <span class="mi">2021</span>
+<span class="mi">3</span>     <span class="n">time</span>            <span class="mi">2021</span>               <span class="mi">12</span>                      <span class="mi">2</span>            <span class="mi">2021</span>
+
+   <span class="n">var_time2_month</span>  <span class="n">var_time2_day_of_week</span>
+<span class="mi">0</span>               <span class="mi">12</span>                      <span class="mi">2</span>
+<span class="mi">1</span>               <span class="mi">12</span>                      <span class="mi">2</span>
+<span class="mi">2</span>               <span class="mi">12</span>                      <span class="mi">2</span>
+<span class="mi">3</span>               <span class="mi">12</span>                      <span class="mi">2</span>
+</pre></div>
+</div>
+<p>The transformer will still create features derived from today’s date (the date of
+creating the docs).</p>
+<p>If instead we have a dataframe with only date variables:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">from</span> <span class="nn">feature_engine.datetime</span> <span class="kn">import</span> <span class="n">DatetimeFeatures</span>
+
+<span class="n">toy_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span>
+    <span class="s2">&quot;var_date1&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;May-1989&#39;</span><span class="p">,</span> <span class="s1">&#39;Dec-2020&#39;</span><span class="p">,</span> <span class="s1">&#39;Jan-1999&#39;</span><span class="p">,</span> <span class="s1">&#39;Feb-2002&#39;</span><span class="p">],</span>
+    <span class="s2">&quot;var_date2&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;06/21/12&#39;</span><span class="p">,</span> <span class="s1">&#39;02/10/98&#39;</span><span class="p">,</span> <span class="s1">&#39;08/03/10&#39;</span><span class="p">,</span> <span class="s1">&#39;10/31/20&#39;</span><span class="p">],</span>
+<span class="p">})</span>
+</pre></div>
+</div>
+<p>And we mistakenly extract the hour and the minute:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">dfts</span> <span class="o">=</span> <span class="n">DatetimeFeatures</span><span class="p">(</span>
+    <span class="n">features_to_extract</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;hour&quot;</span><span class="p">,</span> <span class="s2">&quot;minute&quot;</span><span class="p">],</span>
+    <span class="nb">format</span><span class="o">=</span><span class="s2">&quot;mixed&quot;</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="n">df_transf</span> <span class="o">=</span> <span class="n">dfts</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">toy_df</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">df_transf</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span>   <span class="n">var_date1_hour</span>  <span class="n">var_date1_minute</span>  <span class="n">var_date2_hour</span>  <span class="n">var_date2_minute</span>
+<span class="mi">0</span>               <span class="mi">0</span>                 <span class="mi">0</span>               <span class="mi">0</span>                 <span class="mi">0</span>
+<span class="mi">1</span>               <span class="mi">0</span>                 <span class="mi">0</span>               <span class="mi">0</span>                 <span class="mi">0</span>
+<span class="mi">2</span>               <span class="mi">0</span>                 <span class="mi">0</span>               <span class="mi">0</span>                 <span class="mi">0</span>
+<span class="mi">3</span>               <span class="mi">0</span>                 <span class="mi">0</span>               <span class="mi">0</span>                 <span class="mi">0</span>
+</pre></div>
+</div>
+<p>The new features will contain the value 0.</p>
+</section>
+<section id="automating-feature-extraction">
+<h2>Automating feature extraction<a class="headerlink" href="#automating-feature-extraction" title="Permalink to this heading">#</a></h2>
+<p>We can indicate which features we want to extract from the datetime variables as we did
+in the previous examples, by passing the feature names in lists.</p>
+<p>Alternatively, <code class="xref py py-class docutils literal notranslate"><span class="pre">DatetimeFeatures()</span></code> has default options to extract a group of
+commonly used features, or all supported features.</p>
+<p>Let’s first create a toy dataframe:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">from</span> <span class="nn">feature_engine.datetime</span> <span class="kn">import</span> <span class="n">DatetimeFeatures</span>
+
+<span class="n">toy_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span>
+    <span class="s2">&quot;var_dt1&quot;</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">date_range</span><span class="p">(</span><span class="s2">&quot;2018-01-01&quot;</span><span class="p">,</span> <span class="n">periods</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">freq</span><span class="o">=</span><span class="s2">&quot;H&quot;</span><span class="p">),</span>
+    <span class="s2">&quot;var_dt2&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;08/31/00 12:34:45&#39;</span><span class="p">,</span> <span class="s1">&#39;12/01/90 23:01:02&#39;</span><span class="p">,</span> <span class="s1">&#39;04/25/01 11:59:21&#39;</span><span class="p">],</span>
+    <span class="s2">&quot;var_dt3&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;03/02/15 02:27:26&#39;</span><span class="p">,</span> <span class="s1">&#39;02/28/97 10:10:55&#39;</span><span class="p">,</span> <span class="s1">&#39;11/11/03 17:30:00&#39;</span><span class="p">],</span>
+<span class="p">})</span>
+</pre></div>
+</div>
+<section id="most-common-features">
+<h3>Most common features<a class="headerlink" href="#most-common-features" title="Permalink to this heading">#</a></h3>
+<p>Now, we will extract the <strong>most common</strong> date and time features from one of the variables.
+To do this, we leave the parameter <code class="docutils literal notranslate"><span class="pre">features_to_extract</span></code> to <code class="docutils literal notranslate"><span class="pre">None</span></code>.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">dfts</span> <span class="o">=</span> <span class="n">DatetimeFeatures</span><span class="p">(</span>
+    <span class="n">variables</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;var_dt1&quot;</span><span class="p">],</span>
+    <span class="n">features_to_extract</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">drop_original</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="n">df_transf</span> <span class="o">=</span> <span class="n">dfts</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">toy_df</span><span class="p">)</span>
+
+<span class="n">df_transf</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span>              <span class="n">var_dt1</span>            <span class="n">var_dt2</span>            <span class="n">var_dt3</span>  <span class="n">var_dt1_month</span>  \
+<span class="mi">0</span> <span class="mi">2018</span><span class="o">-</span><span class="mi">01</span><span class="o">-</span><span class="mi">01</span> <span class="mi">00</span><span class="p">:</span><span class="mi">00</span><span class="p">:</span><span class="mi">00</span>  <span class="mi">08</span><span class="o">/</span><span class="mi">31</span><span class="o">/</span><span class="mi">00</span> <span class="mi">12</span><span class="p">:</span><span class="mi">34</span><span class="p">:</span><span class="mi">45</span>  <span class="mi">03</span><span class="o">/</span><span class="mi">02</span><span class="o">/</span><span class="mi">15</span> <span class="mi">02</span><span class="p">:</span><span class="mi">27</span><span class="p">:</span><span class="mi">26</span>              <span class="mi">1</span>
+<span class="mi">1</span> <span class="mi">2018</span><span class="o">-</span><span class="mi">01</span><span class="o">-</span><span class="mi">01</span> <span class="mi">01</span><span class="p">:</span><span class="mi">00</span><span class="p">:</span><span class="mi">00</span>  <span class="mi">12</span><span class="o">/</span><span class="mi">01</span><span class="o">/</span><span class="mi">90</span> <span class="mi">23</span><span class="p">:</span><span class="mi">01</span><span class="p">:</span><span class="mi">02</span>  <span class="mi">02</span><span class="o">/</span><span class="mi">28</span><span class="o">/</span><span class="mi">97</span> <span class="mi">10</span><span class="p">:</span><span class="mi">10</span><span class="p">:</span><span class="mi">55</span>              <span class="mi">1</span>
+<span class="mi">2</span> <span class="mi">2018</span><span class="o">-</span><span class="mi">01</span><span class="o">-</span><span class="mi">01</span> <span class="mi">02</span><span class="p">:</span><span class="mi">00</span><span class="p">:</span><span class="mi">00</span>  <span class="mi">04</span><span class="o">/</span><span class="mi">25</span><span class="o">/</span><span class="mi">01</span> <span class="mi">11</span><span class="p">:</span><span class="mi">59</span><span class="p">:</span><span class="mi">21</span>  <span class="mi">11</span><span class="o">/</span><span class="mi">11</span><span class="o">/</span><span class="mi">03</span> <span class="mi">17</span><span class="p">:</span><span class="mi">30</span><span class="p">:</span><span class="mi">00</span>              <span class="mi">1</span>
+
+   <span class="n">var_dt1_year</span>  <span class="n">var_dt1_day_of_week</span>  <span class="n">var_dt1_day_of_month</span>  <span class="n">var_dt1_hour</span>  \
+<span class="mi">0</span>          <span class="mi">2018</span>                    <span class="mi">0</span>                     <span class="mi">1</span>             <span class="mi">0</span>
+<span class="mi">1</span>          <span class="mi">2018</span>                    <span class="mi">0</span>                                   <span class="mi">1</span>
+<span class="mi">2</span>          <span class="mi">2018</span>                    <span class="mi">0</span>                  <span class="mi">1</span>                <span class="mi">2</span>
+
+    <span class="n">var_dt1_minute</span>    <span class="n">var_dt1_second</span>
+<span class="mi">0</span>               <span class="mi">0</span>                  <span class="mi">0</span>
+<span class="mi">1</span>               <span class="mi">0</span>                  <span class="mi">0</span>
+<span class="mi">2</span>               <span class="mi">0</span>                  <span class="mi">0</span>
+</pre></div>
+</div>
+<p>Our new dataset contains the original features plus the new variables extracted
+from them.</p>
+<p>We can find the group of features extracted by the transformer in its attribute:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">dfts</span><span class="o">.</span><span class="n">features_to_extract_</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="s1">&#39;month&#39;</span><span class="p">,</span>
+ <span class="s1">&#39;year&#39;</span><span class="p">,</span>
+ <span class="s1">&#39;day_of_week&#39;</span><span class="p">,</span>
+ <span class="s1">&#39;day_of_month&#39;</span><span class="p">,</span>
+ <span class="s1">&#39;hour&#39;</span><span class="p">,</span>
+ <span class="s1">&#39;minute&#39;</span><span class="p">,</span>
+ <span class="s1">&#39;second&#39;</span><span class="p">]</span>
+</pre></div>
+</div>
+</section>
+<section id="all-supported-features">
+<h3>All supported features<a class="headerlink" href="#all-supported-features" title="Permalink to this heading">#</a></h3>
+<p>We can also extract all supported features automatically, by setting the parameter
+<code class="docutils literal notranslate"><span class="pre">features_to_extract</span></code> to <code class="docutils literal notranslate"><span class="pre">&quot;all&quot;</span></code>:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">dfts</span> <span class="o">=</span> <span class="n">DatetimeFeatures</span><span class="p">(</span>
+    <span class="n">variables</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;var_dt1&quot;</span><span class="p">],</span>
+    <span class="n">features_to_extract</span><span class="o">=</span><span class="s1">&#39;all&#39;</span><span class="p">,</span>
+    <span class="n">drop_original</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="n">df_transf</span> <span class="o">=</span> <span class="n">dfts</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">toy_df</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">df_transf</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span>              <span class="n">var_dt1</span>            <span class="n">var_dt2</span>            <span class="n">var_dt3</span>  <span class="n">var_dt1_month</span>  \
+<span class="mi">0</span> <span class="mi">2018</span><span class="o">-</span><span class="mi">01</span><span class="o">-</span><span class="mi">01</span> <span class="mi">00</span><span class="p">:</span><span class="mi">00</span><span class="p">:</span><span class="mi">00</span>  <span class="mi">08</span><span class="o">/</span><span class="mi">31</span><span class="o">/</span><span class="mi">00</span> <span class="mi">12</span><span class="p">:</span><span class="mi">34</span><span class="p">:</span><span class="mi">45</span>  <span class="mi">03</span><span class="o">/</span><span class="mi">02</span><span class="o">/</span><span class="mi">15</span> <span class="mi">02</span><span class="p">:</span><span class="mi">27</span><span class="p">:</span><span class="mi">26</span>              <span class="mi">1</span>
+<span class="mi">1</span> <span class="mi">2018</span><span class="o">-</span><span class="mi">01</span><span class="o">-</span><span class="mi">01</span> <span class="mi">01</span><span class="p">:</span><span class="mi">00</span><span class="p">:</span><span class="mi">00</span>  <span class="mi">12</span><span class="o">/</span><span class="mi">01</span><span class="o">/</span><span class="mi">90</span> <span class="mi">23</span><span class="p">:</span><span class="mi">01</span><span class="p">:</span><span class="mi">02</span>  <span class="mi">02</span><span class="o">/</span><span class="mi">28</span><span class="o">/</span><span class="mi">97</span> <span class="mi">10</span><span class="p">:</span><span class="mi">10</span><span class="p">:</span><span class="mi">55</span>              <span class="mi">1</span>
+<span class="mi">2</span> <span class="mi">2018</span><span class="o">-</span><span class="mi">01</span><span class="o">-</span><span class="mi">01</span> <span class="mi">02</span><span class="p">:</span><span class="mi">00</span><span class="p">:</span><span class="mi">00</span>  <span class="mi">04</span><span class="o">/</span><span class="mi">25</span><span class="o">/</span><span class="mi">01</span> <span class="mi">11</span><span class="p">:</span><span class="mi">59</span><span class="p">:</span><span class="mi">21</span>  <span class="mi">11</span><span class="o">/</span><span class="mi">11</span><span class="o">/</span><span class="mi">03</span> <span class="mi">17</span><span class="p">:</span><span class="mi">30</span><span class="p">:</span><span class="mi">00</span>              <span class="mi">1</span>
+
+   <span class="n">var_dt1_quarter</span>  <span class="n">var_dt1_semester</span>  <span class="n">var_dt1_year</span>  \
+<span class="mi">0</span>                <span class="mi">1</span>                 <span class="mi">1</span>          <span class="mi">2018</span>
+<span class="mi">1</span>                <span class="mi">1</span>                 <span class="mi">1</span>          <span class="mi">2018</span>
+<span class="mi">2</span>                <span class="mi">1</span>                 <span class="mi">1</span>          <span class="mi">2018</span>
+
+   <span class="n">var_dt1_week</span>  <span class="n">var_dt1_day_of_week</span>  <span class="o">...</span>  <span class="n">var_dt1_month_end</span>  <span class="n">var_dt1_quarter_start</span>  \
+<span class="mi">0</span>             <span class="mi">1</span>                    <span class="mi">0</span>  <span class="o">...</span>                  <span class="mi">0</span>                      <span class="mi">1</span>
+<span class="mi">1</span>             <span class="mi">1</span>                    <span class="mi">0</span>  <span class="o">...</span>                  <span class="mi">0</span>                      <span class="mi">1</span>
+<span class="mi">2</span>             <span class="mi">1</span>                    <span class="mi">0</span>  <span class="o">...</span>                  <span class="mi">0</span>                      <span class="mi">1</span>
+
+   <span class="n">var_dt1_quarter_end</span>  <span class="n">var_dt1_year_start</span>  <span class="n">var_dt1_year_end</span>  \
+<span class="mi">0</span>                    <span class="mi">0</span>                   <span class="mi">1</span>                 <span class="mi">0</span>
+<span class="mi">1</span>                    <span class="mi">0</span>                   <span class="mi">1</span>                 <span class="mi">0</span>
+<span class="mi">2</span>                    <span class="mi">0</span>                   <span class="mi">1</span>                 <span class="mi">0</span>
+
+   <span class="n">var_dt1_leap_year</span>  <span class="n">var_dt1_days_in_month</span>  <span class="n">var_dt1_hour</span>  <span class="n">var_dt1_minute</span>  \
+<span class="mi">0</span>                  <span class="mi">0</span>                     <span class="mi">31</span>             <span class="mi">0</span>               <span class="mi">0</span>
+<span class="mi">1</span>                  <span class="mi">0</span>                     <span class="mi">31</span>             <span class="mi">1</span>               <span class="mi">0</span>
+<span class="mi">2</span>                  <span class="mi">0</span>                     <span class="mi">31</span>             <span class="mi">2</span>               <span class="mi">0</span>
+
+   <span class="n">var_dt1_second</span>
+<span class="mi">0</span>               <span class="mi">0</span>
+<span class="mi">1</span>               <span class="mi">0</span>
+<span class="mi">2</span>               <span class="mi">0</span>
+</pre></div>
+</div>
+<p>We can find the group of features extracted by the transformer in its attribute:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">dfts</span><span class="o">.</span><span class="n">features_to_extract_</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="s1">&#39;month&#39;</span><span class="p">,</span>
+ <span class="s1">&#39;quarter&#39;</span><span class="p">,</span>
+ <span class="s1">&#39;semester&#39;</span><span class="p">,</span>
+ <span class="s1">&#39;year&#39;</span><span class="p">,</span>
+ <span class="s1">&#39;week&#39;</span><span class="p">,</span>
+ <span class="s1">&#39;day_of_week&#39;</span><span class="p">,</span>
+ <span class="s1">&#39;day_of_month&#39;</span><span class="p">,</span>
+ <span class="s1">&#39;day_of_year&#39;</span><span class="p">,</span>
+ <span class="s1">&#39;weekend&#39;</span><span class="p">,</span>
+ <span class="s1">&#39;month_start&#39;</span><span class="p">,</span>
+ <span class="s1">&#39;month_end&#39;</span><span class="p">,</span>
+ <span class="s1">&#39;quarter_start&#39;</span><span class="p">,</span>
+ <span class="s1">&#39;quarter_end&#39;</span><span class="p">,</span>
+ <span class="s1">&#39;year_start&#39;</span><span class="p">,</span>
+ <span class="s1">&#39;year_end&#39;</span><span class="p">,</span>
+ <span class="s1">&#39;leap_year&#39;</span><span class="p">,</span>
+ <span class="s1">&#39;days_in_month&#39;</span><span class="p">,</span>
+ <span class="s1">&#39;hour&#39;</span><span class="p">,</span>
+ <span class="s1">&#39;minute&#39;</span><span class="p">,</span>
+ <span class="s1">&#39;second&#39;</span><span class="p">]</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="extract-and-select-features-automatically">
+<h2>Extract and select features automatically<a class="headerlink" href="#extract-and-select-features-automatically" title="Permalink to this heading">#</a></h2>
+<p>If we have a dataframe with date variables, time variables and date and time variables,
+we can extract all features, or the most common features from all the variables, and then
+go ahead and remove the irrelevant features with the <code class="docutils literal notranslate"><span class="pre">DropConstantFeatures()</span></code> class.</p>
+<p>Let’s create a dataframe with a mix of datetime variables.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">from</span> <span class="nn">sklearn.pipeline</span> <span class="kn">import</span> <span class="n">Pipeline</span>
+<span class="kn">from</span> <span class="nn">feature_engine.datetime</span> <span class="kn">import</span> <span class="n">DatetimeFeatures</span>
+<span class="kn">from</span> <span class="nn">feature_engine.selection</span> <span class="kn">import</span> <span class="n">DropConstantFeatures</span>
+
+<span class="n">toy_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span>
+    <span class="s2">&quot;var_date&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;06/21/12&#39;</span><span class="p">,</span> <span class="s1">&#39;02/10/98&#39;</span><span class="p">,</span> <span class="s1">&#39;08/03/10&#39;</span><span class="p">,</span> <span class="s1">&#39;10/31/20&#39;</span><span class="p">],</span>
+    <span class="s2">&quot;var_time1&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;12:34:45&#39;</span><span class="p">,</span> <span class="s1">&#39;23:01:02&#39;</span><span class="p">,</span> <span class="s1">&#39;11:59:21&#39;</span><span class="p">,</span> <span class="s1">&#39;08:44:23&#39;</span><span class="p">],</span>
+    <span class="s2">&quot;var_dt&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;08/31/00 12:34:45&#39;</span><span class="p">,</span> <span class="s1">&#39;12/01/90 23:01:02&#39;</span><span class="p">,</span> <span class="s1">&#39;04/25/01 11:59:21&#39;</span><span class="p">,</span> <span class="s1">&#39;04/25/01 11:59:21&#39;</span><span class="p">],</span>
+<span class="p">})</span>
+</pre></div>
+</div>
+<p>Now, we line up in a Scikit-learn pipeline the <code class="xref py py-class docutils literal notranslate"><span class="pre">DatetimeFeatures</span></code> and the
+<code class="docutils literal notranslate"><span class="pre">DropConstantFeatures()</span></code>. The <code class="xref py py-class docutils literal notranslate"><span class="pre">DatetimeFeatures</span></code> will create date features
+derived from today for the time variable, and time features with the value 0 for the
+date only variable. <code class="docutils literal notranslate"><span class="pre">DropConstantFeatures()</span></code> will identify and remove these features
+from the dataset.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">pipe</span> <span class="o">=</span> <span class="n">Pipeline</span><span class="p">([</span>
+    <span class="p">(</span><span class="s1">&#39;datetime&#39;</span><span class="p">,</span> <span class="n">DatetimeFeatures</span><span class="p">(</span><span class="nb">format</span><span class="o">=</span><span class="s2">&quot;mixed&quot;</span><span class="p">)),</span>
+    <span class="p">(</span><span class="s1">&#39;drop_constant&#39;</span><span class="p">,</span> <span class="n">DropConstantFeatures</span><span class="p">()),</span>
+<span class="p">])</span>
+
+<span class="n">pipe</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">toy_df</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">Pipeline</span><span class="p">(</span><span class="n">steps</span><span class="o">=</span><span class="p">[(</span><span class="s1">&#39;datetime&#39;</span><span class="p">,</span> <span class="n">DatetimeFeatures</span><span class="p">()),</span>
+                <span class="p">(</span><span class="s1">&#39;drop_constant&#39;</span><span class="p">,</span> <span class="n">DropConstantFeatures</span><span class="p">())])</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">df_transf</span> <span class="o">=</span> <span class="n">pipe</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">toy_df</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">df_transf</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span>   <span class="n">var_date_month</span>  <span class="n">var_date_year</span>  <span class="n">var_date_day_of_week</span>  <span class="n">var_date_day_of_month</span>  \
+<span class="mi">0</span>               <span class="mi">6</span>           <span class="mi">2012</span>                     <span class="mi">3</span>                     <span class="mi">21</span>
+<span class="mi">1</span>               <span class="mi">2</span>           <span class="mi">1998</span>                     <span class="mi">1</span>                     <span class="mi">10</span>
+<span class="mi">2</span>               <span class="mi">8</span>           <span class="mi">2010</span>                     <span class="mi">1</span>                      <span class="mi">3</span>
+<span class="mi">3</span>              <span class="mi">10</span>           <span class="mi">2020</span>                     <span class="mi">5</span>                     <span class="mi">31</span>
+
+   <span class="n">var_time1_hour</span>  <span class="n">var_time1_minute</span>  <span class="n">var_time1_second</span>  <span class="n">var_dt_month</span>  \
+<span class="mi">0</span>              <span class="mi">12</span>                <span class="mi">34</span>                <span class="mi">45</span>             <span class="mi">8</span>
+<span class="mi">1</span>              <span class="mi">23</span>                 <span class="mi">1</span>                 <span class="mi">2</span>            <span class="mi">12</span>
+<span class="mi">2</span>              <span class="mi">11</span>                <span class="mi">59</span>                <span class="mi">21</span>             <span class="mi">4</span>
+<span class="mi">3</span>               <span class="mi">8</span>                <span class="mi">44</span>                <span class="mi">23</span>             <span class="mi">4</span>
+
+   <span class="n">var_dt_year</span>  <span class="n">var_dt_day_of_week</span>  <span class="n">var_dt_day_of_month</span>  <span class="n">var_dt_hour</span>  \
+<span class="mi">0</span>         <span class="mi">2000</span>                   <span class="mi">3</span>                   <span class="mi">31</span>           <span class="mi">12</span>
+<span class="mi">1</span>         <span class="mi">1990</span>                   <span class="mi">5</span>                    <span class="mi">1</span>           <span class="mi">23</span>
+<span class="mi">2</span>         <span class="mi">2001</span>                   <span class="mi">2</span>                   <span class="mi">25</span>           <span class="mi">11</span>
+<span class="mi">3</span>         <span class="mi">2001</span>                   <span class="mi">2</span>                   <span class="mi">25</span>           <span class="mi">11</span>
+
+   <span class="n">var_dt_minute</span>   <span class="n">var_dt_second</span>
+<span class="mi">0</span>             <span class="mi">34</span>              <span class="mi">45</span>
+<span class="mi">1</span>              <span class="mi">1</span>               <span class="mi">2</span>
+<span class="mi">2</span>             <span class="mi">59</span>              <span class="mi">21</span>
+<span class="mi">3</span>             <span class="mi">59</span>              <span class="mi">21</span>
+</pre></div>
+</div>
+<p>As you can see, we do not have the constant features in the transformed dataset.</p>
+</section>
+<section id="working-with-different-timezones">
+<h2>Working with different timezones<a class="headerlink" href="#working-with-different-timezones" title="Permalink to this heading">#</a></h2>
+<p>Time-aware datetime variables can be particularly cumbersome to work with as far
+as the format goes. We will briefly show how <code class="xref py py-class docutils literal notranslate"><span class="pre">DatetimeFeatures()</span></code> deals
+with such variables in three different scenarios.</p>
+<p><strong>Case 1</strong>: our dataset contains a time-aware variable in object format,
+with potentially different timezones across different observations.
+We pass <code class="docutils literal notranslate"><span class="pre">utc=True</span></code> when initializing the transformer to make sure it
+converts all data to UTC timezone.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">from</span> <span class="nn">feature_engine.datetime</span> <span class="kn">import</span> <span class="n">DatetimeFeatures</span>
+
+<span class="n">toy_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span>
+    <span class="s2">&quot;var_tz&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;12:34:45+3&#39;</span><span class="p">,</span> <span class="s1">&#39;23:01:02-6&#39;</span><span class="p">,</span> <span class="s1">&#39;11:59:21-8&#39;</span><span class="p">,</span> <span class="s1">&#39;08:44:23Z&#39;</span><span class="p">]</span>
+<span class="p">})</span>
+
+<span class="n">dfts</span> <span class="o">=</span> <span class="n">DatetimeFeatures</span><span class="p">(</span>
+    <span class="n">features_to_extract</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;hour&quot;</span><span class="p">,</span> <span class="s2">&quot;minute&quot;</span><span class="p">],</span>
+    <span class="n">drop_original</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="n">utc</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="nb">format</span><span class="o">=</span><span class="s2">&quot;mixed&quot;</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="n">df_transf</span> <span class="o">=</span> <span class="n">dfts</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">toy_df</span><span class="p">)</span>
+
+<span class="n">df_transf</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span>       <span class="n">var_tz</span>  <span class="n">var_tz_hour</span>  <span class="n">var_tz_minute</span>
+<span class="mi">0</span>  <span class="mi">12</span><span class="p">:</span><span class="mi">34</span><span class="p">:</span><span class="mi">45</span><span class="o">+</span><span class="mi">3</span>            <span class="mi">9</span>             <span class="mi">34</span>
+<span class="mi">1</span>  <span class="mi">23</span><span class="p">:</span><span class="mi">01</span><span class="p">:</span><span class="mi">02</span><span class="o">-</span><span class="mi">6</span>            <span class="mi">5</span>              <span class="mi">1</span>
+<span class="mi">2</span>  <span class="mi">11</span><span class="p">:</span><span class="mi">59</span><span class="p">:</span><span class="mi">21</span><span class="o">-</span><span class="mi">8</span>           <span class="mi">19</span>             <span class="mi">59</span>
+<span class="mi">3</span>   <span class="mi">08</span><span class="p">:</span><span class="mi">44</span><span class="p">:</span><span class="mi">23</span><span class="n">Z</span>            <span class="mi">8</span>             <span class="mi">44</span>
+</pre></div>
+</div>
+<p><strong>Case 2</strong>: our dataset contains a variable that is cast as a localized
+datetime in a particular timezone. However, we decide that we want to get all
+the datetime information extracted as if it were in UTC timezone.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">from</span> <span class="nn">feature_engine.datetime</span> <span class="kn">import</span> <span class="n">DatetimeFeatures</span>
+
+<span class="n">var_tz</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">([</span><span class="s1">&#39;08/31/00 12:34:45&#39;</span><span class="p">,</span> <span class="s1">&#39;12/01/90 23:01:02&#39;</span><span class="p">,</span> <span class="s1">&#39;04/25/01 11:59:21&#39;</span><span class="p">])</span>
+<span class="n">var_tz</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">(</span><span class="n">var_tz</span><span class="p">,</span> <span class="nb">format</span><span class="o">=</span><span class="s2">&quot;mixed&quot;</span><span class="p">)</span>
+<span class="n">var_tz</span> <span class="o">=</span> <span class="n">var_tz</span><span class="o">.</span><span class="n">dt</span><span class="o">.</span><span class="n">tz_localize</span><span class="p">(</span><span class="s2">&quot;US/eastern&quot;</span><span class="p">)</span>
+<span class="n">var_tz</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="mi">0</span>   <span class="mi">2000</span><span class="o">-</span><span class="mi">08</span><span class="o">-</span><span class="mi">31</span> <span class="mi">12</span><span class="p">:</span><span class="mi">34</span><span class="p">:</span><span class="mi">45</span><span class="o">-</span><span class="mi">04</span><span class="p">:</span><span class="mi">00</span>
+<span class="mi">1</span>   <span class="mi">1990</span><span class="o">-</span><span class="mi">12</span><span class="o">-</span><span class="mi">01</span> <span class="mi">23</span><span class="p">:</span><span class="mi">01</span><span class="p">:</span><span class="mi">02</span><span class="o">-</span><span class="mi">05</span><span class="p">:</span><span class="mi">00</span>
+<span class="mi">2</span>   <span class="mi">2001</span><span class="o">-</span><span class="mi">04</span><span class="o">-</span><span class="mi">25</span> <span class="mi">11</span><span class="p">:</span><span class="mi">59</span><span class="p">:</span><span class="mi">21</span><span class="o">-</span><span class="mi">04</span><span class="p">:</span><span class="mi">00</span>
+<span class="n">dtype</span><span class="p">:</span> <span class="n">datetime64</span><span class="p">[</span><span class="n">ns</span><span class="p">,</span> <span class="n">US</span><span class="o">/</span><span class="n">Eastern</span><span class="p">]</span>
+</pre></div>
+</div>
+<p>We need to pass <code class="docutils literal notranslate"><span class="pre">utc=True</span></code> when initializing the transformer to revert back to the UTC
+timezone.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">toy_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s2">&quot;var_tz&quot;</span><span class="p">:</span> <span class="n">var_tz</span><span class="p">})</span>
+
+<span class="n">dfts</span> <span class="o">=</span> <span class="n">DatetimeFeatures</span><span class="p">(</span>
+    <span class="n">features_to_extract</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;day_of_month&quot;</span><span class="p">,</span> <span class="s2">&quot;hour&quot;</span><span class="p">],</span>
+    <span class="n">drop_original</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="n">utc</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="n">df_transf</span> <span class="o">=</span> <span class="n">dfts</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">toy_df</span><span class="p">)</span>
+
+<span class="n">df_transf</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span>                     <span class="n">var_tz</span>  <span class="n">var_tz_day_of_month</span>  <span class="n">var_tz_hour</span>
+<span class="mi">0</span> <span class="mi">2000</span><span class="o">-</span><span class="mi">08</span><span class="o">-</span><span class="mi">31</span> <span class="mi">12</span><span class="p">:</span><span class="mi">34</span><span class="p">:</span><span class="mi">45</span><span class="o">-</span><span class="mi">04</span><span class="p">:</span><span class="mi">00</span>                   <span class="mi">31</span>           <span class="mi">16</span>
+<span class="mi">1</span> <span class="mi">1990</span><span class="o">-</span><span class="mi">12</span><span class="o">-</span><span class="mi">01</span> <span class="mi">23</span><span class="p">:</span><span class="mi">01</span><span class="p">:</span><span class="mi">02</span><span class="o">-</span><span class="mi">05</span><span class="p">:</span><span class="mi">00</span>                    <span class="mi">2</span>            <span class="mi">4</span>
+<span class="mi">2</span> <span class="mi">2001</span><span class="o">-</span><span class="mi">04</span><span class="o">-</span><span class="mi">25</span> <span class="mi">11</span><span class="p">:</span><span class="mi">59</span><span class="p">:</span><span class="mi">21</span><span class="o">-</span><span class="mi">04</span><span class="p">:</span><span class="mi">00</span>                   <span class="mi">25</span>           <span class="mi">15</span>
+</pre></div>
+</div>
+<p><strong>Case 3</strong>: given a variable like <em>var_tz</em> in the example above, we now want
+to extract the features keeping the original timezone localization,
+therefore we pass <code class="docutils literal notranslate"><span class="pre">utc=False</span></code> or <code class="docutils literal notranslate"><span class="pre">None</span></code>. In this case, we leave it to <code class="docutils literal notranslate"><span class="pre">None</span></code> which
+is the default option.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">dfts</span> <span class="o">=</span> <span class="n">DatetimeFeatures</span><span class="p">(</span>
+    <span class="n">features_to_extract</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;day_of_month&quot;</span><span class="p">,</span> <span class="s2">&quot;hour&quot;</span><span class="p">],</span>
+    <span class="n">drop_original</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="n">utc</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="n">df_transf</span> <span class="o">=</span> <span class="n">dfts</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">toy_df</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">df_transf</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span>                     <span class="n">var_tz</span>  <span class="n">var_tz_day_of_month</span>  <span class="n">var_tz_hour</span>
+<span class="mi">0</span> <span class="mi">2000</span><span class="o">-</span><span class="mi">08</span><span class="o">-</span><span class="mi">31</span> <span class="mi">12</span><span class="p">:</span><span class="mi">34</span><span class="p">:</span><span class="mi">45</span><span class="o">-</span><span class="mi">04</span><span class="p">:</span><span class="mi">00</span>                   <span class="mi">31</span>           <span class="mi">12</span>
+<span class="mi">1</span> <span class="mi">1990</span><span class="o">-</span><span class="mi">12</span><span class="o">-</span><span class="mi">01</span> <span class="mi">23</span><span class="p">:</span><span class="mi">01</span><span class="p">:</span><span class="mi">02</span><span class="o">-</span><span class="mi">05</span><span class="p">:</span><span class="mi">00</span>                    <span class="mi">1</span>           <span class="mi">23</span>
+<span class="mi">2</span> <span class="mi">2001</span><span class="o">-</span><span class="mi">04</span><span class="o">-</span><span class="mi">25</span> <span class="mi">11</span><span class="p">:</span><span class="mi">59</span><span class="p">:</span><span class="mi">21</span><span class="o">-</span><span class="mi">04</span><span class="p">:</span><span class="mi">00</span>                   <span class="mi">25</span>           <span class="mi">11</span>
+</pre></div>
+</div>
+<p>Note that the hour extracted from the variable differ in this dataframe respect to the
+one obtained in <strong>Case 2</strong>.</p>
+</section>
+<section id="missing-timestamps">
+<h2>Missing timestamps<a class="headerlink" href="#missing-timestamps" title="Permalink to this heading">#</a></h2>
+<p><code class="xref py py-class docutils literal notranslate"><span class="pre">DatetimeFeatures</span></code> has the option to ignore missing timestamps, or raise an error
+when a missing value is encountered in a datetime variable.</p>
+</section>
+<section id="additional-resources">
+<h2>Additional resources<a class="headerlink" href="#additional-resources" title="Permalink to this heading">#</a></h2>
+<p>You can find an example of how to use <code class="xref py py-class docutils literal notranslate"><span class="pre">DatetimeFeatures()</span></code> with a real dataset in
+the following <a class="reference external" href="https://nbviewer.org/github/feature-engine/feature-engine-examples/blob/main/datetime/DatetimeFeatures.ipynb">Jupyter notebook</a></p>
+<p>For tutorials on how to create and use features from datetime columns, check the following courses:</p>
+<figure class="align-center align-left" id="id1">
+<a class="reference external image-reference" href="https://www.trainindata.com/p/feature-engineering-for-machine-learning"><img alt="../../_images/feml.png" src="../../_images/feml.png" style="width: 300px;" /></a>
+<figcaption>
+<p><span class="caption-text">Feature Engineering for Machine Learning</span><a class="headerlink" href="#id1" title="Permalink to this image">#</a></p>
+</figcaption>
+</figure>
+<figure class="align-center align-right" id="id2">
+<a class="reference external image-reference" href="https://www.trainindata.com/p/feature-engineering-for-forecasting"><img alt="../../_images/fetsf.png" src="../../_images/fetsf.png" style="width: 300px;" /></a>
+<figcaption>
+<p><span class="caption-text">Feature Engineering for Time Series Forecasting</span><a class="headerlink" href="#id2" title="Permalink to this image">#</a></p>
+</figcaption>
+</figure>
+<div class="line-block">
+<div class="line"><br /></div>
+<div class="line"><br /></div>
+<div class="line"><br /></div>
+<div class="line"><br /></div>
+<div class="line"><br /></div>
+<div class="line"><br /></div>
+<div class="line"><br /></div>
+<div class="line"><br /></div>
+<div class="line"><br /></div>
+<div class="line"><br /></div>
+</div>
+<p>Or read our book:</p>
+<figure class="align-center align-left" id="id3">
+<a class="reference external image-reference" href="https://www.packtpub.com/en-us/product/python-feature-engineering-cookbook-9781835883587"><img alt="../../_images/cookbook.png" src="../../_images/cookbook.png" style="width: 200px;" /></a>
+<figcaption>
+<p><span class="caption-text">Python Feature Engineering Cookbook</span><a class="headerlink" href="#id3" title="Permalink to this image">#</a></p>
+</figcaption>
+</figure>
+<div class="line-block">
+<div class="line"><br /></div>
+<div class="line"><br /></div>
+<div class="line"><br /></div>
+<div class="line"><br /></div>
+<div class="line"><br /></div>
+<div class="line"><br /></div>
+<div class="line"><br /></div>
+<div class="line"><br /></div>
+<div class="line"><br /></div>
+<div class="line"><br /></div>
+<div class="line"><br /></div>
+<div class="line"><br /></div>
+<div class="line"><br /></div>
+</div>
+<p>Both our book and course are suitable for beginners and more advanced data scientists
+alike. By purchasing them you are supporting Sole, the main developer of Feature-engine.</p>
+</section>
+</section>
+
+
+                </article>
+              
+              
+              
+              
+              
+                <footer class="prev-next-footer">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="index.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Datetime Features</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="DatetimeSubtraction.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">DatetimeSubtraction</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+  <div class="sidebar-secondary-item">
+
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> On this page
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#datetime-features-with-pandas">Datetime features with pandas</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#datetime-features-with-feature-engine">Datetime features with Feature-engine</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#extract-date-features">Extract date features</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#extract-time-features">Extract time features</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#extract-date-and-time-features">Extract date and time features</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#time-series">Time series</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#important">Important</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#automating-feature-extraction">Automating feature extraction</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#most-common-features">Most common features</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#all-supported-features">All supported features</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#extract-and-select-features-automatically">Extract and select features automatically</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#working-with-different-timezones">Working with different timezones</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#missing-timestamps">Missing timestamps</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#additional-resources">Additional resources</a></li>
+</ul>
+  </nav></div>
+
+  <div class="sidebar-secondary-item">
+
+  <div class="tocsection sourcelink">
+    <a href="../../_sources/user_guide/datetime/DatetimeFeatures.rst.txt">
+      <i class="fa-solid fa-file-lines"></i> Show Source
+    </a>
+  </div>
+</div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../_static/scripts/bootstrap.js?digest=5b4479735964841361fd"></script>
+<script src="../../_static/scripts/pydata-sphinx-theme.js?digest=5b4479735964841361fd"></script>
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+
+  <p class="sphinx-version">
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.1.2.
+    <br/>
+  </p>
+</div>
+      
+    </div>
+  
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item">
+<p class="theme-version">
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.14.4.
+</p></div>
+      
+    </div>
+  
+</div>
+
+  </footer>
+  </body>
+</html>
