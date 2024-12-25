@@ -1,0 +1,7 @@
+docutils
+Sphinx
+pydata_sphinx_theme
+sphinx_autodoc_typehints
+numpydoc
+pydata-sphinx-theme
+sphinx-autobuild

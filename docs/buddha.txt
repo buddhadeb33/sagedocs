@@ -1,0 +1,2 @@
+sphinx-autobuild docs build
+sphinx-build docs build
