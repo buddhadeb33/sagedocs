@@ -1,0 +1,1253 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>DropMissingData &#8212; 3.1</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=5b4479735964841361fd" rel="stylesheet" />
+<link href="../../_static/styles/bootstrap.css?digest=5b4479735964841361fd" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=5b4479735964841361fd" rel="stylesheet" />
+
+  
+  <link href="../../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=5b4479735964841361fd" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/custom.css?v=346841c8" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/custom.css?v=346841c8" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=5b4479735964841361fd" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=5b4479735964841361fd" />
+  <script src="../../_static/vendor/fontawesome/6.1.2/js/all.min.js?digest=5b4479735964841361fd"></script>
+
+    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js?v=e1ce3931"></script>
+    <script src="../../_static/doctools.js?v=888ff710"></script>
+    <script src="../../_static/sphinx_highlight.js?v=4825356b"></script>
+    <script defer data-domain="feature-engine.readthedocs.io" src="https://plausible.io/js/plausible.js"></script>
+    <script src="../../_static/js/copybutton.js?v=84772c1c"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'user_guide/experiment/DropMissingData';</script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Categorical Encoding" href="../encoding/index.html" />
+    <link rel="prev" title="AddMissingIndicator" href="AddMissingIndicator.html" />
+    
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+
+    <!-- Cookie banner -->
+    <style>
+        /* Style for the cookie banner */
+        #cookie-banner {
+            position: fixed;
+            bottom: 0;
+            right: 0;
+            background-color: #ffe4e1; /* Light Pink */
+            color: #333;
+            padding: 15px;
+            max-width: 400px;
+            display: none;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            z-index: 1000; /* Set a higher z-index value */
+        }
+
+        #cookie-banner p {
+        font-size: 16px; /* Font size for the text */
+        color: #333 !important; /* Set link color to black */
+        line-height: 1.5; /* Increase line height for added spacing between sentences */
+        }
+
+        #cookie-banner a {
+            color: #333;
+            text-decoration: underline;
+        }
+    </style>
+
+    <div id="cookie-banner">
+        <h2 style="font-size: 20px; margin-bottom: 10px;">This site uses cookies</h2>
+        <p style="font-size: 16px;">We use cookies to recognize your visits and preferences, to measure the effectiveness of the documentation, and discover how people find us. With your consent, you're helping us make our documentation better. <br><a href="https://www.trainindata.com/p/privacy" target="_blank">Learn More</a>.</p>
+        <button id="cookie-accept">Accept</button>
+        <button id="cookie-decline">Decline</button>
+    </div>
+
+    <script>
+        // JavaScript to show the cookie banner and handle the accept button
+        document.addEventListener('DOMContentLoaded', function () {
+            var cookieBanner = document.getElementById('cookie-banner');
+            var acceptButton = document.getElementById('cookie-accept');
+            var declineButton = document.getElementById('cookie-decline');
+
+            // Check if the user has already accepted or declined cookies
+            var cookiesAccepted = localStorage.getItem('cookiesAccepted');
+
+            if (!cookiesAccepted) {
+                cookieBanner.style.display = 'block';
+
+                acceptButton.addEventListener('click', function () {
+                    localStorage.setItem('cookiesAccepted', 'true');
+                    loadGoogleAnalytics();
+                    cookieBanner.style.display = 'none';
+                });
+
+                declineButton.addEventListener('click', function () {
+                    localStorage.setItem('cookiesAccepted', 'false');
+                    cookieBanner.style.display = 'none';
+                });
+            } else if (cookiesAccepted === 'true') {
+                loadGoogleAnalytics();
+            }
+        });
+
+        function loadGoogleAnalytics() {
+            // Load Google Analytics only if consent is given
+            var script = document.createElement('script');
+            script.async = true;
+            script.src = 'https://www.googletagmanager.com/gtag/js?id=G-Z6MPCG673G';
+            document.head.appendChild(script);
+
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', 'G-Z6MPCG673G');
+        }
+    </script>
+    <!-- Cookie banner -->
+
+
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>
+    Back to top
+  </button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
+<div class="bd-header__inner bd-page-width">
+  <label class="sidebar-toggle primary-toggle" for="__primary">
+    <span class="fa-solid fa-bars"></span>
+  </label>
+  
+  
+  <div class="col-lg-3 navbar-header-items__start">
+    
+      <div class="navbar-item">
+
+  
+
+<a class="navbar-brand logo" href="../../index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../../_static/sageops_logo.png" class="logo__image only-light" alt="3.1 - Home"/>
+    <script>document.write(`<img src="../../_static/sageops_logo.png" class="logo__image only-dark" alt="3.1 - Home"/>`);</script>
+  
+  
+</a></div>
+    
+      <div class="navbar-item">
+<script>
+document.write(`
+  <div class="version-switcher__container dropdown">
+    <button id="pst-version-switcher-button-2"
+      type="button"
+      class="version-switcher__button btn btn-sm navbar-btn dropdown-toggle"
+      data-bs-toggle="dropdown"
+      aria-haspopup="listbox"
+      aria-controls="pst-version-switcher-list-2"
+      aria-label="Version switcher list"
+    >
+      Choose version  <!-- this text may get changed later by javascript -->
+      <span class="caret"></span>
+    </button>
+    <div id="pst-version-switcher-list-2"
+      class="version-switcher__menu dropdown-menu list-group-flush py-0"
+      role="listbox" aria-labelledby="pst-version-switcher-button-2">
+      <!-- dropdown will be populated by javascript on page load -->
+    </div>
+  </div>
+`);
+</script></div>
+    
+  </div>
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item">
+<nav class="navbar-nav">
+  <p class="sidebar-header-items__title"
+     role="heading"
+     aria-level="1"
+     aria-label="Site Navigation">
+    Site Navigation
+  </p>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../quickstart/index.html">
+                        Quick Start
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item current active">
+                      <a class="nav-link nav-internal" href="../index.html">
+                        SageOps User Guide
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../api_doc/index.html">
+                        API
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../example_notebooks/index.html">
+                        Example Notebooks
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../about/index.html">
+                        About
+                      </a>
+                    </li>
+                
+  </ul>
+</nav></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+ <script>
+ document.write(`
+   <button class="btn navbar-btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script>
+        </div>
+      
+      
+        <div class="navbar-item">
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  </button>
+`);
+</script></div>
+      
+        <div class="navbar-item"><ul class="navbar-icon-links navbar-nav"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/" title="GitHub" class="nav-link" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><span><i class="fab fa-github-square fa-lg" aria-hidden="true"></i></span>
+            <span class="sr-only">GitHub</span></a>
+        </li>
+</ul></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+ <script>
+ document.write(`
+   <button class="btn navbar-btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script>
+    </div>
+  
+
+  
+    <label class="sidebar-toggle secondary-toggle" for="__secondary" tabindex="0">
+      <span class="fa-solid fa-outdent"></span>
+    </label>
+  
+</div>
+
+    </nav>
+  
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          <div class="navbar-item">
+<nav class="navbar-nav">
+  <p class="sidebar-header-items__title"
+     role="heading"
+     aria-level="1"
+     aria-label="Site Navigation">
+    Site Navigation
+  </p>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../quickstart/index.html">
+                        Quick Start
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item current active">
+                      <a class="nav-link nav-internal" href="../index.html">
+                        SageOps User Guide
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../api_doc/index.html">
+                        API
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../example_notebooks/index.html">
+                        Example Notebooks
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../about/index.html">
+                        About
+                      </a>
+                    </li>
+                
+  </ul>
+</nav></div>
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  </button>
+`);
+</script></div>
+        
+          <div class="navbar-item"><ul class="navbar-icon-links navbar-nav"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/" title="GitHub" class="nav-link" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><span><i class="fab fa-github-square fa-lg" aria-hidden="true"></i></span>
+            <span class="sr-only">GitHub</span></a>
+        </li>
+</ul></div>
+        
+      </div>
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+<nav class="bd-docs-nav bd-links"
+     aria-label="Section Navigation">
+  <p class="bd-links__title" role="heading" aria-level="1">Section Navigation</p>
+  <div class="bd-toc-item navbar-nav"><ul class="current nav bd-sidenav">
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="index.html">Experiment</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-1"><i class="fa-solid fa-chevron-down"></i></label><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="overview.html">Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ArbitraryNumberImputer.html">Experiment Setup</a></li>
+<li class="toctree-l2"><a class="reference internal" href="EndTailImputer.html">EndTailImputer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="CategoricalImputer.html">CategoricalImputer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="RandomSampleImputer.html">RandomSampleImputer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="AddMissingIndicator.html">AddMissingIndicator</a></li>
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">DropMissingData</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../encoding/index.html">Categorical Encoding</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-2"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../encoding/OneHotEncoder.html">OneHotEncoder</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../encoding/OrdinalEncoder.html">Ordinal Encoding</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../encoding/CountFrequencyEncoder.html">CountFrequencyEncoder</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../encoding/MeanEncoder.html">MeanEncoder</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../encoding/WoEEncoder.html">Weight of Evidence (WoE)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../encoding/DecisionTreeEncoder.html">DecisionTreeEncoder</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../encoding/RareLabelEncoder.html">RareLabelEncoder</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../encoding/StringSimilarityEncoder.html">StringSimilarityEncoder</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../discretisation/index.html">Discretisation</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-3"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../discretisation/EqualFrequencyDiscretiser.html">EqualFrequencyDiscretiser</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../discretisation/EqualWidthDiscretiser.html">EqualWidthDiscretiser</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../discretisation/ArbitraryDiscretiser.html">ArbitraryDiscretiser</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../discretisation/DecisionTreeDiscretiser.html">DecisionTreeDiscretiser</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../discretisation/GeometricWidthDiscretiser.html">GeometricWidthDiscretiser</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../outliers/index.html">Outlier Handling</a><input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-4"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../outliers/Winsorizer.html">Winsorizer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../outliers/ArbitraryOutlierCapper.html">ArbitraryOutlierCapper</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../outliers/OutlierTrimmer.html">OutlierTrimmer</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../transformation/index.html">Variance Stabilizing Transformations</a><input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-5"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../transformation/LogTransformer.html">LogTransformer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../transformation/LogCpTransformer.html">LogCpTransformer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../transformation/ReciprocalTransformer.html">ReciprocalTransformer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../transformation/ArcsinTransformer.html">ArcsinTransformer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../transformation/PowerTransformer.html">PowerTransformer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../transformation/BoxCoxTransformer.html">BoxCoxTransformer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../transformation/YeoJohnsonTransformer.html">YeoJohnsonTransformer</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../scaling/index.html">Scaling</a><input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-6"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../scaling/MeanNormalizationScaler.html">MeanNormalizationScaler</a></li>
+</ul>
+</li>
+</ul>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../creation/index.html">Feature Creation</a><input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-7"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../creation/CyclicalFeatures.html">CyclicalFeatures</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../creation/MathFeatures.html">MathFeatures</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../creation/RelativeFeatures.html">RelativeFeatures</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../creation/DecisionTreeFeatures.html">DecisionTreeFeatures</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../datetime/index.html">Datetime Features</a><input class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-8"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../datetime/DatetimeFeatures.html">DatetimeFeatures</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../datetime/DatetimeSubtraction.html">DatetimeSubtraction</a></li>
+</ul>
+</li>
+</ul>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../selection/index.html">Feature Selection</a><input class="toctree-checkbox" id="toctree-checkbox-9" name="toctree-checkbox-9" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-9"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../selection/DropFeatures.html">DropFeatures</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../selection/DropConstantFeatures.html">DropConstantFeatures</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../selection/DropDuplicateFeatures.html">DropDuplicateFeatures</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../selection/DropCorrelatedFeatures.html">DropCorrelatedFeatures</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../selection/SmartCorrelatedSelection.html">SmartCorrelatedSelection</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../selection/SelectBySingleFeaturePerformance.html">SelectBySingleFeaturePerformance</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../selection/RecursiveFeatureElimination.html">RecursiveFeatureElimination</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../selection/RecursiveFeatureAddition.html">RecursiveFeatureAddition</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../selection/SelectByShuffling.html">SelectByShuffling</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../selection/SelectByTargetMeanPerformance.html">SelectByTargetMeanPerformance</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../selection/DropHighPSIFeatures.html">DropHighPSIFeatures</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../selection/SelectByInformationValue.html">SelectByInformationValue</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../selection/ProbeFeatureSelection.html">ProbeFeatureSelection</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../selection/MRMR.html">MRMR - Minimum Redundancy Maximum Relevance</a></li>
+</ul>
+</li>
+</ul>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../timeseries/index.html">Time Series Features</a><input class="toctree-checkbox" id="toctree-checkbox-10" name="toctree-checkbox-10" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-10"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../timeseries/forecasting/index.html">Forecasting Features</a></li>
+</ul>
+</li>
+</ul>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../preprocessing/index.html">Preprocessing</a><input class="toctree-checkbox" id="toctree-checkbox-11" name="toctree-checkbox-11" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-11"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../preprocessing/MatchCategories.html">MatchCategories</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../preprocessing/MatchVariables.html">MatchVariables</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../wrappers/index.html">Scikit-learn Wrapper</a><input class="toctree-checkbox" id="toctree-checkbox-12" name="toctree-checkbox-12" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-12"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../wrappers/Wrapper.html">SklearnTransformerWrapper</a></li>
+</ul>
+</li>
+</ul>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../pipeline/index.html">Pipeline</a><input class="toctree-checkbox" id="toctree-checkbox-13" name="toctree-checkbox-13" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-13"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../pipeline/Pipeline.html">Pipeline</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../pipeline/make_pipeline.html">make_pipeline</a></li>
+</ul>
+</li>
+</ul>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../variable_handling/index.html">Variable handling functions</a><input class="toctree-checkbox" id="toctree-checkbox-14" name="toctree-checkbox-14" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-14"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../variable_handling/find_all_variables.html">find_all_variables</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../variable_handling/find_categorical_variables.html">find_categorical_variables</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../variable_handling/find_datetime_variables.html">find_datetime_variables</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../variable_handling/find_numerical_variables.html">find_numerical_variables</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../variable_handling/find_categorical_and_numerical_variables.html">find_categorical_and_numerical_variables</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../variable_handling/check_all_variables.html">check_all_variables</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../variable_handling/check_categorical_variables.html">check_categorical_variables</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../variable_handling/check_datetime_variables.html">check_datetime_variables</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../variable_handling/check_numerical_variables.html">check_numerical_variables</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../variable_handling/retain_variables_if_in_df.html">retain_variables_if_in_df</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+
+
+<nav aria-label="Breadcrumb">
+  <ul class="bd-breadcrumbs">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="../../index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    
+    <li class="breadcrumb-item"><a href="../index.html" class="nav-link">SageOps User Guide</a></li>
+    
+    
+    <li class="breadcrumb-item"><a href="index.html" class="nav-link">Experiment</a></li>
+    
+    <li class="breadcrumb-item active" aria-current="page">DropMissingData</li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article" role="main">
+                  
+  <section id="dropmissingdata">
+<span id="drop-missing-data"></span><h1>DropMissingData<a class="headerlink" href="#dropmissingdata" title="Permalink to this heading">#</a></h1>
+<p>Removing rows with nan values from a dataset is a common practice in data science and
+machine learning projects.</p>
+<p>You are probably familiar with the use of pandas dropna. You basically take a pandas
+dataframe or a pandas series, apply dropna, and eliminate those rows that contain nan
+values in one or more columns.</p>
+<p>Here, we have an example of that syntax:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+
+<span class="n">X</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="nb">dict</span><span class="p">(</span>
+       <span class="n">x1</span> <span class="o">=</span> <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">],</span>
+       <span class="n">x2</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;a&quot;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">,</span> <span class="s2">&quot;b&quot;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">,</span> <span class="s2">&quot;a&quot;</span><span class="p">],</span>
+       <span class="p">))</span>
+
+<span class="n">X</span><span class="o">.</span><span class="n">dropna</span><span class="p">(</span><span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The previous code returns a dataframe without missing values:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span>    <span class="n">x1</span> <span class="n">x2</span>
+<span class="mi">2</span>  <span class="mf">1.0</span>  <span class="n">b</span>
+</pre></div>
+</div>
+<p>Feature-engine’s <code class="xref py py-class docutils literal notranslate"><span class="pre">DropMissingData()</span></code> wraps pandas dropna in a transformer that
+will remove rows with na values while adhering to scikit-learn’s <code class="docutils literal notranslate"><span class="pre">fit</span></code> and <code class="docutils literal notranslate"><span class="pre">transform</span></code>
+functionality.</p>
+<p>Here we have a snapshot of <code class="xref py py-class docutils literal notranslate"><span class="pre">DropMissingData()</span></code>’s syntax:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">feature_engine.imputation</span> <span class="kn">import</span> <span class="n">DropMissingData</span>
+
+<span class="n">X</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="nb">dict</span><span class="p">(</span>
+       <span class="n">x1</span> <span class="o">=</span> <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">],</span>
+       <span class="n">x2</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;a&quot;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">,</span> <span class="s2">&quot;b&quot;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">,</span> <span class="s2">&quot;a&quot;</span><span class="p">],</span>
+       <span class="p">))</span>
+
+<span class="n">dmd</span> <span class="o">=</span> <span class="n">DropMissingData</span><span class="p">()</span>
+<span class="n">dmd</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+<span class="n">dmd</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The previous code returns a dataframe without missing values:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span>    <span class="n">x1</span> <span class="n">x2</span>
+<span class="mi">2</span>  <span class="mf">1.0</span>  <span class="n">b</span>
+</pre></div>
+</div>
+<p><code class="xref py py-class docutils literal notranslate"><span class="pre">DropMissingData()</span></code> allows you therefore to remove null values as part of any
+scikit-learn feature engineering workflow.</p>
+<section id="id1">
+<h2>DropMissingData<a class="headerlink" href="#id1" title="Permalink to this heading">#</a></h2>
+<p><code class="xref py py-class docutils literal notranslate"><span class="pre">DropMissingData()</span></code> has some advantages over pandas:</p>
+<ul class="simple">
+<li><p>It learns and stores the variables for which rows with nan values should be deleted.</p></li>
+<li><p>It can be used within a Scikit-learn like pipeline.</p></li>
+</ul>
+<p>With <code class="xref py py-class docutils literal notranslate"><span class="pre">DropMissingData()</span></code>, you can drop nan values from numerical and categorical
+variables. In other words, you can remove null values from numerical, categorical or
+object datatypes.</p>
+<p>You have the option to remove nan values from all columns or only from a subset of
+them. Alternatively, you can remove rows if they have more than a certain percentage of
+nan values.</p>
+<p>Let’s better illustrate <code class="xref py py-class docutils literal notranslate"><span class="pre">DropMissingData()</span></code>’s functionality through code examples.</p>
+<section id="dropna">
+<h3>Dropna<a class="headerlink" href="#dropna" title="Permalink to this heading">#</a></h3>
+<p>Let’s start by importing pandas and numpy, and creating a toy dataframe with nan values
+in 2 columns:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+
+<span class="kn">from</span> <span class="nn">feature_engine.imputation</span> <span class="kn">import</span> <span class="n">DropMissingData</span>
+
+<span class="n">X</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span>
+    <span class="nb">dict</span><span class="p">(</span>
+        <span class="n">x1</span><span class="o">=</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">],</span>
+        <span class="n">x2</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;a&quot;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">,</span> <span class="s2">&quot;b&quot;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">,</span> <span class="s2">&quot;a&quot;</span><span class="p">],</span>
+        <span class="n">x3</span><span class="o">=</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">5</span><span class="p">],</span>
+    <span class="p">)</span>
+<span class="p">)</span>
+<span class="n">y</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">])</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">X</span><span class="o">.</span><span class="n">head</span><span class="p">())</span>
+</pre></div>
+</div>
+<p>Below we see the new dataframe:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span>    <span class="n">x1</span>   <span class="n">x2</span>  <span class="n">x3</span>
+<span class="mi">0</span>  <span class="mf">2.0</span>    <span class="n">a</span>   <span class="mi">2</span>
+<span class="mi">1</span>  <span class="mf">1.0</span>  <span class="n">NaN</span>   <span class="mi">3</span>
+<span class="mi">2</span>  <span class="mf">1.0</span>    <span class="n">b</span>   <span class="mi">4</span>
+<span class="mi">3</span>  <span class="mf">0.0</span>  <span class="n">NaN</span>   <span class="mi">5</span>
+<span class="mi">4</span>  <span class="n">NaN</span>    <span class="n">a</span>   <span class="mi">5</span>
+</pre></div>
+</div>
+<p>We can drop nan values across all columns as follows:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">dmd</span> <span class="o">=</span>  <span class="n">DropMissingData</span><span class="p">()</span>
+<span class="n">Xt</span> <span class="o">=</span> <span class="n">dmd</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+<span class="n">Xt</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>We see the transformed dataframe without null values:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span>    <span class="n">x1</span> <span class="n">x2</span>  <span class="n">x3</span>
+<span class="mi">0</span>  <span class="mf">2.0</span>  <span class="n">a</span>   <span class="mi">2</span>
+<span class="mi">2</span>  <span class="mf">1.0</span>  <span class="n">b</span>   <span class="mi">4</span>
+</pre></div>
+</div>
+<p>By default, <code class="xref py py-class docutils literal notranslate"><span class="pre">DropMissingData()</span></code> will find and store the columns that had
+missing data during fit, that is, in the training set. They are stored here:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">dmd</span><span class="o">.</span><span class="n">variables_</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="s1">&#39;x1&#39;</span><span class="p">,</span> <span class="s1">&#39;x2&#39;</span><span class="p">]</span>
+</pre></div>
+</div>
+<p>That means that every time that we apply <code class="docutils literal notranslate"><span class="pre">transform()</span></code> to a new dataframe, the
+transformer will remove rows with nan values only in those columns.</p>
+<p>If we want to force <code class="xref py py-class docutils literal notranslate"><span class="pre">DropMissingData()</span></code> to drop na across all columns, regardless
+of whether they had nan values during fit, we need to set up the class like this:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">dmd</span> <span class="o">=</span>  <span class="n">DropMissingData</span><span class="p">(</span><span class="n">missing_only</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">Xt</span> <span class="o">=</span> <span class="n">dmd</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Now, when we explore the paramter <code class="docutils literal notranslate"><span class="pre">variables_</span></code>, we see that all the variables in the
+train set are stored, and hence, will be used to remove nan values:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">dmd</span><span class="o">.</span><span class="n">variables_</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="s1">&#39;x1&#39;</span><span class="p">,</span> <span class="s1">&#39;x2&#39;</span><span class="p">,</span> <span class="s1">&#39;x3&#39;</span><span class="p">]</span>
+</pre></div>
+</div>
+</section>
+<section id="adjust-target-after-dropna">
+<h3>Adjust target after dropna<a class="headerlink" href="#adjust-target-after-dropna" title="Permalink to this heading">#</a></h3>
+<p><code class="xref py py-class docutils literal notranslate"><span class="pre">DropMissingData()</span></code> has the option to remove rows with nan from both training set
+and target variable. Like this, we can obtain a target that is aligned with the
+resulting dataframe after the transformation.</p>
+<p>The method <code class="docutils literal notranslate"><span class="pre">transform_x_y</span></code> removes rows with null values from the train set, and then
+realigns the target. Let’s take a look:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">Xt</span><span class="p">,</span> <span class="n">yt</span> <span class="o">=</span> <span class="n">dmd</span><span class="o">.</span><span class="n">transform_x_y</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+<span class="n">Xt</span>
+</pre></div>
+</div>
+<p>Below we see the dataframe without nan:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span>    <span class="n">x1</span> <span class="n">x2</span>  <span class="n">x3</span>
+<span class="mi">0</span>  <span class="mf">2.0</span>  <span class="n">a</span>   <span class="mi">2</span>
+<span class="mi">2</span>  <span class="mf">1.0</span>  <span class="n">b</span>   <span class="mi">4</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">yt</span>
+</pre></div>
+</div>
+<p>And here we see the target with those rows corresponing to the remaining rows in the
+transformed dataframe:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="mi">0</span>    <span class="mi">1</span>
+<span class="mi">2</span>    <span class="mi">3</span>
+<span class="n">dtype</span><span class="p">:</span> <span class="n">int64</span>
+</pre></div>
+</div>
+<p>Let’s check that the shape of the transformed dataframe and target are the same:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">Xt</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">yt</span><span class="o">.</span><span class="n">shape</span>
+</pre></div>
+</div>
+<p>We see that the resulting training set and target have each 2 rows, instead of the 5
+original rows.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="p">((</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span> <span class="p">(</span><span class="mi">2</span><span class="p">,))</span>
+</pre></div>
+</div>
+</section>
+<section id="return-the-rows-with-nan">
+<h3>Return the rows with nan<a class="headerlink" href="#return-the-rows-with-nan" title="Permalink to this heading">#</a></h3>
+<p>When we have a model in production, it might be useful to know which rows are being
+removed by the transformer. We can obtain that information as follows:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">dmd</span><span class="o">.</span><span class="n">return_na_data</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The previous command returns the rows with nan. In other words, it does the opposite
+of <code class="docutils literal notranslate"><span class="pre">transform()</span></code>, or pandas.dropna.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span>    <span class="n">x1</span>   <span class="n">x2</span>  <span class="n">x3</span>
+<span class="mi">1</span>  <span class="mf">1.0</span>  <span class="n">NaN</span>   <span class="mi">3</span>
+<span class="mi">3</span>  <span class="mf">0.0</span>  <span class="n">NaN</span>   <span class="mi">5</span>
+<span class="mi">4</span>  <span class="n">NaN</span>    <span class="n">a</span>   <span class="mi">5</span>
+</pre></div>
+</div>
+</section>
+<section id="dropna-from-subset-of-variables">
+<h3>Dropna from subset of variables<a class="headerlink" href="#dropna-from-subset-of-variables" title="Permalink to this heading">#</a></h3>
+<p>We can choose to remove missing data only from a specific column or group of columns.
+We just need to pass the column name or names to the <code class="docutils literal notranslate"><span class="pre">variables</span></code> parameter:</p>
+<p>Here, we’ll dropna from the variables “x1”, “x3”.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">dmd</span> <span class="o">=</span> <span class="n">DropMissingData</span><span class="p">(</span><span class="n">variables</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;x1&quot;</span><span class="p">,</span> <span class="s2">&quot;x3&quot;</span><span class="p">],</span> <span class="n">missing_only</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">Xt</span> <span class="o">=</span> <span class="n">dmd</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+<span class="n">Xt</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>Below, we see the transformed dataframe. It removed the rows with nan in “x1”, and we
+see that those rows with nan in “x2” are still in the dataframe:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span>    <span class="n">x1</span>   <span class="n">x2</span>  <span class="n">x3</span>
+<span class="mi">0</span>  <span class="mf">2.0</span>    <span class="n">a</span>   <span class="mi">2</span>
+<span class="mi">1</span>  <span class="mf">1.0</span>  <span class="n">NaN</span>   <span class="mi">3</span>
+<span class="mi">2</span>  <span class="mf">1.0</span>    <span class="n">b</span>   <span class="mi">4</span>
+<span class="mi">3</span>  <span class="mf">0.0</span>  <span class="n">NaN</span>   <span class="mi">5</span>
+</pre></div>
+</div>
+<p>Only rows with nan in “x1” and “x3” are removed. We can corroborate that by examining
+the <code class="docutils literal notranslate"><span class="pre">variables_</span></code> parameter:</p>
+<p><strong>Important</strong></p>
+<p>When you indicate which variables should be examined to remove rows with nan, make sure
+you set the parameter <code class="docutils literal notranslate"><span class="pre">missing_only</span></code> to the boolean <code class="docutils literal notranslate"><span class="pre">False</span></code>. Otherwise,
+<code class="xref py py-class docutils literal notranslate"><span class="pre">DropMissingData()</span></code> will select from your list only those variables that showed
+nan values in the train set.</p>
+<p>See for example what happens when we set up the class like this:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">dmd</span> <span class="o">=</span> <span class="n">DropMissingData</span><span class="p">(</span><span class="n">variables</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;x1&quot;</span><span class="p">,</span> <span class="s2">&quot;x3&quot;</span><span class="p">],</span> <span class="n">missing_only</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">Xt</span> <span class="o">=</span> <span class="n">dmd</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+<span class="n">dmd</span><span class="o">.</span><span class="n">variables_</span>
+</pre></div>
+</div>
+<p>Note, that we indicated that we wanted to remove nan from “x1”, “x3”. Yet, only “x1”
+has nan in X. So the transformer learns that nan should be only dropped from “x1”:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="s1">&#39;x1&#39;</span><span class="p">]</span>
+</pre></div>
+</div>
+<p><code class="xref py py-class docutils literal notranslate"><span class="pre">DropMissingData()</span></code> took the 2 variables indicated in the list, and stored
+only the one that showed nan in during fit. That means that when transforming future
+dataframes, it will only remove rows with nan in “x1”.</p>
+<p>In other words, if you pass a list of variables to impute and set <code class="docutils literal notranslate"><span class="pre">missing_only=True</span></code>,
+and some of the variables in your list do not have missing data in the train set,
+missing data will not be removed during transform for those particular variables.</p>
+<p>When <code class="docutils literal notranslate"><span class="pre">missing_only=True</span></code>, the transformer “double checks” that the entered
+variables have missing data in the train set. If not, it ignores them during
+<code class="docutils literal notranslate"><span class="pre">transform()</span></code>.</p>
+<p>It is recommended to use <code class="docutils literal notranslate"><span class="pre">missing_only=True</span></code> when not passing a list of variables to
+impute.</p>
+</section>
+<section id="dropna-based-on-percentage-of-non-nan-values">
+<h3>Dropna based on percentage of non-nan values<a class="headerlink" href="#dropna-based-on-percentage-of-non-nan-values" title="Permalink to this heading">#</a></h3>
+<p>We can set <code class="xref py py-class docutils literal notranslate"><span class="pre">DropMissingData()</span></code> to require a percentage of non-NA values in a
+row to keep it. We can control this behaviour through the <code class="docutils literal notranslate"><span class="pre">threshold</span></code> parameter, which
+is equivalent to pandas.dropna’s <code class="docutils literal notranslate"><span class="pre">thresh</span></code> parameter.</p>
+<p>If <code class="docutils literal notranslate"><span class="pre">threshold=1</span></code>, all variables need to have data to keep a row. If <code class="docutils literal notranslate"><span class="pre">threshold=0.5</span></code>,
+50% of the variables need to have data to keep a row. If <code class="docutils literal notranslate"><span class="pre">threshold=0.01</span></code>, 10% of the
+variables need to have data to keep the row. If <code class="docutils literal notranslate"><span class="pre">threshold=None</span></code>, rows with NA in any
+of the variables will be dropped.</p>
+<p>Let’s see this with an example. We create a new dataframe that has different proportion
+of non-nan values in every row.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">X</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span>
+    <span class="nb">dict</span><span class="p">(</span>
+        <span class="n">x1</span><span class="o">=</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">],</span>
+        <span class="n">x2</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;a&quot;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">,</span> <span class="s2">&quot;b&quot;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">],</span>
+        <span class="n">x3</span><span class="o">=</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">],</span>
+    <span class="p">)</span>
+<span class="p">)</span>
+<span class="n">X</span>
+</pre></div>
+</div>
+<p>We see that the bottom row has nan in all columns, row 3 has nan in 2 of 3 columns,
+and row 1 has nan in 1 variable:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span>    <span class="n">x1</span>   <span class="n">x2</span>   <span class="n">x3</span>
+<span class="mi">0</span>  <span class="mf">2.0</span>    <span class="n">a</span>  <span class="mf">2.0</span>
+<span class="mi">1</span>  <span class="mf">1.0</span>  <span class="n">NaN</span>  <span class="mf">3.0</span>
+<span class="mi">2</span>  <span class="mf">1.0</span>    <span class="n">b</span>  <span class="mf">4.0</span>
+<span class="mi">3</span>  <span class="n">NaN</span>  <span class="n">NaN</span>  <span class="mf">5.0</span>
+<span class="mi">4</span>  <span class="n">NaN</span>  <span class="n">NaN</span>  <span class="n">NaN</span>
+</pre></div>
+</div>
+<p>Now, we can set <code class="xref py py-class docutils literal notranslate"><span class="pre">DropMissingData()</span></code> to drop rows if &gt;50% of its values are nan:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">dmd</span> <span class="o">=</span> <span class="n">DropMissingData</span><span class="p">(</span><span class="n">threshold</span><span class="o">=</span><span class="mf">.5</span><span class="p">)</span>
+<span class="n">dmd</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+<span class="n">dmd</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>We see that the last 2 rows are dropped, because they have more than 50% nan values.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span>    <span class="n">x1</span>   <span class="n">x2</span>   <span class="n">x3</span>
+<span class="mi">0</span>  <span class="mf">2.0</span>    <span class="n">a</span>  <span class="mf">2.0</span>
+<span class="mi">1</span>  <span class="mf">1.0</span>  <span class="n">NaN</span>  <span class="mf">3.0</span>
+<span class="mi">2</span>  <span class="mf">1.0</span>    <span class="n">b</span>  <span class="mf">4.0</span>
+</pre></div>
+</div>
+<p>Instead, we can set class:<code class="docutils literal notranslate"><span class="pre">DropMissingData()</span></code> to drop rows if &gt;70% of its values are
+nan as follows:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">dmd</span> <span class="o">=</span> <span class="n">DropMissingData</span><span class="p">(</span><span class="n">threshold</span><span class="o">=</span><span class="mf">.3</span><span class="p">)</span>
+<span class="n">dmd</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+<span class="n">dmd</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Now we see that only the last row was removed.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span>    <span class="n">x1</span>   <span class="n">x2</span>   <span class="n">x3</span>
+<span class="mi">0</span>  <span class="mf">2.0</span>    <span class="n">a</span>  <span class="mf">2.0</span>
+<span class="mi">1</span>  <span class="mf">1.0</span>  <span class="n">NaN</span>  <span class="mf">3.0</span>
+<span class="mi">2</span>  <span class="mf">1.0</span>    <span class="n">b</span>  <span class="mf">4.0</span>
+<span class="mi">3</span>  <span class="n">NaN</span>  <span class="n">NaN</span>  <span class="mf">5.0</span>
+</pre></div>
+</div>
+</section>
+<section id="scikit-learn-compatible">
+<h3>Scikit-learn compatible<a class="headerlink" href="#scikit-learn-compatible" title="Permalink to this heading">#</a></h3>
+<p><code class="xref py py-class docutils literal notranslate"><span class="pre">DropMissingData()</span></code> is fully compatible with the Scikit-learn API, so you will
+find common methods that you also find in Scikit-learn transformers, like, for example,
+the <code class="docutils literal notranslate"><span class="pre">get_feature_names_out()</span></code> method to obtain the variable names in the transformed
+dataframe.</p>
+</section>
+<section id="pipeline">
+<h3>Pipeline<a class="headerlink" href="#pipeline" title="Permalink to this heading">#</a></h3>
+<p>When we dropna from a dataframe, we then need to realign the target. We saw previously
+that we can do that by using the method <code class="docutils literal notranslate"><span class="pre">transform_x_y</span></code>.</p>
+<p>We can align the target with the resulting dataframe automatically from within a
+pipeline as well, by utilizing Feature-engine’s pipeline.</p>
+<p>Let’s start by importing the necessary libraries:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+
+<span class="kn">from</span> <span class="nn">feature_engine.imputation</span> <span class="kn">import</span> <span class="n">DropMissingData</span>
+<span class="kn">from</span> <span class="nn">feature_engine.encoding</span> <span class="kn">import</span> <span class="n">OrdinalEncoder</span>
+<span class="kn">from</span> <span class="nn">feature_engine.pipeline</span> <span class="kn">import</span> <span class="n">Pipeline</span>
+</pre></div>
+</div>
+<p>Let’s create a new dataframe with nan values in some rows, two numerical and one
+categorical variable, and its corresponding target variable:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">X</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span>
+    <span class="nb">dict</span><span class="p">(</span>
+        <span class="n">x1</span><span class="o">=</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">],</span>
+        <span class="n">x2</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;a&quot;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">,</span> <span class="s2">&quot;b&quot;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">,</span> <span class="s2">&quot;a&quot;</span><span class="p">],</span>
+        <span class="n">x3</span><span class="o">=</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">5</span><span class="p">],</span>
+    <span class="p">)</span>
+<span class="p">)</span>
+<span class="n">y</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">])</span>
+
+<span class="n">X</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>Below, we see the resulting dataframe:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span>    <span class="n">x1</span>   <span class="n">x2</span>  <span class="n">x3</span>
+<span class="mi">0</span>  <span class="mf">2.0</span>    <span class="n">a</span>   <span class="mi">2</span>
+<span class="mi">1</span>  <span class="mf">1.0</span>  <span class="n">NaN</span>   <span class="mi">3</span>
+<span class="mi">2</span>  <span class="mf">1.0</span>    <span class="n">b</span>   <span class="mi">4</span>
+<span class="mi">3</span>  <span class="mf">0.0</span>  <span class="n">NaN</span>   <span class="mi">5</span>
+<span class="mi">4</span>  <span class="n">NaN</span>    <span class="n">a</span>   <span class="mi">5</span>
+</pre></div>
+</div>
+<p>Let’s now set up a pipeline to dropna first, and then encode the categorical variable
+by using ordinal encoding:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">pipe</span> <span class="o">=</span> <span class="n">Pipeline</span><span class="p">(</span>
+    <span class="p">[</span>
+        <span class="p">(</span><span class="s2">&quot;drop&quot;</span><span class="p">,</span> <span class="n">DropMissingData</span><span class="p">()),</span>
+        <span class="p">(</span><span class="s2">&quot;enc&quot;</span><span class="p">,</span> <span class="n">OrdinalEncoder</span><span class="p">(</span><span class="n">encoding_method</span><span class="o">=</span><span class="s2">&quot;arbitrary&quot;</span><span class="p">)),</span>
+    <span class="p">]</span>
+<span class="p">)</span>
+
+<span class="n">pipe</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>When we apply <code class="docutils literal notranslate"><span class="pre">fit</span></code> and <code class="docutils literal notranslate"><span class="pre">transform</span></code> or <code class="docutils literal notranslate"><span class="pre">fit_transform</span></code>, we will obtain the transformed
+training set only:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span>    <span class="n">x1</span>  <span class="n">x2</span>  <span class="n">x3</span>
+<span class="mi">0</span>  <span class="mf">2.0</span>   <span class="mi">0</span>   <span class="mi">2</span>
+<span class="mi">2</span>  <span class="mf">1.0</span>   <span class="mi">1</span>   <span class="mi">4</span>
+</pre></div>
+</div>
+<p>To obtain the transform training set and target, we use <code class="docutils literal notranslate"><span class="pre">transform_x_y</span></code>:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">pipe</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">,</span><span class="n">y</span><span class="p">)</span>
+<span class="n">Xt</span><span class="p">,</span> <span class="n">yt</span> <span class="o">=</span> <span class="n">pipe</span><span class="o">.</span><span class="n">transform_x_y</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+<span class="n">Xt</span>
+</pre></div>
+</div>
+<p>Here we see the transformed training set:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span>    <span class="n">x1</span>  <span class="n">x2</span>  <span class="n">x3</span>
+<span class="mi">0</span>  <span class="mf">2.0</span>   <span class="mi">0</span>   <span class="mi">2</span>
+<span class="mi">2</span>  <span class="mf">1.0</span>   <span class="mi">1</span>   <span class="mi">4</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">yt</span>
+</pre></div>
+</div>
+<p>And here we see the re-aligned target variable:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="mi">0</span>    <span class="mi">1</span>
+<span class="mi">2</span>    <span class="mi">3</span>
+</pre></div>
+</div>
+<p>And to wrap up, let’s add an estimator to the pipeline:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+
+<span class="kn">from</span> <span class="nn">sklearn.linear_model</span> <span class="kn">import</span> <span class="n">Lasso</span>
+
+<span class="kn">from</span> <span class="nn">feature_engine.imputation</span> <span class="kn">import</span> <span class="n">DropMissingData</span>
+<span class="kn">from</span> <span class="nn">feature_engine.encoding</span> <span class="kn">import</span> <span class="n">OrdinalEncoder</span>
+<span class="kn">from</span> <span class="nn">feature_engine.pipeline</span> <span class="kn">import</span> <span class="n">Pipeline</span>
+
+<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span>
+    <span class="nb">dict</span><span class="p">(</span>
+        <span class="n">x1</span><span class="o">=</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">],</span>
+        <span class="n">x2</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;a&quot;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">,</span> <span class="s2">&quot;b&quot;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">,</span> <span class="s2">&quot;a&quot;</span><span class="p">],</span>
+        <span class="n">x3</span><span class="o">=</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">5</span><span class="p">],</span>
+    <span class="p">)</span>
+<span class="p">)</span>
+<span class="n">y</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">])</span>
+
+<span class="n">pipe</span> <span class="o">=</span> <span class="n">Pipeline</span><span class="p">(</span>
+    <span class="p">[</span>
+        <span class="p">(</span><span class="s2">&quot;drop&quot;</span><span class="p">,</span> <span class="n">DropMissingData</span><span class="p">()),</span>
+        <span class="p">(</span><span class="s2">&quot;enc&quot;</span><span class="p">,</span> <span class="n">OrdinalEncoder</span><span class="p">(</span><span class="n">encoding_method</span><span class="o">=</span><span class="s2">&quot;arbitrary&quot;</span><span class="p">)),</span>
+        <span class="p">(</span><span class="s2">&quot;lasso&quot;</span><span class="p">,</span> <span class="n">Lasso</span><span class="p">(</span><span class="n">random_state</span><span class="o">=</span><span class="mi">2</span><span class="p">))</span>
+    <span class="p">]</span>
+<span class="p">)</span>
+
+<span class="n">pipe</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+<span class="n">pipe</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">array</span><span class="p">([</span><span class="mf">2.</span><span class="p">,</span> <span class="mf">2.</span><span class="p">])</span>
+</pre></div>
+</div>
+</section>
+<section id="dropna-or-fillna">
+<h3>Dropna or fillna?<a class="headerlink" href="#dropna-or-fillna" title="Permalink to this heading">#</a></h3>
+<p><code class="xref py py-class docutils literal notranslate"><span class="pre">DropMissingData()</span></code> has the same functionality than <code class="docutils literal notranslate"><span class="pre">pandas.series.dropna</span></code> or
+<code class="docutils literal notranslate"><span class="pre">pandas.dataframe.dropna`</span></code>. If you want functionality compatible with <code class="docutils literal notranslate"><span class="pre">pandas.fillna</span></code>
+instead, check our other imputation transformers.</p>
+</section>
+<section id="drop-columns-with-nan">
+<h3>Drop columns with nan<a class="headerlink" href="#drop-columns-with-nan" title="Permalink to this heading">#</a></h3>
+<p>At the moment, Feature-engine does not have transformers that will find columns with a
+certain percentage of missing values and drop them. Instead, you can find those columns
+manually, and then drop them with the help of <code class="docutils literal notranslate"><span class="pre">DropFeatures</span></code> from the selection module.</p>
+</section>
+<section id="see-also">
+<h3>See also<a class="headerlink" href="#see-also" title="Permalink to this heading">#</a></h3>
+<p>Check out our tutorials on <code class="docutils literal notranslate"><span class="pre">LagFeatures</span></code> and <code class="docutils literal notranslate"><span class="pre">WindowFeatures</span></code> to see how to combine
+<code class="xref py py-class docutils literal notranslate"><span class="pre">DropMissingData()</span></code> with lags or rolling windows, to create features for
+forecasting.</p>
+</section>
+<section id="tutorials-books-and-courses">
+<h3>Tutorials, books and courses<a class="headerlink" href="#tutorials-books-and-courses" title="Permalink to this heading">#</a></h3>
+<p>In the following Jupyter notebook, in our accompanying Github repository, you will find
+more examples using <code class="xref py py-class docutils literal notranslate"><span class="pre">DropMissingData()</span></code>.</p>
+<ul class="simple">
+<li><p><a class="reference external" href="https://nbviewer.org/github/feature-engine/feature-engine-examples/blob/main/imputation/DropMissingData.ipynb">Jupyter notebook</a></p></li>
+</ul>
+<p>For tutorials about this and other feature engineering methods check out our online course:</p>
+<figure class="align-center align-left" id="id2">
+<a class="reference external image-reference" href="https://www.trainindata.com/p/feature-engineering-for-machine-learning"><img alt="../../_images/feml.png" src="../../_images/feml.png" style="width: 300px;" /></a>
+<figcaption>
+<p><span class="caption-text">Feature Engineering for Machine Learning</span><a class="headerlink" href="#id2" title="Permalink to this image">#</a></p>
+</figcaption>
+</figure>
+<div class="line-block">
+<div class="line"><br /></div>
+<div class="line"><br /></div>
+<div class="line"><br /></div>
+<div class="line"><br /></div>
+<div class="line"><br /></div>
+<div class="line"><br /></div>
+<div class="line"><br /></div>
+<div class="line"><br /></div>
+<div class="line"><br /></div>
+<div class="line"><br /></div>
+</div>
+<p>Or read our book:</p>
+<figure class="align-center align-left" id="id3">
+<a class="reference external image-reference" href="https://www.packtpub.com/en-us/product/python-feature-engineering-cookbook-9781835883587"><img alt="../../_images/cookbook.png" src="../../_images/cookbook.png" style="width: 200px;" /></a>
+<figcaption>
+<p><span class="caption-text">Python Feature Engineering Cookbook</span><a class="headerlink" href="#id3" title="Permalink to this image">#</a></p>
+</figcaption>
+</figure>
+<div class="line-block">
+<div class="line"><br /></div>
+<div class="line"><br /></div>
+<div class="line"><br /></div>
+<div class="line"><br /></div>
+<div class="line"><br /></div>
+<div class="line"><br /></div>
+<div class="line"><br /></div>
+<div class="line"><br /></div>
+<div class="line"><br /></div>
+<div class="line"><br /></div>
+<div class="line"><br /></div>
+<div class="line"><br /></div>
+<div class="line"><br /></div>
+</div>
+<p>Both our book and course are suitable for beginners and more advanced data scientists
+alike. By purchasing them you are supporting Sole, the main developer of Feature-engine.</p>
+</section>
+</section>
+</section>
+
+
+                </article>
+              
+              
+              
+              
+              
+                <footer class="prev-next-footer">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="AddMissingIndicator.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">AddMissingIndicator</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="../encoding/index.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Categorical Encoding</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+  <div class="sidebar-secondary-item">
+
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> On this page
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">DropMissingData</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#dropna">Dropna</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#adjust-target-after-dropna">Adjust target after dropna</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#return-the-rows-with-nan">Return the rows with nan</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#dropna-from-subset-of-variables">Dropna from subset of variables</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#dropna-based-on-percentage-of-non-nan-values">Dropna based on percentage of non-nan values</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#scikit-learn-compatible">Scikit-learn compatible</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pipeline">Pipeline</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#dropna-or-fillna">Dropna or fillna?</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#drop-columns-with-nan">Drop columns with nan</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#see-also">See also</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tutorials-books-and-courses">Tutorials, books and courses</a></li>
+</ul>
+</li>
+</ul>
+  </nav></div>
+
+  <div class="sidebar-secondary-item">
+
+  <div class="tocsection sourcelink">
+    <a href="../../_sources/user_guide/experiment/DropMissingData.rst.txt">
+      <i class="fa-solid fa-file-lines"></i> Show Source
+    </a>
+  </div>
+</div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../_static/scripts/bootstrap.js?digest=5b4479735964841361fd"></script>
+<script src="../../_static/scripts/pydata-sphinx-theme.js?digest=5b4479735964841361fd"></script>
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+
+  <p class="sphinx-version">
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.1.2.
+    <br/>
+  </p>
+</div>
+      
+    </div>
+  
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item">
+<p class="theme-version">
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.14.4.
+</p></div>
+      
+    </div>
+  
+</div>
+
+  </footer>
+  </body>
+</html>

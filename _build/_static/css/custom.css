@@ -64,7 +64,7 @@ img {
 h1 {
     font-family: 'Arial', sans-serif; /* Change to your preferred font */
     font-size: 3em;  /* Increase font size */
-    color: #2c3e50;  /* Change font color */
+    color: #1c262f;  /* Change font color */
     text-align: center;  /* Center align the title */
     font-weight: bold;  /* Make the title bold */
 }
@@ -81,7 +81,7 @@ h2 {
 h1 {
   background-color: #2980b9;  /* Set background color */
   color: white;  /* Set text color */
-  padding: 10px 20px;  /* Add some padding around the text */
+  padding: 10px 10px;  /* Add some padding around the text */
   border-radius: 5px;  /* Rounded corners */
   box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);  /* Subtle shadow effect */
 }

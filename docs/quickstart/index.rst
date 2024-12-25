@@ -11,6 +11,11 @@ SageOps bridges the gap between data science and operations, making it easier to
 It’s the ultimate companion for data scientists striving for operational excellence.
 
 
+.. figure::  ../images/quick_start.png
+   :align:   center
+
+
+
 Installation
 -------------
 

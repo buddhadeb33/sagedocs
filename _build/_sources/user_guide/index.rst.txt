@@ -14,13 +14,13 @@ Welcome to **SageOps**, the platform that simplifies the deployment, monitoring,
    :class: custom-image-effect
 
 
-Transformation
+Experiment
 --------------
 
 .. toctree::
    :maxdepth: 1
 
-   imputation/index
+   experiment/index
    encoding/index
    discretisation/index
    outliers/index
