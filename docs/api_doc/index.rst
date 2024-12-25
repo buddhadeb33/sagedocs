@@ -3,7 +3,7 @@
 API
 ===
 
-Full API documentation for Feature-engine transformers.
+Full API documentation for SageOps.
 
 Transformation
 --------------

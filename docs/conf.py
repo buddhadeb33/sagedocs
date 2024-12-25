@@ -114,19 +114,10 @@ html_theme_options = {
     "icon_links": [
         {
             "name": "GitHub",
-            "url": "https://github.com/feature-engine/feature_engine",
+            "url": "https://github.com/",
             "icon": "fab fa-github-square",
         },
-        # {
-        #     "name": "Blog",
-        #     "url": "https://www.blog.trainindata.com/",
-        #     "icon": "fab fa-blogger",
-        # },
-        # {
-        #     "name": "Sponsor",
-        #     "url": "https://github.com/sponsors/feature-engine",
-        #     "icon": "fas fa-hand-holding-heart",
-        # },
+
     ],
     "navbar_start": ["navbar-logo", "version-switcher"],
     "navigation_depth": 2,
@@ -136,7 +127,8 @@ html_theme_options = {
 # Add any paths that contain custom static files (such as style sheets) here,
 # relative to this directory. They are copied after the builtin static files,
 # so a file named "default.css" will overwrite the builtin "default.css".
-html_static_path = ["_static"]
+html_static_path = ["_static", '../images']
+
 
 # The name for this set of Sphinx documents.  If None, it defaults to
 # "<project> v<release> documentation".
@@ -152,9 +144,9 @@ html_logo = "images/logo/sageops_logo.png"
 html_favicon_url = "images/logo/SageOps.png"
 
 # Custom style
-html_style = "css/feature-engine.css"
+html_style = "css/custom.css"
 html_css_files = [
-    "css/feature-engine.css",
+    "css/custom.css",
 ]
 
 # If true, "Created using Sphinx" is shown in the HTML footer. Default is True.
