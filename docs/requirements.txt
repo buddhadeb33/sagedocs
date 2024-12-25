@@ -5,3 +5,7 @@ sphinx_autodoc_typehints
 numpydoc
 pydata-sphinx-theme
 sphinx-autobuild
+jupyter-sphinx
+nbsphinx notebook
+nbconvert jupyterlab pygments
+sphinx-thebelab

@@ -26,9 +26,21 @@ extensions = [
     "sphinx.ext.intersphinx",  # Link to other project's documentation (see mapping below)
     "sphinx_autodoc_typehints",  # Automatically document param types (less noise in class signature)
     "numpydoc",
-    #"sphinx.ext.linkcode",
-    # "sphinx.ext.doctest",
+    "nbsphinx",  # For rendering Jupyter Notebooks
+    "sphinx.ext.mathjax",  # For math rendering (optional)
+   # "jupyter_sphinx",  # For Jupyter Notebook rendering
+    "sphinx.ext.napoleon",  # Optional: For NumPy/Google docstrings
 ]
+# Optional: Ignore Jupyter Notebook output cells in documentation
+nbsphinx_execute = "never"  # Options: 'auto', 'always', 'never'
+# Handle raw notebook outputs
+nbsphinx_allow_errors = True
+
+# Use IPython syntax highlighting
+nbsphinx_codecell_lexer = "ipython"
+
+# Optional: Disable Jupyter execution during build
+jupyter_execute_notebooks = "off"  # Options: "auto", "force", "cache", "off"
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ["_templates"]
