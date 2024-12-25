@@ -1,0 +1,1218 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>DecisionTreeFeatures &#8212; 3.1</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=5b4479735964841361fd" rel="stylesheet" />
+<link href="../../_static/styles/bootstrap.css?digest=5b4479735964841361fd" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=5b4479735964841361fd" rel="stylesheet" />
+
+  
+  <link href="../../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=5b4479735964841361fd" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/custom.css?v=346841c8" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/custom.css?v=346841c8" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=5b4479735964841361fd" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=5b4479735964841361fd" />
+  <script src="../../_static/vendor/fontawesome/6.1.2/js/all.min.js?digest=5b4479735964841361fd"></script>
+
+    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js?v=e1ce3931"></script>
+    <script src="../../_static/doctools.js?v=888ff710"></script>
+    <script src="../../_static/sphinx_highlight.js?v=4825356b"></script>
+    <script defer data-domain="feature-engine.readthedocs.io" src="https://plausible.io/js/plausible.js"></script>
+    <script src="../../_static/js/copybutton.js?v=84772c1c"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'user_guide/creation/DecisionTreeFeatures';</script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Datetime Features" href="../datetime/index.html" />
+    <link rel="prev" title="RelativeFeatures" href="RelativeFeatures.html" />
+    
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+
+    <!-- Cookie banner -->
+    <style>
+        /* Style for the cookie banner */
+        #cookie-banner {
+            position: fixed;
+            bottom: 0;
+            right: 0;
+            background-color: #ffe4e1; /* Light Pink */
+            color: #333;
+            padding: 15px;
+            max-width: 400px;
+            display: none;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            z-index: 1000; /* Set a higher z-index value */
+        }
+
+        #cookie-banner p {
+        font-size: 16px; /* Font size for the text */
+        color: #333 !important; /* Set link color to black */
+        line-height: 1.5; /* Increase line height for added spacing between sentences */
+        }
+
+        #cookie-banner a {
+            color: #333;
+            text-decoration: underline;
+        }
+    </style>
+
+    <div id="cookie-banner">
+        <h2 style="font-size: 20px; margin-bottom: 10px;">This site uses cookies</h2>
+        <p style="font-size: 16px;">We use cookies to recognize your visits and preferences, to measure the effectiveness of the documentation, and discover how people find us. With your consent, you're helping us make our documentation better. <br><a href="https://www.trainindata.com/p/privacy" target="_blank">Learn More</a>.</p>
+        <button id="cookie-accept">Accept</button>
+        <button id="cookie-decline">Decline</button>
+    </div>
+
+    <script>
+        // JavaScript to show the cookie banner and handle the accept button
+        document.addEventListener('DOMContentLoaded', function () {
+            var cookieBanner = document.getElementById('cookie-banner');
+            var acceptButton = document.getElementById('cookie-accept');
+            var declineButton = document.getElementById('cookie-decline');
+
+            // Check if the user has already accepted or declined cookies
+            var cookiesAccepted = localStorage.getItem('cookiesAccepted');
+
+            if (!cookiesAccepted) {
+                cookieBanner.style.display = 'block';
+
+                acceptButton.addEventListener('click', function () {
+                    localStorage.setItem('cookiesAccepted', 'true');
+                    loadGoogleAnalytics();
+                    cookieBanner.style.display = 'none';
+                });
+
+                declineButton.addEventListener('click', function () {
+                    localStorage.setItem('cookiesAccepted', 'false');
+                    cookieBanner.style.display = 'none';
+                });
+            } else if (cookiesAccepted === 'true') {
+                loadGoogleAnalytics();
+            }
+        });
+
+        function loadGoogleAnalytics() {
+            // Load Google Analytics only if consent is given
+            var script = document.createElement('script');
+            script.async = true;
+            script.src = 'https://www.googletagmanager.com/gtag/js?id=G-Z6MPCG673G';
+            document.head.appendChild(script);
+
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', 'G-Z6MPCG673G');
+        }
+    </script>
+    <!-- Cookie banner -->
+
+
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>
+    Back to top
+  </button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
+<div class="bd-header__inner bd-page-width">
+  <label class="sidebar-toggle primary-toggle" for="__primary">
+    <span class="fa-solid fa-bars"></span>
+  </label>
+  
+  
+  <div class="col-lg-3 navbar-header-items__start">
+    
+      <div class="navbar-item">
+
+  
+
+<a class="navbar-brand logo" href="../../index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../../_static/sageops_logo.png" class="logo__image only-light" alt="3.1 - Home"/>
+    <script>document.write(`<img src="../../_static/sageops_logo.png" class="logo__image only-dark" alt="3.1 - Home"/>`);</script>
+  
+  
+</a></div>
+    
+      <div class="navbar-item">
+<script>
+document.write(`
+  <div class="version-switcher__container dropdown">
+    <button id="pst-version-switcher-button-2"
+      type="button"
+      class="version-switcher__button btn btn-sm navbar-btn dropdown-toggle"
+      data-bs-toggle="dropdown"
+      aria-haspopup="listbox"
+      aria-controls="pst-version-switcher-list-2"
+      aria-label="Version switcher list"
+    >
+      Choose version  <!-- this text may get changed later by javascript -->
+      <span class="caret"></span>
+    </button>
+    <div id="pst-version-switcher-list-2"
+      class="version-switcher__menu dropdown-menu list-group-flush py-0"
+      role="listbox" aria-labelledby="pst-version-switcher-button-2">
+      <!-- dropdown will be populated by javascript on page load -->
+    </div>
+  </div>
+`);
+</script></div>
+    
+  </div>
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item">
+<nav class="navbar-nav">
+  <p class="sidebar-header-items__title"
+     role="heading"
+     aria-level="1"
+     aria-label="Site Navigation">
+    Site Navigation
+  </p>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../quickstart/index.html">
+                        Quick Start
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item current active">
+                      <a class="nav-link nav-internal" href="../index.html">
+                        SageOps User Guide
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../api_doc/index.html">
+                        API
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../example_notebooks/index.html">
+                        Example Notebooks
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../about/index.html">
+                        About
+                      </a>
+                    </li>
+                
+  </ul>
+</nav></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+ <script>
+ document.write(`
+   <button class="btn navbar-btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script>
+        </div>
+      
+      
+        <div class="navbar-item">
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  </button>
+`);
+</script></div>
+      
+        <div class="navbar-item"><ul class="navbar-icon-links navbar-nav"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/" title="GitHub" class="nav-link" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><span><i class="fab fa-github-square fa-lg" aria-hidden="true"></i></span>
+            <span class="sr-only">GitHub</span></a>
+        </li>
+</ul></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+ <script>
+ document.write(`
+   <button class="btn navbar-btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script>
+    </div>
+  
+
+  
+    <label class="sidebar-toggle secondary-toggle" for="__secondary" tabindex="0">
+      <span class="fa-solid fa-outdent"></span>
+    </label>
+  
+</div>
+
+    </nav>
+  
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          <div class="navbar-item">
+<nav class="navbar-nav">
+  <p class="sidebar-header-items__title"
+     role="heading"
+     aria-level="1"
+     aria-label="Site Navigation">
+    Site Navigation
+  </p>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../quickstart/index.html">
+                        Quick Start
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item current active">
+                      <a class="nav-link nav-internal" href="../index.html">
+                        SageOps User Guide
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../api_doc/index.html">
+                        API
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../example_notebooks/index.html">
+                        Example Notebooks
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../about/index.html">
+                        About
+                      </a>
+                    </li>
+                
+  </ul>
+</nav></div>
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  </button>
+`);
+</script></div>
+        
+          <div class="navbar-item"><ul class="navbar-icon-links navbar-nav"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/" title="GitHub" class="nav-link" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><span><i class="fab fa-github-square fa-lg" aria-hidden="true"></i></span>
+            <span class="sr-only">GitHub</span></a>
+        </li>
+</ul></div>
+        
+      </div>
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+<nav class="bd-docs-nav bd-links"
+     aria-label="Section Navigation">
+  <p class="bd-links__title" role="heading" aria-level="1">Section Navigation</p>
+  <div class="bd-toc-item navbar-nav"><ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../imputation/index.html">Experiment</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-1"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../imputation/MeanMedianImputer.html">Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../imputation/ArbitraryNumberImputer.html">Experiment Setup</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../imputation/EndTailImputer.html">EndTailImputer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../imputation/CategoricalImputer.html">CategoricalImputer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../imputation/RandomSampleImputer.html">RandomSampleImputer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../imputation/AddMissingIndicator.html">AddMissingIndicator</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../imputation/DropMissingData.html">DropMissingData</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../encoding/index.html">Categorical Encoding</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-2"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../encoding/OneHotEncoder.html">OneHotEncoder</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../encoding/OrdinalEncoder.html">Ordinal Encoding</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../encoding/CountFrequencyEncoder.html">CountFrequencyEncoder</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../encoding/MeanEncoder.html">MeanEncoder</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../encoding/WoEEncoder.html">Weight of Evidence (WoE)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../encoding/DecisionTreeEncoder.html">DecisionTreeEncoder</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../encoding/RareLabelEncoder.html">RareLabelEncoder</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../encoding/StringSimilarityEncoder.html">StringSimilarityEncoder</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../discretisation/index.html">Discretisation</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-3"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../discretisation/EqualFrequencyDiscretiser.html">EqualFrequencyDiscretiser</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../discretisation/EqualWidthDiscretiser.html">EqualWidthDiscretiser</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../discretisation/ArbitraryDiscretiser.html">ArbitraryDiscretiser</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../discretisation/DecisionTreeDiscretiser.html">DecisionTreeDiscretiser</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../discretisation/GeometricWidthDiscretiser.html">GeometricWidthDiscretiser</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../outliers/index.html">Outlier Handling</a><input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-4"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../outliers/Winsorizer.html">Winsorizer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../outliers/ArbitraryOutlierCapper.html">ArbitraryOutlierCapper</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../outliers/OutlierTrimmer.html">OutlierTrimmer</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../transformation/index.html">Variance Stabilizing Transformations</a><input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-5"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../transformation/LogTransformer.html">LogTransformer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../transformation/LogCpTransformer.html">LogCpTransformer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../transformation/ReciprocalTransformer.html">ReciprocalTransformer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../transformation/ArcsinTransformer.html">ArcsinTransformer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../transformation/PowerTransformer.html">PowerTransformer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../transformation/BoxCoxTransformer.html">BoxCoxTransformer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../transformation/YeoJohnsonTransformer.html">YeoJohnsonTransformer</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../scaling/index.html">Scaling</a><input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-6"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../scaling/MeanNormalizationScaler.html">MeanNormalizationScaler</a></li>
+</ul>
+</li>
+</ul>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="index.html">Feature Creation</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-7"><i class="fa-solid fa-chevron-down"></i></label><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="CyclicalFeatures.html">CyclicalFeatures</a></li>
+<li class="toctree-l2"><a class="reference internal" href="MathFeatures.html">MathFeatures</a></li>
+<li class="toctree-l2"><a class="reference internal" href="RelativeFeatures.html">RelativeFeatures</a></li>
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">DecisionTreeFeatures</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../datetime/index.html">Datetime Features</a><input class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-8"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../datetime/DatetimeFeatures.html">DatetimeFeatures</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../datetime/DatetimeSubtraction.html">DatetimeSubtraction</a></li>
+</ul>
+</li>
+</ul>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../selection/index.html">Feature Selection</a><input class="toctree-checkbox" id="toctree-checkbox-9" name="toctree-checkbox-9" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-9"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../selection/DropFeatures.html">DropFeatures</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../selection/DropConstantFeatures.html">DropConstantFeatures</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../selection/DropDuplicateFeatures.html">DropDuplicateFeatures</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../selection/DropCorrelatedFeatures.html">DropCorrelatedFeatures</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../selection/SmartCorrelatedSelection.html">SmartCorrelatedSelection</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../selection/SelectBySingleFeaturePerformance.html">SelectBySingleFeaturePerformance</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../selection/RecursiveFeatureElimination.html">RecursiveFeatureElimination</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../selection/RecursiveFeatureAddition.html">RecursiveFeatureAddition</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../selection/SelectByShuffling.html">SelectByShuffling</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../selection/SelectByTargetMeanPerformance.html">SelectByTargetMeanPerformance</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../selection/DropHighPSIFeatures.html">DropHighPSIFeatures</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../selection/SelectByInformationValue.html">SelectByInformationValue</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../selection/ProbeFeatureSelection.html">ProbeFeatureSelection</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../selection/MRMR.html">MRMR - Minimum Redundancy Maximum Relevance</a></li>
+</ul>
+</li>
+</ul>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../timeseries/index.html">Time Series Features</a><input class="toctree-checkbox" id="toctree-checkbox-10" name="toctree-checkbox-10" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-10"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../timeseries/forecasting/index.html">Forecasting Features</a></li>
+</ul>
+</li>
+</ul>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../preprocessing/index.html">Preprocessing</a><input class="toctree-checkbox" id="toctree-checkbox-11" name="toctree-checkbox-11" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-11"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../preprocessing/MatchCategories.html">MatchCategories</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../preprocessing/MatchVariables.html">MatchVariables</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../wrappers/index.html">Scikit-learn Wrapper</a><input class="toctree-checkbox" id="toctree-checkbox-12" name="toctree-checkbox-12" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-12"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../wrappers/Wrapper.html">SklearnTransformerWrapper</a></li>
+</ul>
+</li>
+</ul>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../pipeline/index.html">Pipeline</a><input class="toctree-checkbox" id="toctree-checkbox-13" name="toctree-checkbox-13" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-13"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../pipeline/Pipeline.html">Pipeline</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../pipeline/make_pipeline.html">make_pipeline</a></li>
+</ul>
+</li>
+</ul>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../variable_handling/index.html">Variable handling functions</a><input class="toctree-checkbox" id="toctree-checkbox-14" name="toctree-checkbox-14" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-14"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../variable_handling/find_all_variables.html">find_all_variables</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../variable_handling/find_categorical_variables.html">find_categorical_variables</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../variable_handling/find_datetime_variables.html">find_datetime_variables</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../variable_handling/find_numerical_variables.html">find_numerical_variables</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../variable_handling/find_categorical_and_numerical_variables.html">find_categorical_and_numerical_variables</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../variable_handling/check_all_variables.html">check_all_variables</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../variable_handling/check_categorical_variables.html">check_categorical_variables</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../variable_handling/check_datetime_variables.html">check_datetime_variables</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../variable_handling/check_numerical_variables.html">check_numerical_variables</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../variable_handling/retain_variables_if_in_df.html">retain_variables_if_in_df</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+
+
+<nav aria-label="Breadcrumb">
+  <ul class="bd-breadcrumbs">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="../../index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    
+    <li class="breadcrumb-item"><a href="../index.html" class="nav-link">SageOps User Guide</a></li>
+    
+    
+    <li class="breadcrumb-item"><a href="index.html" class="nav-link">Feature Creation</a></li>
+    
+    <li class="breadcrumb-item active" aria-current="page">DecisionTreeFeatures</li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article" role="main">
+                  
+  <section id="decisiontreefeatures">
+<span id="dtree-features"></span><h1>DecisionTreeFeatures<a class="headerlink" href="#decisiontreefeatures" title="Permalink to this heading">#</a></h1>
+<p>The winners of the KDD 2009 competition observed that many features had high
+mutual information with the target, but low correlation, leading them to conclude
+that the relationships were non-linear. While non-linear relationships can be
+captured by non-linear models, to leverage the information from these features with
+linear models, we need to somehow transform that information into a linear, or
+monotonic relationship with the target.</p>
+<p>The output of decision trees, that is, their predictions, should be monotonic with
+the target, if there is a good fit for the tree.</p>
+<p>In addition, decision trees trained on 2 or more features could capture feature
+interactions that simpler models would miss.</p>
+<p>By enriching the dataset with features resulting from the predictions of decision trees,
+we can create better performing models. On the downside the features resulting
+from decision trees, are not easy to interpret or explain.</p>
+<p><code class="xref py py-class docutils literal notranslate"><span class="pre">DecisionTreeFeatures()</span></code> creates and adds features resulting from the predictions
+of decision trees trained on 1 or more features.</p>
+<section id="values-of-the-tree-based-features">
+<h2>Values of the tree based features<a class="headerlink" href="#values-of-the-tree-based-features" title="Permalink to this heading">#</a></h2>
+<p>If we create features for regression, <code class="xref py py-class docutils literal notranslate"><span class="pre">DecisionTreeFeatures()</span></code> will train scikit-learn’s
+<code class="docutils literal notranslate"><span class="pre">DecisionTreeRegressor</span></code> under the hood, and the features are derived from the <code class="docutils literal notranslate"><span class="pre">predict</span></code> method
+of these regressors. Hence, the features will be in the scale of the target. Remember however,
+that the output of decision tree regressors is not continuous, it is a piecewise function.</p>
+<p>If we create features for classification, <code class="xref py py-class docutils literal notranslate"><span class="pre">DecisionTreeFeatures()</span></code> will train scikit-learn’s
+<code class="docutils literal notranslate"><span class="pre">DecisionTreeClassifier</span></code> under the hood. If the target is binary, the resulting features
+are the output of the <code class="docutils literal notranslate"><span class="pre">predict_proba</span></code> method of the model corresponding to the predictions
+of class 1. If the output is multiclass, on the other hand, the features are derived from
+the <code class="docutils literal notranslate"><span class="pre">predict</span></code> method, and hence return the predicted class.</p>
+</section>
+<section id="examples">
+<h2>Examples<a class="headerlink" href="#examples" title="Permalink to this heading">#</a></h2>
+<p>In the rest of the document, we’ll show the versatility of <code class="xref py py-class docutils literal notranslate"><span class="pre">DecisionTreeFeatures()</span></code>
+to create multiple features by using decision trees.</p>
+<p>Let’s start by loading and displaying the California housing dataset from sklearn</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.datasets</span> <span class="kn">import</span> <span class="n">fetch_california_housing</span>
+<span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="kn">import</span> <span class="n">train_test_split</span>
+<span class="kn">from</span> <span class="nn">feature_engine.creation</span> <span class="kn">import</span> <span class="n">DecisionTreeFeatures</span>
+
+<span class="n">X</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">fetch_california_housing</span><span class="p">(</span><span class="n">return_X_y</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">as_frame</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">X</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">labels</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;Latitude&quot;</span><span class="p">,</span> <span class="s2">&quot;Longitude&quot;</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">X</span><span class="o">.</span><span class="n">head</span><span class="p">())</span>
+</pre></div>
+</div>
+<p>In the following output we see the dataframe:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span>   <span class="n">MedInc</span>  <span class="n">HouseAge</span>  <span class="n">AveRooms</span>  <span class="n">AveBedrms</span>  <span class="n">Population</span>  <span class="n">AveOccup</span>
+<span class="mi">0</span>  <span class="mf">8.3252</span>      <span class="mf">41.0</span>  <span class="mf">6.984127</span>   <span class="mf">1.023810</span>       <span class="mf">322.0</span>  <span class="mf">2.555556</span>
+<span class="mi">1</span>  <span class="mf">8.3014</span>      <span class="mf">21.0</span>  <span class="mf">6.238137</span>   <span class="mf">0.971880</span>      <span class="mf">2401.0</span>  <span class="mf">2.109842</span>
+<span class="mi">2</span>  <span class="mf">7.2574</span>      <span class="mf">52.0</span>  <span class="mf">8.288136</span>   <span class="mf">1.073446</span>       <span class="mf">496.0</span>  <span class="mf">2.802260</span>
+<span class="mi">3</span>  <span class="mf">5.6431</span>      <span class="mf">52.0</span>  <span class="mf">5.817352</span>   <span class="mf">1.073059</span>       <span class="mf">558.0</span>  <span class="mf">2.547945</span>
+<span class="mi">4</span>  <span class="mf">3.8462</span>      <span class="mf">52.0</span>  <span class="mf">6.281853</span>   <span class="mf">1.081081</span>       <span class="mf">565.0</span>  <span class="mf">2.181467</span>
+</pre></div>
+</div>
+<p>Let’s split the dataset into a training and a testing set:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">X_train</span><span class="p">,</span> <span class="n">X_test</span><span class="p">,</span> <span class="n">y_train</span><span class="p">,</span> <span class="n">y_test</span> <span class="o">=</span> <span class="n">train_test_split</span><span class="p">(</span>
+    <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">test_size</span><span class="o">=</span><span class="mf">0.3</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="combining-features-integers">
+<h2>Combining features - integers<a class="headerlink" href="#combining-features-integers" title="Permalink to this heading">#</a></h2>
+<p>We’ll set up <code class="xref py py-class docutils literal notranslate"><span class="pre">DecisionTreeFeatures()</span></code> to create <strong>all possible</strong> combinations of 2
+features. To create all possible combinations we use integers with the <code class="docutils literal notranslate"><span class="pre">features_to_combine</span></code>
+parameter:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">dtf</span> <span class="o">=</span> <span class="n">DecisionTreeFeatures</span><span class="p">(</span><span class="n">features_to_combine</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">dtf</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>If we leave the parameter <code class="docutils literal notranslate"><span class="pre">variables</span></code> to <code class="docutils literal notranslate"><span class="pre">None</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">DecisionTreeFeatures()</span></code> will combine
+all numerical variables in the training set, in the way we indicate in <code class="docutils literal notranslate"><span class="pre">features_to_combine</span></code>.
+Since we set <code class="docutils literal notranslate"><span class="pre">features_to_combine=2</span></code>, the transformer will create all possible combinations of
+1 or 2 variables.</p>
+<p>We can find the feature combinations that will be used to train the trees as follows:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">dtf</span><span class="o">.</span><span class="n">input_features_</span>
+</pre></div>
+</div>
+<p>In the following output we see the combinations of 1 and 2 features that will be used
+to train decision trees, based of all the numerical variables in the training set:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="s1">&#39;MedInc&#39;</span><span class="p">,</span>
+ <span class="s1">&#39;HouseAge&#39;</span><span class="p">,</span>
+ <span class="s1">&#39;AveRooms&#39;</span><span class="p">,</span>
+ <span class="s1">&#39;AveBedrms&#39;</span><span class="p">,</span>
+ <span class="s1">&#39;Population&#39;</span><span class="p">,</span>
+ <span class="s1">&#39;AveOccup&#39;</span><span class="p">,</span>
+ <span class="p">[</span><span class="s1">&#39;MedInc&#39;</span><span class="p">,</span> <span class="s1">&#39;HouseAge&#39;</span><span class="p">],</span>
+ <span class="p">[</span><span class="s1">&#39;MedInc&#39;</span><span class="p">,</span> <span class="s1">&#39;AveRooms&#39;</span><span class="p">],</span>
+ <span class="p">[</span><span class="s1">&#39;MedInc&#39;</span><span class="p">,</span> <span class="s1">&#39;AveBedrms&#39;</span><span class="p">],</span>
+ <span class="p">[</span><span class="s1">&#39;MedInc&#39;</span><span class="p">,</span> <span class="s1">&#39;Population&#39;</span><span class="p">],</span>
+ <span class="p">[</span><span class="s1">&#39;MedInc&#39;</span><span class="p">,</span> <span class="s1">&#39;AveOccup&#39;</span><span class="p">],</span>
+ <span class="p">[</span><span class="s1">&#39;HouseAge&#39;</span><span class="p">,</span> <span class="s1">&#39;AveRooms&#39;</span><span class="p">],</span>
+ <span class="p">[</span><span class="s1">&#39;HouseAge&#39;</span><span class="p">,</span> <span class="s1">&#39;AveBedrms&#39;</span><span class="p">],</span>
+ <span class="p">[</span><span class="s1">&#39;HouseAge&#39;</span><span class="p">,</span> <span class="s1">&#39;Population&#39;</span><span class="p">],</span>
+ <span class="p">[</span><span class="s1">&#39;HouseAge&#39;</span><span class="p">,</span> <span class="s1">&#39;AveOccup&#39;</span><span class="p">],</span>
+ <span class="p">[</span><span class="s1">&#39;AveRooms&#39;</span><span class="p">,</span> <span class="s1">&#39;AveBedrms&#39;</span><span class="p">],</span>
+ <span class="p">[</span><span class="s1">&#39;AveRooms&#39;</span><span class="p">,</span> <span class="s1">&#39;Population&#39;</span><span class="p">],</span>
+ <span class="p">[</span><span class="s1">&#39;AveRooms&#39;</span><span class="p">,</span> <span class="s1">&#39;AveOccup&#39;</span><span class="p">],</span>
+ <span class="p">[</span><span class="s1">&#39;AveBedrms&#39;</span><span class="p">,</span> <span class="s1">&#39;Population&#39;</span><span class="p">],</span>
+ <span class="p">[</span><span class="s1">&#39;AveBedrms&#39;</span><span class="p">,</span> <span class="s1">&#39;AveOccup&#39;</span><span class="p">],</span>
+ <span class="p">[</span><span class="s1">&#39;Population&#39;</span><span class="p">,</span> <span class="s1">&#39;AveOccup&#39;</span><span class="p">]]</span>
+</pre></div>
+</div>
+<p>Let’s now add the new features to the data:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">train_t</span> <span class="o">=</span> <span class="n">dtf</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">X_train</span><span class="p">)</span>
+<span class="n">test_t</span> <span class="o">=</span> <span class="n">dtf</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">X_test</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">test_t</span><span class="o">.</span><span class="n">head</span><span class="p">())</span>
+</pre></div>
+</div>
+<p>In the following output we see the resulting data with the features derived from
+decision trees:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span>       <span class="n">MedInc</span>  <span class="n">HouseAge</span>  <span class="n">AveRooms</span>  <span class="n">AveBedrms</span>  <span class="n">Population</span>  <span class="n">AveOccup</span>  \
+<span class="mi">14740</span>  <span class="mf">4.1518</span>      <span class="mf">22.0</span>  <span class="mf">5.663073</span>   <span class="mf">1.075472</span>      <span class="mf">1551.0</span>  <span class="mf">4.180593</span>
+<span class="mi">10101</span>  <span class="mf">5.7796</span>      <span class="mf">32.0</span>  <span class="mf">6.107226</span>   <span class="mf">0.927739</span>      <span class="mf">1296.0</span>  <span class="mf">3.020979</span>
+<span class="mi">20566</span>  <span class="mf">4.3487</span>      <span class="mf">29.0</span>  <span class="mf">5.930712</span>   <span class="mf">1.026217</span>      <span class="mf">1554.0</span>  <span class="mf">2.910112</span>
+<span class="mi">2670</span>   <span class="mf">2.4511</span>      <span class="mf">37.0</span>  <span class="mf">4.992958</span>   <span class="mf">1.316901</span>       <span class="mf">390.0</span>  <span class="mf">2.746479</span>
+<span class="mi">15709</span>  <span class="mf">5.0049</span>      <span class="mf">25.0</span>  <span class="mf">4.319261</span>   <span class="mf">1.039578</span>       <span class="mf">649.0</span>  <span class="mf">1.712401</span>
+
+       <span class="n">tree</span><span class="p">(</span><span class="n">MedInc</span><span class="p">)</span>  <span class="n">tree</span><span class="p">(</span><span class="n">HouseAge</span><span class="p">)</span>  <span class="n">tree</span><span class="p">(</span><span class="n">AveRooms</span><span class="p">)</span>  <span class="n">tree</span><span class="p">(</span><span class="n">AveBedrms</span><span class="p">)</span>  <span class="o">...</span>  \
+<span class="mi">14740</span>      <span class="mf">2.204822</span>        <span class="mf">2.130618</span>        <span class="mf">2.001950</span>         <span class="mf">2.080254</span>  <span class="o">...</span>
+<span class="mi">10101</span>      <span class="mf">2.975513</span>        <span class="mf">2.051980</span>        <span class="mf">2.001950</span>         <span class="mf">2.165554</span>  <span class="o">...</span>
+<span class="mi">20566</span>      <span class="mf">2.204822</span>        <span class="mf">2.051980</span>        <span class="mf">2.001950</span>         <span class="mf">2.165554</span>  <span class="o">...</span>
+<span class="mi">2670</span>       <span class="mf">1.416771</span>        <span class="mf">2.051980</span>        <span class="mf">1.802158</span>         <span class="mf">1.882763</span>  <span class="o">...</span>
+<span class="mi">15709</span>      <span class="mf">2.420124</span>        <span class="mf">2.130618</span>        <span class="mf">1.802158</span>         <span class="mf">2.165554</span>  <span class="o">...</span>
+
+       <span class="n">tree</span><span class="p">([</span><span class="s1">&#39;HouseAge&#39;</span><span class="p">,</span> <span class="s1">&#39;AveRooms&#39;</span><span class="p">])</span>  <span class="n">tree</span><span class="p">([</span><span class="s1">&#39;HouseAge&#39;</span><span class="p">,</span> <span class="s1">&#39;AveBedrms&#39;</span><span class="p">])</span>  \
+<span class="mi">14740</span>                        <span class="mf">1.885406</span>                         <span class="mf">2.124812</span>
+<span class="mi">10101</span>                        <span class="mf">1.885406</span>                         <span class="mf">2.124812</span>
+<span class="mi">20566</span>                        <span class="mf">1.885406</span>                         <span class="mf">2.124812</span>
+<span class="mi">2670</span>                         <span class="mf">1.797902</span>                         <span class="mf">1.836498</span>
+<span class="mi">15709</span>                        <span class="mf">1.797902</span>                         <span class="mf">2.124812</span>
+
+       <span class="n">tree</span><span class="p">([</span><span class="s1">&#39;HouseAge&#39;</span><span class="p">,</span> <span class="s1">&#39;Population&#39;</span><span class="p">])</span>  <span class="n">tree</span><span class="p">([</span><span class="s1">&#39;HouseAge&#39;</span><span class="p">,</span> <span class="s1">&#39;AveOccup&#39;</span><span class="p">])</span>  \
+<span class="mi">14740</span>                          <span class="mf">2.004703</span>                        <span class="mf">1.437440</span>
+<span class="mi">10101</span>                          <span class="mf">2.004703</span>                        <span class="mf">2.257968</span>
+<span class="mi">20566</span>                          <span class="mf">2.004703</span>                        <span class="mf">2.257968</span>
+<span class="mi">2670</span>                           <span class="mf">2.123579</span>                        <span class="mf">2.257968</span>
+<span class="mi">15709</span>                          <span class="mf">2.123579</span>                        <span class="mf">2.603372</span>
+
+       <span class="n">tree</span><span class="p">([</span><span class="s1">&#39;AveRooms&#39;</span><span class="p">,</span> <span class="s1">&#39;AveBedrms&#39;</span><span class="p">])</span>  <span class="n">tree</span><span class="p">([</span><span class="s1">&#39;AveRooms&#39;</span><span class="p">,</span> <span class="s1">&#39;Population&#39;</span><span class="p">])</span>  \
+<span class="mi">14740</span>                         <span class="mf">2.099977</span>                          <span class="mf">1.878989</span>
+<span class="mi">10101</span>                         <span class="mf">2.438937</span>                          <span class="mf">2.077321</span>
+<span class="mi">20566</span>                         <span class="mf">2.099977</span>                          <span class="mf">1.878989</span>
+<span class="mi">2670</span>                          <span class="mf">1.728401</span>                          <span class="mf">1.843904</span>
+<span class="mi">15709</span>                         <span class="mf">1.821467</span>                          <span class="mf">1.843904</span>
+
+       <span class="n">tree</span><span class="p">([</span><span class="s1">&#39;AveRooms&#39;</span><span class="p">,</span> <span class="s1">&#39;AveOccup&#39;</span><span class="p">])</span>  <span class="n">tree</span><span class="p">([</span><span class="s1">&#39;AveBedrms&#39;</span><span class="p">,</span> <span class="s1">&#39;Population&#39;</span><span class="p">])</span>  \
+<span class="mi">14740</span>                        <span class="mf">1.719582</span>                           <span class="mf">2.056003</span>
+<span class="mi">10101</span>                        <span class="mf">2.156884</span>                           <span class="mf">2.056003</span>
+<span class="mi">20566</span>                        <span class="mf">2.156884</span>                           <span class="mf">2.056003</span>
+<span class="mi">2670</span>                         <span class="mf">1.747990</span>                           <span class="mf">1.882763</span>
+<span class="mi">15709</span>                        <span class="mf">2.783690</span>                           <span class="mf">2.221092</span>
+
+       <span class="n">tree</span><span class="p">([</span><span class="s1">&#39;AveBedrms&#39;</span><span class="p">,</span> <span class="s1">&#39;AveOccup&#39;</span><span class="p">])</span>  <span class="n">tree</span><span class="p">([</span><span class="s1">&#39;Population&#39;</span><span class="p">,</span> <span class="s1">&#39;AveOccup&#39;</span><span class="p">])</span>
+<span class="mi">14740</span>                         <span class="mf">1.400491</span>                          <span class="mf">1.484939</span>
+<span class="mi">10101</span>                         <span class="mf">2.153210</span>                          <span class="mf">2.059187</span>
+<span class="mi">20566</span>                         <span class="mf">2.153210</span>                          <span class="mf">2.059187</span>
+<span class="mi">2670</span>                          <span class="mf">1.861020</span>                          <span class="mf">2.235743</span>
+<span class="mi">15709</span>                         <span class="mf">2.727460</span>                          <span class="mf">2.747390</span>
+
+<span class="p">[</span><span class="mi">5</span> <span class="n">rows</span> <span class="n">x</span> <span class="mi">27</span> <span class="n">columns</span><span class="p">]</span>
+</pre></div>
+</div>
+</section>
+<section id="combining-features-lists">
+<h2>Combining features - Lists<a class="headerlink" href="#combining-features-lists" title="Permalink to this heading">#</a></h2>
+<p>Let’s say that we want to create features based of trees trained of 2 or more variables. Instead of using
+an integer in <code class="docutils literal notranslate"><span class="pre">features_to_combine</span></code>, we need to pass a list of integers, telling <code class="xref py py-class docutils literal notranslate"><span class="pre">DecisionTreeFeatures()</span></code>
+to make all possible combinations of the integers mentioned in the list.</p>
+<p>We’ll set up the transformer to create features based on all possible combinations of
+2 and 3 features of just 3 of the numerical variables this time:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">dtf</span> <span class="o">=</span> <span class="n">DecisionTreeFeatures</span><span class="p">(</span>
+    <span class="n">variables</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;AveRooms&quot;</span><span class="p">,</span> <span class="s2">&quot;AveBedrms&quot;</span><span class="p">,</span> <span class="s2">&quot;Population&quot;</span><span class="p">],</span>
+    <span class="n">features_to_combine</span><span class="o">=</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">])</span>
+
+<span class="n">dtf</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>If we now examine the feature combinations:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">dtf</span><span class="o">.</span><span class="n">input_features_</span>
+</pre></div>
+</div>
+<p>We see that they are based of combinations of 2 or 3 of the variables that we set in
+the <code class="docutils literal notranslate"><span class="pre">variables</span></code> parameter:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="p">[[</span><span class="s1">&#39;AveRooms&#39;</span><span class="p">,</span> <span class="s1">&#39;AveBedrms&#39;</span><span class="p">],</span>
+ <span class="p">[</span><span class="s1">&#39;AveRooms&#39;</span><span class="p">,</span> <span class="s1">&#39;Population&#39;</span><span class="p">],</span>
+ <span class="p">[</span><span class="s1">&#39;AveBedrms&#39;</span><span class="p">,</span> <span class="s1">&#39;Population&#39;</span><span class="p">],</span>
+ <span class="p">[</span><span class="s1">&#39;AveRooms&#39;</span><span class="p">,</span> <span class="s1">&#39;AveBedrms&#39;</span><span class="p">,</span> <span class="s1">&#39;Population&#39;</span><span class="p">]]</span>
+</pre></div>
+</div>
+<p>We can now add the features to the data and inspect the result:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">train_t</span> <span class="o">=</span> <span class="n">dtf</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">X_train</span><span class="p">)</span>
+<span class="n">test_t</span> <span class="o">=</span> <span class="n">dtf</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">X_test</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">test_t</span><span class="o">.</span><span class="n">head</span><span class="p">())</span>
+</pre></div>
+</div>
+<p>In the following output we see the dataframe with the new features:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span>       <span class="n">MedInc</span>  <span class="n">HouseAge</span>  <span class="n">AveRooms</span>  <span class="n">AveBedrms</span>  <span class="n">Population</span>  <span class="n">AveOccup</span>  \
+<span class="mi">14740</span>  <span class="mf">4.1518</span>      <span class="mf">22.0</span>  <span class="mf">5.663073</span>   <span class="mf">1.075472</span>      <span class="mf">1551.0</span>  <span class="mf">4.180593</span>
+<span class="mi">10101</span>  <span class="mf">5.7796</span>      <span class="mf">32.0</span>  <span class="mf">6.107226</span>   <span class="mf">0.927739</span>      <span class="mf">1296.0</span>  <span class="mf">3.020979</span>
+<span class="mi">20566</span>  <span class="mf">4.3487</span>      <span class="mf">29.0</span>  <span class="mf">5.930712</span>   <span class="mf">1.026217</span>      <span class="mf">1554.0</span>  <span class="mf">2.910112</span>
+<span class="mi">2670</span>   <span class="mf">2.4511</span>      <span class="mf">37.0</span>  <span class="mf">4.992958</span>   <span class="mf">1.316901</span>       <span class="mf">390.0</span>  <span class="mf">2.746479</span>
+<span class="mi">15709</span>  <span class="mf">5.0049</span>      <span class="mf">25.0</span>  <span class="mf">4.319261</span>   <span class="mf">1.039578</span>       <span class="mf">649.0</span>  <span class="mf">1.712401</span>
+
+       <span class="n">tree</span><span class="p">([</span><span class="s1">&#39;AveRooms&#39;</span><span class="p">,</span> <span class="s1">&#39;AveBedrms&#39;</span><span class="p">])</span>  <span class="n">tree</span><span class="p">([</span><span class="s1">&#39;AveRooms&#39;</span><span class="p">,</span> <span class="s1">&#39;Population&#39;</span><span class="p">])</span>  \
+<span class="mi">14740</span>                         <span class="mf">2.099977</span>                          <span class="mf">1.878989</span>
+<span class="mi">10101</span>                         <span class="mf">2.438937</span>                          <span class="mf">2.077321</span>
+<span class="mi">20566</span>                         <span class="mf">2.099977</span>                          <span class="mf">1.878989</span>
+<span class="mi">2670</span>                          <span class="mf">1.728401</span>                          <span class="mf">1.843904</span>
+<span class="mi">15709</span>                         <span class="mf">1.821467</span>                          <span class="mf">1.843904</span>
+
+       <span class="n">tree</span><span class="p">([</span><span class="s1">&#39;AveBedrms&#39;</span><span class="p">,</span> <span class="s1">&#39;Population&#39;</span><span class="p">])</span>  \
+<span class="mi">14740</span>                           <span class="mf">2.056003</span>
+<span class="mi">10101</span>                           <span class="mf">2.056003</span>
+<span class="mi">20566</span>                           <span class="mf">2.056003</span>
+<span class="mi">2670</span>                            <span class="mf">1.882763</span>
+<span class="mi">15709</span>                           <span class="mf">2.221092</span>
+
+       <span class="n">tree</span><span class="p">([</span><span class="s1">&#39;AveRooms&#39;</span><span class="p">,</span> <span class="s1">&#39;AveBedrms&#39;</span><span class="p">,</span> <span class="s1">&#39;Population&#39;</span><span class="p">])</span>
+<span class="mi">14740</span>                                       <span class="mf">2.099977</span>
+<span class="mi">10101</span>                                       <span class="mf">2.438937</span>
+<span class="mi">20566</span>                                       <span class="mf">2.099977</span>
+<span class="mi">2670</span>                                        <span class="mf">1.843904</span>
+<span class="mi">15709</span>                                       <span class="mf">1.843904</span>
+</pre></div>
+</div>
+</section>
+<section id="specifying-the-feature-combinations-tuples">
+<h2>Specifying the feature combinations - tuples<a class="headerlink" href="#specifying-the-feature-combinations-tuples" title="Permalink to this heading">#</a></h2>
+<p>We can indicate precisely the features that we want to use as input of the decision trees.
+Let’s make a tuple containing the features combinations. We want a tree trained with
+Population, a tree trained with Population and AveOccup, and a tree trained with
+those 2 variables plus HouseAge:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">features</span> <span class="o">=</span> <span class="p">((</span><span class="s1">&#39;Population&#39;</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;Population&#39;</span><span class="p">,</span> <span class="s1">&#39;AveOccup&#39;</span><span class="p">),</span>
+            <span class="p">(</span><span class="s1">&#39;Population&#39;</span><span class="p">,</span> <span class="s1">&#39;AveOccup&#39;</span><span class="p">,</span> <span class="s1">&#39;HouseAge&#39;</span><span class="p">))</span>
+</pre></div>
+</div>
+<p>Now, we pass this tuple to <code class="xref py py-class docutils literal notranslate"><span class="pre">DecisionTreeFeatures()</span></code> and note that we can leave
+the parameter <code class="docutils literal notranslate"><span class="pre">variables</span></code> to the default, because with tuples, that parameter is
+ignored:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">dtf</span> <span class="o">=</span> <span class="n">DecisionTreeFeatures</span><span class="p">(</span>
+    <span class="n">variables</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">features_to_combine</span><span class="o">=</span><span class="n">features</span><span class="p">,</span>
+    <span class="n">cv</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span>
+    <span class="n">scoring</span><span class="o">=</span><span class="s2">&quot;neg_mean_squared_error&quot;</span>
+<span class="p">)</span>
+
+<span class="n">dtf</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>If we inspect the input features, it will coincide with the tuple we passed to
+<code class="docutils literal notranslate"><span class="pre">features_to_combine</span></code>:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">dtf</span><span class="o">.</span><span class="n">input_features_</span>
+</pre></div>
+</div>
+<p>We see that the input features are those from the tuple:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="s1">&#39;Population&#39;</span><span class="p">,</span>
+ <span class="p">[</span><span class="s1">&#39;Population&#39;</span><span class="p">,</span> <span class="s1">&#39;AveOccup&#39;</span><span class="p">],</span>
+ <span class="p">[</span><span class="s1">&#39;Population&#39;</span><span class="p">,</span> <span class="s1">&#39;AveOccup&#39;</span><span class="p">,</span> <span class="s1">&#39;HouseAge&#39;</span><span class="p">]]</span>
+</pre></div>
+</div>
+<p>And now we can go ahead and add the features to the data:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">train_t</span> <span class="o">=</span> <span class="n">dtf</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">X_train</span><span class="p">)</span>
+<span class="n">test_t</span> <span class="o">=</span> <span class="n">dtf</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">X_test</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="examining-the-new-features">
+<h2>Examining the new features<a class="headerlink" href="#examining-the-new-features" title="Permalink to this heading">#</a></h2>
+<p><code class="xref py py-class docutils literal notranslate"><span class="pre">DecisionTreeFeatures()</span></code> appends the word <code class="docutils literal notranslate"><span class="pre">tree</span></code> to the new features, so if
+we wanted to display only the new features, we can do so as follows</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">tree_features</span> <span class="o">=</span> <span class="p">[</span><span class="n">var</span> <span class="k">for</span> <span class="n">var</span> <span class="ow">in</span> <span class="n">test_t</span><span class="o">.</span><span class="n">columns</span> <span class="k">if</span> <span class="s2">&quot;tree&quot;</span> <span class="ow">in</span> <span class="n">var</span><span class="p">]</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">test_t</span><span class="p">[</span><span class="n">tree_features</span><span class="p">]</span><span class="o">.</span><span class="n">head</span><span class="p">())</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span>       <span class="n">tree</span><span class="p">(</span><span class="n">Population</span><span class="p">)</span>  <span class="n">tree</span><span class="p">([</span><span class="s1">&#39;Population&#39;</span><span class="p">,</span> <span class="s1">&#39;AveOccup&#39;</span><span class="p">])</span>  \
+<span class="mi">14740</span>          <span class="mf">2.008283</span>                          <span class="mf">1.484939</span>
+<span class="mi">10101</span>          <span class="mf">2.008283</span>                          <span class="mf">2.059187</span>
+<span class="mi">20566</span>          <span class="mf">2.008283</span>                          <span class="mf">2.059187</span>
+<span class="mi">2670</span>           <span class="mf">2.128961</span>                          <span class="mf">2.235743</span>
+<span class="mi">15709</span>          <span class="mf">2.128961</span>                          <span class="mf">2.747390</span>
+
+       <span class="n">tree</span><span class="p">([</span><span class="s1">&#39;Population&#39;</span><span class="p">,</span> <span class="s1">&#39;AveOccup&#39;</span><span class="p">,</span> <span class="s1">&#39;HouseAge&#39;</span><span class="p">])</span>
+<span class="mi">14740</span>                                      <span class="mf">1.443097</span>
+<span class="mi">10101</span>                                      <span class="mf">2.257968</span>
+<span class="mi">20566</span>                                      <span class="mf">2.257968</span>
+<span class="mi">2670</span>                                       <span class="mf">2.257968</span>
+<span class="mi">15709</span>                                      <span class="mf">3.111251</span>
+</pre></div>
+</div>
+</section>
+<section id="evaluating-individual-trees">
+<h2>Evaluating individual trees<a class="headerlink" href="#evaluating-individual-trees" title="Permalink to this heading">#</a></h2>
+<p>We can evaluate the performance of each of the trees used to create the features, if
+we so wish. Let’s set up the <code class="xref py py-class docutils literal notranslate"><span class="pre">DecisionTreeFeatures()</span></code>:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">dtf</span> <span class="o">=</span> <span class="n">DecisionTreeFeatures</span><span class="p">(</span><span class="n">features_to_combine</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">dtf</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><code class="xref py py-class docutils literal notranslate"><span class="pre">DecisionTreeFeatures()</span></code> trains each tree with cross-validation. If we do not
+pass a grid with hyperparameters, it will optimize the depth by default. We can find
+the trained estimators like this:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">dtf</span><span class="o">.</span><span class="n">estimators_</span>
+</pre></div>
+</div>
+<p>Because the estimators are trained with sklearn’s <code class="docutils literal notranslate"><span class="pre">GridSearchCV</span></code>, what is stored is
+the result of the search:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">GridSearchCV</span><span class="p">(</span><span class="n">cv</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">estimator</span><span class="o">=</span><span class="n">DecisionTreeRegressor</span><span class="p">(</span><span class="n">random_state</span><span class="o">=</span><span class="mi">0</span><span class="p">),</span>
+              <span class="n">param_grid</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;max_depth&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">]},</span>
+              <span class="n">scoring</span><span class="o">=</span><span class="s1">&#39;neg_mean_squared_error&#39;</span><span class="p">),</span>
+ <span class="n">GridSearchCV</span><span class="p">(</span><span class="n">cv</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">estimator</span><span class="o">=</span><span class="n">DecisionTreeRegressor</span><span class="p">(</span><span class="n">random_state</span><span class="o">=</span><span class="mi">0</span><span class="p">),</span>
+              <span class="n">param_grid</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;max_depth&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">]},</span>
+              <span class="n">scoring</span><span class="o">=</span><span class="s1">&#39;neg_mean_squared_error&#39;</span><span class="p">),</span>
+ <span class="o">...</span>
+
+ <span class="n">GridSearchCV</span><span class="p">(</span><span class="n">cv</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">estimator</span><span class="o">=</span><span class="n">DecisionTreeRegressor</span><span class="p">(</span><span class="n">random_state</span><span class="o">=</span><span class="mi">0</span><span class="p">),</span>
+              <span class="n">param_grid</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;max_depth&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">]},</span>
+              <span class="n">scoring</span><span class="o">=</span><span class="s1">&#39;neg_mean_squared_error&#39;</span><span class="p">),</span>
+ <span class="n">GridSearchCV</span><span class="p">(</span><span class="n">cv</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">estimator</span><span class="o">=</span><span class="n">DecisionTreeRegressor</span><span class="p">(</span><span class="n">random_state</span><span class="o">=</span><span class="mi">0</span><span class="p">),</span>
+              <span class="n">param_grid</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;max_depth&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">]},</span>
+              <span class="n">scoring</span><span class="o">=</span><span class="s1">&#39;neg_mean_squared_error&#39;</span><span class="p">)]</span>
+</pre></div>
+</div>
+<p>If you want to inspect an individual tree and it’s performance, you can do so like this:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">tree</span> <span class="o">=</span> <span class="n">dtf</span><span class="o">.</span><span class="n">estimators_</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span>
+<span class="n">tree</span><span class="o">.</span><span class="n">best_params_</span>
+</pre></div>
+</div>
+<p>In the following output, we see the best parameters obtained for a tree trained based
+of the feature <strong>Population</strong> to predict house price:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="p">{</span><span class="s1">&#39;max_depth&#39;</span><span class="p">:</span> <span class="mi">2</span><span class="p">}</span>
+</pre></div>
+</div>
+<p>If we want to check out the performance of the best tree during found in the grid search,
+we can do so like this:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">tree</span><span class="o">.</span><span class="n">score</span><span class="p">(</span><span class="n">X_test</span><span class="p">[[</span><span class="s1">&#39;Population&#39;</span><span class="p">]],</span> <span class="n">y_test</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The following performance value corresponds to the negative of the mean squared error
+which is the metric optimised durign the search (you can select the metric to optimize
+through the <code class="docutils literal notranslate"><span class="pre">scoring</span></code> parameter of <code class="xref py py-class docutils literal notranslate"><span class="pre">DecisionTreeFeatures()</span></code>).</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="o">-</span><span class="mf">1.3308515769033213</span>
+</pre></div>
+</div>
+<p>Note that you can also isolate the tree, and then obtain a performance metric:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">tree</span><span class="o">.</span><span class="n">best_estimator_</span><span class="o">.</span><span class="n">score</span><span class="p">(</span><span class="n">X_test</span><span class="p">[[</span><span class="s1">&#39;Population&#39;</span><span class="p">]],</span> <span class="n">y_test</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>In this case, the following performance metric corresponds to the R2, which is the
+default metric returned by scikit-learn’s DecisionTreeRegressor.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="mf">0.0017890442253447603</span>
+</pre></div>
+</div>
+</section>
+<section id="dropping-the-original-variables">
+<h2>Dropping the original variables<a class="headerlink" href="#dropping-the-original-variables" title="Permalink to this heading">#</a></h2>
+<p>With <code class="xref py py-class docutils literal notranslate"><span class="pre">DecisionTreeFeatures()</span></code>, we can automatically remove from the resulting
+dataframe the features used as input from the decision trees. We need to set <code class="docutils literal notranslate"><span class="pre">drop_original</span></code>
+to <code class="docutils literal notranslate"><span class="pre">True</span></code>.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">dtf</span> <span class="o">=</span> <span class="n">DecisionTreeFeatures</span><span class="p">(</span>
+    <span class="n">variables</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;AveRooms&quot;</span><span class="p">,</span> <span class="s2">&quot;AveBedrms&quot;</span><span class="p">,</span> <span class="s2">&quot;Population&quot;</span><span class="p">],</span>
+    <span class="n">features_to_combine</span><span class="o">=</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">],</span>
+    <span class="n">drop_original</span><span class="o">=</span><span class="kc">True</span>
+<span class="p">)</span>
+
+<span class="n">dtf</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span>
+
+<span class="n">train_t</span> <span class="o">=</span> <span class="n">dtf</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">X_train</span><span class="p">)</span>
+<span class="n">test_t</span> <span class="o">=</span> <span class="n">dtf</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">X_test</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">test_t</span><span class="o">.</span><span class="n">head</span><span class="p">())</span>
+</pre></div>
+</div>
+<p>We see in the resulting dataframe that the variables [“AveRooms”, “AveBedrms”, “Population”]
+are not there:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span>       <span class="n">MedInc</span>  <span class="n">HouseAge</span>  <span class="n">AveOccup</span>  <span class="n">tree</span><span class="p">([</span><span class="s1">&#39;AveRooms&#39;</span><span class="p">,</span> <span class="s1">&#39;AveBedrms&#39;</span><span class="p">])</span>  \
+<span class="mi">14740</span>  <span class="mf">4.1518</span>      <span class="mf">22.0</span>  <span class="mf">4.180593</span>                         <span class="mf">2.099977</span>
+<span class="mi">10101</span>  <span class="mf">5.7796</span>      <span class="mf">32.0</span>  <span class="mf">3.020979</span>                         <span class="mf">2.438937</span>
+<span class="mi">20566</span>  <span class="mf">4.3487</span>      <span class="mf">29.0</span>  <span class="mf">2.910112</span>                         <span class="mf">2.099977</span>
+<span class="mi">2670</span>   <span class="mf">2.4511</span>      <span class="mf">37.0</span>  <span class="mf">2.746479</span>                         <span class="mf">1.728401</span>
+<span class="mi">15709</span>  <span class="mf">5.0049</span>      <span class="mf">25.0</span>  <span class="mf">1.712401</span>                         <span class="mf">1.821467</span>
+
+       <span class="n">tree</span><span class="p">([</span><span class="s1">&#39;AveRooms&#39;</span><span class="p">,</span> <span class="s1">&#39;Population&#39;</span><span class="p">])</span>  <span class="n">tree</span><span class="p">([</span><span class="s1">&#39;AveBedrms&#39;</span><span class="p">,</span> <span class="s1">&#39;Population&#39;</span><span class="p">])</span>  \
+<span class="mi">14740</span>                          <span class="mf">1.878989</span>                           <span class="mf">2.056003</span>
+<span class="mi">10101</span>                          <span class="mf">2.077321</span>                           <span class="mf">2.056003</span>
+<span class="mi">20566</span>                          <span class="mf">1.878989</span>                           <span class="mf">2.056003</span>
+<span class="mi">2670</span>                           <span class="mf">1.843904</span>                           <span class="mf">1.882763</span>
+<span class="mi">15709</span>                          <span class="mf">1.843904</span>                           <span class="mf">2.221092</span>
+
+       <span class="n">tree</span><span class="p">([</span><span class="s1">&#39;AveRooms&#39;</span><span class="p">,</span> <span class="s1">&#39;AveBedrms&#39;</span><span class="p">,</span> <span class="s1">&#39;Population&#39;</span><span class="p">])</span>
+<span class="mi">14740</span>                                       <span class="mf">2.099977</span>
+<span class="mi">10101</span>                                       <span class="mf">2.438937</span>
+<span class="mi">20566</span>                                       <span class="mf">2.099977</span>
+<span class="mi">2670</span>                                        <span class="mf">1.843904</span>
+<span class="mi">15709</span>                                       <span class="mf">1.843904</span>
+</pre></div>
+</div>
+</section>
+<section id="creating-features-for-classification">
+<h2>Creating features for classification<a class="headerlink" href="#creating-features-for-classification" title="Permalink to this heading">#</a></h2>
+<p>If we are creating features for a classifier instead of a regressor, the procedure is
+identical. We just need to set the parameter <code class="docutils literal notranslate"><span class="pre">regression</span></code> to False.</p>
+<p>Note that if you are creating features for binary classification, the added features
+will contain the probabilities of class 1. If you are creating features for multi-class
+classification, on the other hand, the features will contain the prediction of the class.</p>
+</section>
+<section id="additional-resources">
+<h2>Additional resources<a class="headerlink" href="#additional-resources" title="Permalink to this heading">#</a></h2>
+<p>For more details about this and other feature engineering methods check out these resources:</p>
+<figure class="align-center align-left" id="id1">
+<a class="reference external image-reference" href="https://www.trainindata.com/p/feature-engineering-for-machine-learning"><img alt="../../_images/feml.png" src="../../_images/feml.png" style="width: 300px;" /></a>
+<figcaption>
+<p><span class="caption-text">Feature Engineering for Machine Learning</span><a class="headerlink" href="#id1" title="Permalink to this image">#</a></p>
+</figcaption>
+</figure>
+<div class="line-block">
+<div class="line"><br /></div>
+<div class="line"><br /></div>
+<div class="line"><br /></div>
+<div class="line"><br /></div>
+<div class="line"><br /></div>
+<div class="line"><br /></div>
+<div class="line"><br /></div>
+<div class="line"><br /></div>
+<div class="line"><br /></div>
+<div class="line"><br /></div>
+</div>
+<p>Or read our book:</p>
+<figure class="align-center align-left" id="id2">
+<a class="reference external image-reference" href="https://www.packtpub.com/en-us/product/python-feature-engineering-cookbook-9781835883587"><img alt="../../_images/cookbook.png" src="../../_images/cookbook.png" style="width: 200px;" /></a>
+<figcaption>
+<p><span class="caption-text">Python Feature Engineering Cookbook</span><a class="headerlink" href="#id2" title="Permalink to this image">#</a></p>
+</figcaption>
+</figure>
+<div class="line-block">
+<div class="line"><br /></div>
+<div class="line"><br /></div>
+<div class="line"><br /></div>
+<div class="line"><br /></div>
+<div class="line"><br /></div>
+<div class="line"><br /></div>
+<div class="line"><br /></div>
+<div class="line"><br /></div>
+<div class="line"><br /></div>
+<div class="line"><br /></div>
+<div class="line"><br /></div>
+<div class="line"><br /></div>
+<div class="line"><br /></div>
+</div>
+<p>Both our book and course are suitable for beginners and more advanced data scientists
+alike. By purchasing them you are supporting Sole, the main developer of Feature-engine.</p>
+</section>
+</section>
+
+
+                </article>
+              
+              
+              
+              
+              
+                <footer class="prev-next-footer">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="RelativeFeatures.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">RelativeFeatures</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="../datetime/index.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Datetime Features</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+  <div class="sidebar-secondary-item">
+
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> On this page
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#values-of-the-tree-based-features">Values of the tree based features</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#examples">Examples</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#combining-features-integers">Combining features - integers</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#combining-features-lists">Combining features - Lists</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#specifying-the-feature-combinations-tuples">Specifying the feature combinations - tuples</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#examining-the-new-features">Examining the new features</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#evaluating-individual-trees">Evaluating individual trees</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#dropping-the-original-variables">Dropping the original variables</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#creating-features-for-classification">Creating features for classification</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#additional-resources">Additional resources</a></li>
+</ul>
+  </nav></div>
+
+  <div class="sidebar-secondary-item">
+
+  <div class="tocsection sourcelink">
+    <a href="../../_sources/user_guide/creation/DecisionTreeFeatures.rst.txt">
+      <i class="fa-solid fa-file-lines"></i> Show Source
+    </a>
+  </div>
+</div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../_static/scripts/bootstrap.js?digest=5b4479735964841361fd"></script>
+<script src="../../_static/scripts/pydata-sphinx-theme.js?digest=5b4479735964841361fd"></script>
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+
+  <p class="sphinx-version">
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.1.2.
+    <br/>
+  </p>
+</div>
+      
+    </div>
+  
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item">
+<p class="theme-version">
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.14.4.
+</p></div>
+      
+    </div>
+  
+</div>
+
+  </footer>
+  </body>
+</html>

@@ -1,0 +1,1524 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>DropHighPSIFeatures &#8212; 3.1</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=5b4479735964841361fd" rel="stylesheet" />
+<link href="../../_static/styles/bootstrap.css?digest=5b4479735964841361fd" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=5b4479735964841361fd" rel="stylesheet" />
+
+  
+  <link href="../../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=5b4479735964841361fd" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/custom.css?v=346841c8" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/custom.css?v=346841c8" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=5b4479735964841361fd" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=5b4479735964841361fd" />
+  <script src="../../_static/vendor/fontawesome/6.1.2/js/all.min.js?digest=5b4479735964841361fd"></script>
+
+    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js?v=e1ce3931"></script>
+    <script src="../../_static/doctools.js?v=888ff710"></script>
+    <script src="../../_static/sphinx_highlight.js?v=4825356b"></script>
+    <script defer data-domain="feature-engine.readthedocs.io" src="https://plausible.io/js/plausible.js"></script>
+    <script src="../../_static/js/copybutton.js?v=84772c1c"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'user_guide/selection/DropHighPSIFeatures';</script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="SelectByInformationValue" href="SelectByInformationValue.html" />
+    <link rel="prev" title="SelectByTargetMeanPerformance" href="SelectByTargetMeanPerformance.html" />
+    
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+
+    <!-- Cookie banner -->
+    <style>
+        /* Style for the cookie banner */
+        #cookie-banner {
+            position: fixed;
+            bottom: 0;
+            right: 0;
+            background-color: #ffe4e1; /* Light Pink */
+            color: #333;
+            padding: 15px;
+            max-width: 400px;
+            display: none;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            z-index: 1000; /* Set a higher z-index value */
+        }
+
+        #cookie-banner p {
+        font-size: 16px; /* Font size for the text */
+        color: #333 !important; /* Set link color to black */
+        line-height: 1.5; /* Increase line height for added spacing between sentences */
+        }
+
+        #cookie-banner a {
+            color: #333;
+            text-decoration: underline;
+        }
+    </style>
+
+    <div id="cookie-banner">
+        <h2 style="font-size: 20px; margin-bottom: 10px;">This site uses cookies</h2>
+        <p style="font-size: 16px;">We use cookies to recognize your visits and preferences, to measure the effectiveness of the documentation, and discover how people find us. With your consent, you're helping us make our documentation better. <br><a href="https://www.trainindata.com/p/privacy" target="_blank">Learn More</a>.</p>
+        <button id="cookie-accept">Accept</button>
+        <button id="cookie-decline">Decline</button>
+    </div>
+
+    <script>
+        // JavaScript to show the cookie banner and handle the accept button
+        document.addEventListener('DOMContentLoaded', function () {
+            var cookieBanner = document.getElementById('cookie-banner');
+            var acceptButton = document.getElementById('cookie-accept');
+            var declineButton = document.getElementById('cookie-decline');
+
+            // Check if the user has already accepted or declined cookies
+            var cookiesAccepted = localStorage.getItem('cookiesAccepted');
+
+            if (!cookiesAccepted) {
+                cookieBanner.style.display = 'block';
+
+                acceptButton.addEventListener('click', function () {
+                    localStorage.setItem('cookiesAccepted', 'true');
+                    loadGoogleAnalytics();
+                    cookieBanner.style.display = 'none';
+                });
+
+                declineButton.addEventListener('click', function () {
+                    localStorage.setItem('cookiesAccepted', 'false');
+                    cookieBanner.style.display = 'none';
+                });
+            } else if (cookiesAccepted === 'true') {
+                loadGoogleAnalytics();
+            }
+        });
+
+        function loadGoogleAnalytics() {
+            // Load Google Analytics only if consent is given
+            var script = document.createElement('script');
+            script.async = true;
+            script.src = 'https://www.googletagmanager.com/gtag/js?id=G-Z6MPCG673G';
+            document.head.appendChild(script);
+
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', 'G-Z6MPCG673G');
+        }
+    </script>
+    <!-- Cookie banner -->
+
+
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>
+    Back to top
+  </button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
+<div class="bd-header__inner bd-page-width">
+  <label class="sidebar-toggle primary-toggle" for="__primary">
+    <span class="fa-solid fa-bars"></span>
+  </label>
+  
+  
+  <div class="col-lg-3 navbar-header-items__start">
+    
+      <div class="navbar-item">
+
+  
+
+<a class="navbar-brand logo" href="../../index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../../_static/sageops_logo.png" class="logo__image only-light" alt="3.1 - Home"/>
+    <script>document.write(`<img src="../../_static/sageops_logo.png" class="logo__image only-dark" alt="3.1 - Home"/>`);</script>
+  
+  
+</a></div>
+    
+      <div class="navbar-item">
+<script>
+document.write(`
+  <div class="version-switcher__container dropdown">
+    <button id="pst-version-switcher-button-2"
+      type="button"
+      class="version-switcher__button btn btn-sm navbar-btn dropdown-toggle"
+      data-bs-toggle="dropdown"
+      aria-haspopup="listbox"
+      aria-controls="pst-version-switcher-list-2"
+      aria-label="Version switcher list"
+    >
+      Choose version  <!-- this text may get changed later by javascript -->
+      <span class="caret"></span>
+    </button>
+    <div id="pst-version-switcher-list-2"
+      class="version-switcher__menu dropdown-menu list-group-flush py-0"
+      role="listbox" aria-labelledby="pst-version-switcher-button-2">
+      <!-- dropdown will be populated by javascript on page load -->
+    </div>
+  </div>
+`);
+</script></div>
+    
+  </div>
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item">
+<nav class="navbar-nav">
+  <p class="sidebar-header-items__title"
+     role="heading"
+     aria-level="1"
+     aria-label="Site Navigation">
+    Site Navigation
+  </p>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../quickstart/index.html">
+                        Quick Start
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item current active">
+                      <a class="nav-link nav-internal" href="../index.html">
+                        SageOps User Guide
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../api_doc/index.html">
+                        API
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../example_notebooks/index.html">
+                        Example Notebooks
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../about/index.html">
+                        About
+                      </a>
+                    </li>
+                
+  </ul>
+</nav></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+ <script>
+ document.write(`
+   <button class="btn navbar-btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script>
+        </div>
+      
+      
+        <div class="navbar-item">
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  </button>
+`);
+</script></div>
+      
+        <div class="navbar-item"><ul class="navbar-icon-links navbar-nav"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/" title="GitHub" class="nav-link" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><span><i class="fab fa-github-square fa-lg" aria-hidden="true"></i></span>
+            <span class="sr-only">GitHub</span></a>
+        </li>
+</ul></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+ <script>
+ document.write(`
+   <button class="btn navbar-btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script>
+    </div>
+  
+
+  
+    <label class="sidebar-toggle secondary-toggle" for="__secondary" tabindex="0">
+      <span class="fa-solid fa-outdent"></span>
+    </label>
+  
+</div>
+
+    </nav>
+  
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          <div class="navbar-item">
+<nav class="navbar-nav">
+  <p class="sidebar-header-items__title"
+     role="heading"
+     aria-level="1"
+     aria-label="Site Navigation">
+    Site Navigation
+  </p>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../quickstart/index.html">
+                        Quick Start
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item current active">
+                      <a class="nav-link nav-internal" href="../index.html">
+                        SageOps User Guide
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../api_doc/index.html">
+                        API
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../example_notebooks/index.html">
+                        Example Notebooks
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../about/index.html">
+                        About
+                      </a>
+                    </li>
+                
+  </ul>
+</nav></div>
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  </button>
+`);
+</script></div>
+        
+          <div class="navbar-item"><ul class="navbar-icon-links navbar-nav"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/" title="GitHub" class="nav-link" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><span><i class="fab fa-github-square fa-lg" aria-hidden="true"></i></span>
+            <span class="sr-only">GitHub</span></a>
+        </li>
+</ul></div>
+        
+      </div>
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+<nav class="bd-docs-nav bd-links"
+     aria-label="Section Navigation">
+  <p class="bd-links__title" role="heading" aria-level="1">Section Navigation</p>
+  <div class="bd-toc-item navbar-nav"><ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../imputation/index.html">Experiment</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-1"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../imputation/MeanMedianImputer.html">Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../imputation/ArbitraryNumberImputer.html">Experiment Setup</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../imputation/EndTailImputer.html">EndTailImputer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../imputation/CategoricalImputer.html">CategoricalImputer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../imputation/RandomSampleImputer.html">RandomSampleImputer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../imputation/AddMissingIndicator.html">AddMissingIndicator</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../imputation/DropMissingData.html">DropMissingData</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../encoding/index.html">Categorical Encoding</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-2"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../encoding/OneHotEncoder.html">OneHotEncoder</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../encoding/OrdinalEncoder.html">Ordinal Encoding</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../encoding/CountFrequencyEncoder.html">CountFrequencyEncoder</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../encoding/MeanEncoder.html">MeanEncoder</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../encoding/WoEEncoder.html">Weight of Evidence (WoE)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../encoding/DecisionTreeEncoder.html">DecisionTreeEncoder</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../encoding/RareLabelEncoder.html">RareLabelEncoder</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../encoding/StringSimilarityEncoder.html">StringSimilarityEncoder</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../discretisation/index.html">Discretisation</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-3"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../discretisation/EqualFrequencyDiscretiser.html">EqualFrequencyDiscretiser</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../discretisation/EqualWidthDiscretiser.html">EqualWidthDiscretiser</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../discretisation/ArbitraryDiscretiser.html">ArbitraryDiscretiser</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../discretisation/DecisionTreeDiscretiser.html">DecisionTreeDiscretiser</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../discretisation/GeometricWidthDiscretiser.html">GeometricWidthDiscretiser</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../outliers/index.html">Outlier Handling</a><input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-4"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../outliers/Winsorizer.html">Winsorizer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../outliers/ArbitraryOutlierCapper.html">ArbitraryOutlierCapper</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../outliers/OutlierTrimmer.html">OutlierTrimmer</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../transformation/index.html">Variance Stabilizing Transformations</a><input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-5"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../transformation/LogTransformer.html">LogTransformer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../transformation/LogCpTransformer.html">LogCpTransformer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../transformation/ReciprocalTransformer.html">ReciprocalTransformer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../transformation/ArcsinTransformer.html">ArcsinTransformer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../transformation/PowerTransformer.html">PowerTransformer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../transformation/BoxCoxTransformer.html">BoxCoxTransformer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../transformation/YeoJohnsonTransformer.html">YeoJohnsonTransformer</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../scaling/index.html">Scaling</a><input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-6"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../scaling/MeanNormalizationScaler.html">MeanNormalizationScaler</a></li>
+</ul>
+</li>
+</ul>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../creation/index.html">Feature Creation</a><input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-7"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../creation/CyclicalFeatures.html">CyclicalFeatures</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../creation/MathFeatures.html">MathFeatures</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../creation/RelativeFeatures.html">RelativeFeatures</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../creation/DecisionTreeFeatures.html">DecisionTreeFeatures</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../datetime/index.html">Datetime Features</a><input class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-8"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../datetime/DatetimeFeatures.html">DatetimeFeatures</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../datetime/DatetimeSubtraction.html">DatetimeSubtraction</a></li>
+</ul>
+</li>
+</ul>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="index.html">Feature Selection</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-9" name="toctree-checkbox-9" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-9"><i class="fa-solid fa-chevron-down"></i></label><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="DropFeatures.html">DropFeatures</a></li>
+<li class="toctree-l2"><a class="reference internal" href="DropConstantFeatures.html">DropConstantFeatures</a></li>
+<li class="toctree-l2"><a class="reference internal" href="DropDuplicateFeatures.html">DropDuplicateFeatures</a></li>
+<li class="toctree-l2"><a class="reference internal" href="DropCorrelatedFeatures.html">DropCorrelatedFeatures</a></li>
+<li class="toctree-l2"><a class="reference internal" href="SmartCorrelatedSelection.html">SmartCorrelatedSelection</a></li>
+<li class="toctree-l2"><a class="reference internal" href="SelectBySingleFeaturePerformance.html">SelectBySingleFeaturePerformance</a></li>
+<li class="toctree-l2"><a class="reference internal" href="RecursiveFeatureElimination.html">RecursiveFeatureElimination</a></li>
+<li class="toctree-l2"><a class="reference internal" href="RecursiveFeatureAddition.html">RecursiveFeatureAddition</a></li>
+<li class="toctree-l2"><a class="reference internal" href="SelectByShuffling.html">SelectByShuffling</a></li>
+<li class="toctree-l2"><a class="reference internal" href="SelectByTargetMeanPerformance.html">SelectByTargetMeanPerformance</a></li>
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">DropHighPSIFeatures</a></li>
+<li class="toctree-l2"><a class="reference internal" href="SelectByInformationValue.html">SelectByInformationValue</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ProbeFeatureSelection.html">ProbeFeatureSelection</a></li>
+<li class="toctree-l2"><a class="reference internal" href="MRMR.html">MRMR - Minimum Redundancy Maximum Relevance</a></li>
+</ul>
+</li>
+</ul>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../timeseries/index.html">Time Series Features</a><input class="toctree-checkbox" id="toctree-checkbox-10" name="toctree-checkbox-10" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-10"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../timeseries/forecasting/index.html">Forecasting Features</a></li>
+</ul>
+</li>
+</ul>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../preprocessing/index.html">Preprocessing</a><input class="toctree-checkbox" id="toctree-checkbox-11" name="toctree-checkbox-11" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-11"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../preprocessing/MatchCategories.html">MatchCategories</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../preprocessing/MatchVariables.html">MatchVariables</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../wrappers/index.html">Scikit-learn Wrapper</a><input class="toctree-checkbox" id="toctree-checkbox-12" name="toctree-checkbox-12" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-12"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../wrappers/Wrapper.html">SklearnTransformerWrapper</a></li>
+</ul>
+</li>
+</ul>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../pipeline/index.html">Pipeline</a><input class="toctree-checkbox" id="toctree-checkbox-13" name="toctree-checkbox-13" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-13"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../pipeline/Pipeline.html">Pipeline</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../pipeline/make_pipeline.html">make_pipeline</a></li>
+</ul>
+</li>
+</ul>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../variable_handling/index.html">Variable handling functions</a><input class="toctree-checkbox" id="toctree-checkbox-14" name="toctree-checkbox-14" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-14"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../variable_handling/find_all_variables.html">find_all_variables</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../variable_handling/find_categorical_variables.html">find_categorical_variables</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../variable_handling/find_datetime_variables.html">find_datetime_variables</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../variable_handling/find_numerical_variables.html">find_numerical_variables</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../variable_handling/find_categorical_and_numerical_variables.html">find_categorical_and_numerical_variables</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../variable_handling/check_all_variables.html">check_all_variables</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../variable_handling/check_categorical_variables.html">check_categorical_variables</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../variable_handling/check_datetime_variables.html">check_datetime_variables</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../variable_handling/check_numerical_variables.html">check_numerical_variables</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../variable_handling/retain_variables_if_in_df.html">retain_variables_if_in_df</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+
+
+<nav aria-label="Breadcrumb">
+  <ul class="bd-breadcrumbs">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="../../index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    
+    <li class="breadcrumb-item"><a href="../index.html" class="nav-link">SageOps User Guide</a></li>
+    
+    
+    <li class="breadcrumb-item"><a href="index.html" class="nav-link">Feature Selection</a></li>
+    
+    <li class="breadcrumb-item active" aria-current="page">DropHighPSIFeatures</li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article" role="main">
+                  
+  <section id="drophighpsifeatures">
+<span id="psi-selection"></span><h1>DropHighPSIFeatures<a class="headerlink" href="#drophighpsifeatures" title="Permalink to this heading">#</a></h1>
+<p>The <code class="xref py py-class docutils literal notranslate"><span class="pre">DropHighPSIFeatures()</span></code> finds and removes features with changes in their
+distribution, i.e. “unstable values”, from a pandas dataframe.
+The stability of the distribution is computed using the <strong>Population Stability
+Index (PSI)</strong> and all features having a PSI value above a given threshold are removed.</p>
+<p>Unstable features may introduce an additional bias in a model if the training population
+significantly differs from the population in production. Removing features for
+which a shift in the distribution is suspected leads to
+more robust models and therefore to better performance. In the field of Credit Risk
+modelling, eliminating features with high PSI is common practice and usually required by the
+Regulator.</p>
+<section id="population-stability-index-psi">
+<h2>Population Stability Index - PSI<a class="headerlink" href="#population-stability-index-psi" title="Permalink to this heading">#</a></h2>
+<p>The PSI is a measure of how much a population has changed in time or how different the distributions
+are between two different population samples.</p>
+<p>To determine the PSI, continuous features are sorted into discrete intervals, the
+fraction of observations per interval is then determined, and finally those values
+are compared between the 2 groups, or as we call them in Feature-engine, between the
+basis and test sets, to obtain the PSI.</p>
+<p>In other words, the PSI is computed as follows:</p>
+<ul class="simple">
+<li><p>Define the intervals into which the observations will be sorted.</p></li>
+<li><p>Sort the feature values into those intervals.</p></li>
+<li><p>Determine the fraction of observations within each interval.</p></li>
+<li><p>Compute the PSI.</p></li>
+</ul>
+<p>The PSI is determined as:</p>
+<div class="math notranslate nohighlight">
+\[PSI = \sum_{i=1}^n (test_i - basis_i) . ln(\frac{test_i}{basis_i})\]</div>
+<p>where <code class="docutils literal notranslate"><span class="pre">basis</span></code> and <code class="docutils literal notranslate"><span class="pre">test</span></code> are the “reference” and “evaluation” datasets, respectively, and <code class="docutils literal notranslate"><span class="pre">i</span></code>
+refers to the interval.</p>
+<p>In other words, the PSI determines the difference in the proportion of observations in each
+interval, between the reference (aka, original) and test datasets.</p>
+<p>In the PSI equation, <code class="docutils literal notranslate"><span class="pre">n</span></code> is the total number of intervals.</p>
+<section id="important">
+<h3>Important<a class="headerlink" href="#important" title="Permalink to this heading">#</a></h3>
+<p>When working with the PSI it is worth highlighting the following:</p>
+<ul class="simple">
+<li><p>The PSI is not symmetric; switching the order of the basis and test dataframes in the PSI calculation will lead to different values.</p></li>
+<li><p>The number of bins used to define the distributions has an impact on the PSI values.</p></li>
+<li><p>The PSI is a suitable metric for numerical features (i.e., either continuous or with high cardinality).</p></li>
+<li><p>For categorical or discrete features, the change in distributions is better assessed with Chi-squared.</p></li>
+</ul>
+</section>
+<section id="threshold">
+<h3>Threshold<a class="headerlink" href="#threshold" title="Permalink to this heading">#</a></h3>
+<p>Different thresholds can be used to assess the magnitude of the distribution shift according
+to the PSI value. The most commonly used thresholds are:</p>
+<ul class="simple">
+<li><p>Below 10%, the variable has not experienced a significant shift.</p></li>
+<li><p>Above 25%, the variable has experienced a major shift.</p></li>
+<li><p>Between those two values, the shift is intermediate.</p></li>
+<li><p>‘auto’: the threshold will be calculated based on the size of the base and target datasets and the number of bins.</p></li>
+</ul>
+<p>When ‘auto’, the threshold is calculated using the chi2 approximation, proposed by B. Yurdakul:</p>
+<div class="math notranslate nohighlight">
+\[threshold = \chi^2_{(q,B-1)} . (\frac{1}{N} + \frac{1}{M})\]</div>
+<p>where q is the percentile, B is the number of bins, N is the size of basis dataset, N is the size of test dataset.</p>
+<p>In our implementation, we are using the 99.9th percentile.</p>
+<p>As mentioned above, the number of bins has an impact on PSI value, because with a higher number of bins it is easier to find divergence in data
+and vice versa. The same could be said about dataset size - the more data we have, the harder it is to find the difference (if the shift is not drastic).
+This formula tries to catch these relationships and adjust threshold to correctly detect feature drift.</p>
+</section>
+</section>
+<section id="procedure">
+<h2>Procedure<a class="headerlink" href="#procedure" title="Permalink to this heading">#</a></h2>
+<p>To compute the PSI, the <code class="xref py py-class docutils literal notranslate"><span class="pre">DropHighPSIFeatures()</span></code> splits the input dataset in
+two: a basis data set (aka the reference data) and a test set. The basis data set is assumed to contain
+the expected or original feature distributions. The test set will be assessed
+against the basis data set.</p>
+<p>In the next step, the interval boundaries are determined based on the features in the basis
+or reference data. These intervals can be determined to be of equal with, or equal number
+of observations.</p>
+<p>Next, <code class="xref py py-class docutils literal notranslate"><span class="pre">DropHighPSIFeatures()</span></code> sorts each of the variable values into those intervals, both in the
+basis and test datasets, and then determines the proportion (percentage) of observations
+within each interval.</p>
+<p>Finally, the PSI is determined as indicated in the previous paragraph for each feature.
+With the PSI value per feature, <code class="xref py py-class docutils literal notranslate"><span class="pre">DropHighPSIFeatures()</span></code> can now select the features that are unstable and
+drop them, based on a threshold.</p>
+</section>
+<section id="splitting-the-data">
+<h2>Splitting the data<a class="headerlink" href="#splitting-the-data" title="Permalink to this heading">#</a></h2>
+<p><code class="xref py py-class docutils literal notranslate"><span class="pre">DropHighPSIFeatures()</span></code> allows us to determine how much a feature distribution has
+changed in time, or how much it differs between 2 groups.</p>
+<p>If we want to evaluate the distribution change in time, we can use a datetime variable as splitting
+reference and provide a datetime cut-off as split point.</p>
+<p>If we want to compare the distribution change between 2 groups, <code class="xref py py-class docutils literal notranslate"><span class="pre">DropHighPSIFeatures()</span></code>
+offers 3 different approaches to split the input dataframe:</p>
+<ul class="simple">
+<li><p>Based on proportion of observations.</p></li>
+<li><p>Based on proportions of unique observations.</p></li>
+<li><p>Using a cut-off value.</p></li>
+</ul>
+<section id="proportion-of-observations">
+<h3>Proportion of observations<a class="headerlink" href="#proportion-of-observations" title="Permalink to this heading">#</a></h3>
+<p>Splitting by proportion of observations will result in a certain proportion of observations
+allocated to either the reference and test datasets. For example, if we set <code class="docutils literal notranslate"><span class="pre">split_frac=0.75</span></code>,
+then 75% and 25% of the observations will be put into the reference and test data, respectively.</p>
+<p>If we select this method, we can pass a variable in the parameter <code class="docutils literal notranslate"><span class="pre">split_col</span></code> or leave it to None.</p>
+<p>Note that the data split is not done at random, but instead guided by the values in the reference
+variable indicated in <code class="docutils literal notranslate"><span class="pre">split_col</span></code>. Under the hood, the reference variable indicated in <code class="docutils literal notranslate"><span class="pre">split_col</span></code>
+is ordered, and the percentage of observations is determined with NumPy quantile. This means
+that the observations with smaller values in <code class="docutils literal notranslate"><span class="pre">split_col</span></code> will land in the reference dataset,
+and those with bigger values will go to the test set.</p>
+<p>If the rows in your dataset are sorted in time, this could be a good default option to split the
+dataframe in 2 and compute the PSI. This will for example be the case if your data set contains
+daily (or any other frequency) sales information on a company’s products.</p>
+</section>
+<section id="proportions-of-unique-observations">
+<h3>Proportions of unique observations<a class="headerlink" href="#proportions-of-unique-observations" title="Permalink to this heading">#</a></h3>
+<p>If we split based on proportion of unique observations, it is important that we indicate which
+column we want to use as reference in the <code class="docutils literal notranslate"><span class="pre">split_col</span></code> parameter, to make a meaningful split. If
+we leave this to None, <code class="xref py py-class docutils literal notranslate"><span class="pre">DropHighPSIFeatures()</span></code> will use the dataframe index as reference.
+This makes sense only if the index in the dataframe has meaningful values.</p>
+<p><code class="xref py py-class docutils literal notranslate"><span class="pre">DropHighPSIFeatures()</span></code> will first identify the unique values of the variable in
+<code class="docutils literal notranslate"><span class="pre">split_col</span></code>. Then it will put a certain proportion of those values into the reference
+dataset and the remaining to the test dataset. The proportion is indicated in the parameter
+<code class="docutils literal notranslate"><span class="pre">split_frac</span></code>.</p>
+<p>Under the hood, <code class="xref py py-class docutils literal notranslate"><span class="pre">DropHighPSIFeatures()</span></code> will sort the unique values of the reference
+variable, and then use NumPy quantiles to determine the fraction that should be allocated to the
+reference and test sets. Thus, it is important to consider that the order of the unique values
+matters in the split.</p>
+<p>This split makes sense when we have for example unique customer identifiers and multiple rows
+per customer in the dataset. We want to make sure that all rows belonging to the same customer
+are allocated either in the reference or test data, but the same customer cannot be in both
+data sets. This way of splitting the data will also ensure that we have a certain percentage,
+indicated in <code class="docutils literal notranslate"><span class="pre">split_frac</span></code> of customers in either data set after the split.</p>
+<p>Thus, if <code class="docutils literal notranslate"><span class="pre">split_frac=0.6</span></code> and <code class="docutils literal notranslate"><span class="pre">split_distinct=True</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">DropHighPSIFeatures()</span></code> will send
+the first 60% of customers to the reference data set, and the remaining 40% to the test set. And it will
+ensure that rows belonging to the same customer are just in one of the 2 data sets.</p>
+</section>
+<section id="using-a-cut-off-value">
+<h3>Using a cut-off value<a class="headerlink" href="#using-a-cut-off-value" title="Permalink to this heading">#</a></h3>
+<p>We have the option to pass a reference variable to use to split the dataframe using <code class="docutils literal notranslate"><span class="pre">split_col</span></code> and
+also a cut-off value in the <code class="docutils literal notranslate"><span class="pre">cut_off</span></code> parameter. The cut-off value can be a number, integer or float,
+a date or a list of values.</p>
+<p>If we pass a datetime column in <code class="docutils literal notranslate"><span class="pre">split_col</span></code> and a datetime value in the <code class="docutils literal notranslate"><span class="pre">cut_off</span></code>, we can split the
+data in a temporal manner. Observations collected before the time indicated will be sent to the reference
+dataframe, and the remaining to the test set.</p>
+<p>If we pass a list of values in the <code class="docutils literal notranslate"><span class="pre">cut_off</span></code> all observations which values are included in the
+list will go into the reference data set, and the remaining to the test set. This split is useful
+if we have a categorical variable indicating a portfolio from which the observations have been collected.
+For example, if we set <code class="docutils literal notranslate"><span class="pre">split_col='portfolio'</span></code> and <code class="docutils literal notranslate"><span class="pre">cut_off=['port_1',</span> <span class="pre">'port_2']</span></code>, all observations
+that belong to the first and second portfolio will be sent to the reference data set, and the observations
+from other portfolios to the test set.</p>
+<p>Finally, if we pass a number to <code class="docutils literal notranslate"><span class="pre">cut_off</span></code>, all observations which value in the variable indicated
+in <code class="docutils literal notranslate"><span class="pre">split_col</span></code> is &lt;= cut-off, will be sent to the reference data set, alternatively to the test set.
+This can be useful for example when dates are defined as integer (for example 20200411) or when
+using an ordinal customer segmentation to split the dataframe (1: retail customers, 2: private
+banking customers, 3: SME and 4: Wholesale).</p>
+</section>
+<section id="split-col">
+<h3>split_col<a class="headerlink" href="#split-col" title="Permalink to this heading">#</a></h3>
+<p>To split the data set, we recommend that you indicate which column you want to use as
+reference in the <code class="docutils literal notranslate"><span class="pre">split_col</span></code> parameter. If you don’t, the split will be done based on the
+values of the dataframe index. This might be a good option if the index contains meaningful
+values or if splitting just based on <code class="docutils literal notranslate"><span class="pre">split_frac</span></code>.</p>
+</section>
+</section>
+<section id="examples">
+<h2>Examples<a class="headerlink" href="#examples" title="Permalink to this heading">#</a></h2>
+<p>The versatility of the class lies in the different options to split the input dataframe
+in a reference or basis data set with the “expected” distributions, and a test set which
+will be evaluated against the reference.</p>
+<p>After splitting the data, <code class="xref py py-class docutils literal notranslate"><span class="pre">DropHighPSIFeatures()</span></code> goes ahead and compares the
+feature distributions in both data sets by computing the PSI.</p>
+<p>To illustrate how to best use <code class="xref py py-class docutils literal notranslate"><span class="pre">DropHighPSIFeatures()</span></code> depending on your data, we
+provide various examples illustrating the different possibilities.</p>
+<section id="case-1-split-data-based-on-proportions-split-frac">
+<h3>Case 1: split data based on proportions (split_frac)<a class="headerlink" href="#case-1-split-data-based-on-proportions-split-frac" title="Permalink to this heading">#</a></h3>
+<p>In this case, <code class="xref py py-class docutils literal notranslate"><span class="pre">DropHighPSIFeatures()</span></code> will split the dataset in 2, based on the
+indicated proportion. The proportion is indicated in the <code class="docutils literal notranslate"><span class="pre">split_frac</span></code> parameter. You have
+the option to select a variable in <code class="docutils literal notranslate"><span class="pre">split_col</span></code> or leave it to None. In the latter, the
+dataframe index will be used to split.</p>
+<p>Let’s first create a toy dataframe containing 5 random variables and 1 variable
+with a shift in its distribution (<em>var_3</em> in this case).</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">seaborn</span> <span class="k">as</span> <span class="nn">sns</span>
+
+<span class="kn">from</span> <span class="nn">sklearn.datasets</span> <span class="kn">import</span> <span class="n">make_classification</span>
+<span class="kn">from</span> <span class="nn">feature_engine.selection</span> <span class="kn">import</span> <span class="n">DropHighPSIFeatures</span>
+
+<span class="c1"># Create a dataframe with 500 observations and 6 random variables</span>
+<span class="n">X</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">make_classification</span><span class="p">(</span>
+    <span class="n">n_samples</span><span class="o">=</span><span class="mi">500</span><span class="p">,</span>
+    <span class="n">n_features</span><span class="o">=</span><span class="mi">6</span><span class="p">,</span>
+    <span class="n">random_state</span><span class="o">=</span><span class="mi">0</span>
+<span class="p">)</span>
+
+<span class="n">colnames</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;var_&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">6</span><span class="p">)]</span>
+<span class="n">X</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="n">colnames</span><span class="p">)</span>
+
+<span class="c1"># Add a column with a shift.</span>
+<span class="n">X</span><span class="p">[</span><span class="s1">&#39;var_3&#39;</span><span class="p">][</span><span class="mi">250</span><span class="p">:]</span> <span class="o">=</span> <span class="n">X</span><span class="p">[</span><span class="s1">&#39;var_3&#39;</span><span class="p">][</span><span class="mi">250</span><span class="p">:]</span> <span class="o">+</span> <span class="mi">1</span>
+</pre></div>
+</div>
+<p>The default approach in <code class="xref py py-class docutils literal notranslate"><span class="pre">DropHighPSIFeatures()</span></code> is to split the
+input dataframe <code class="docutils literal notranslate"><span class="pre">X</span></code> in two equally sized data sets. You can adjust the proportions by changing
+the value in the <code class="docutils literal notranslate"><span class="pre">split_frac</span></code> parameter.</p>
+<p>For example, let’s split the input dataframe into a reference data set containing 60% of
+the observations and a test set containing 40% of the observations.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Remove the features with high PSI values using a 60-40 split.</span>
+
+<span class="n">transformer</span> <span class="o">=</span> <span class="n">DropHighPSIFeatures</span><span class="p">(</span><span class="n">split_frac</span><span class="o">=</span><span class="mf">0.6</span><span class="p">)</span>
+<span class="n">transformer</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The value of <code class="docutils literal notranslate"><span class="pre">split_frac</span></code> tells <code class="xref py py-class docutils literal notranslate"><span class="pre">DropHighPSIFeatures()</span></code> to split X according to a
+60% - 40% ratio. The <code class="docutils literal notranslate"><span class="pre">fit()</span></code> method performs the split of the dataframe and the calculation
+of the PSI.</p>
+<p>Because we created random variables, these features will have low PSI values (i.e., no
+distribution change). However, we manually added a distribution shift in the variable <em>var_3</em>
+and therefore expect the PSI for this particular feature to be above the
+0.25 PSI threshold.</p>
+<p>The PSI values are accessible through the <code class="docutils literal notranslate"><span class="pre">psi_values_</span></code> attribute:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">transformer</span><span class="o">.</span><span class="n">psi_values_</span>
+</pre></div>
+</div>
+<p>The analysis of the PSI values below shows that only feature 3 (called <code class="docutils literal notranslate"><span class="pre">var_3</span></code>)
+has a PSI above the 0.25 threshold (default value) and will be removed
+by the <code class="docutils literal notranslate"><span class="pre">transform</span></code> method.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="p">{</span><span class="s1">&#39;var_0&#39;</span><span class="p">:</span> <span class="mf">0.07405459925568803</span><span class="p">,</span>
+<span class="s1">&#39;var_1&#39;</span><span class="p">:</span> <span class="mf">0.09124093185820083</span><span class="p">,</span>
+<span class="s1">&#39;var_2&#39;</span><span class="p">:</span> <span class="mf">0.16985790067687764</span><span class="p">,</span>
+<span class="s1">&#39;var_3&#39;</span><span class="p">:</span> <span class="mf">1.342485289730313</span><span class="p">,</span>
+<span class="s1">&#39;var_4&#39;</span><span class="p">:</span> <span class="mf">0.0743442762545251</span><span class="p">,</span>
+<span class="s1">&#39;var_5&#39;</span><span class="p">:</span> <span class="mf">0.06809060587241555</span><span class="p">}</span>
+</pre></div>
+</div>
+<p>From the output, we see that the PSI value for <em>var_0</em> is around 7%. This means
+that, when comparing the first 300 and the last 200 observations of the dataframe,
+there is only a small difference in the distribution of the <em>var_0</em> feature.
+A similar conclusion applies to <em>var_1, var_2, var_4</em> and <em>var_5</em>.
+Looking at the PSI value for <em>var_3</em>, we see that it exceeds by far the 0.25
+threshold. We can then conclude the population of this feature has shifted and
+it is wise not to include it in the feature set for modelling.</p>
+<p>The cut-off value used to split the dataframe is stored in the <code class="docutils literal notranslate"><span class="pre">cut_off_</span></code> attribute:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">transformer</span><span class="o">.</span><span class="n">cut_off_</span>
+</pre></div>
+</div>
+<p>This yields the following answer</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="mf">299.4</span>
+</pre></div>
+</div>
+<p>The value of 299.4 means that observations with index from 0 to 299 are used
+to define the basis data set. This corresponds to 60% (300 / 500) of the original dataframe
+(X).
+The value of 299.4 may seem strange because it is not one of the value present in (the
+(index of) the dataframe. Intuitively, we would expect the cut_off to be an integer
+in the present case. However, the cut_off is computed using quantiles and the quantiles
+are computed using extrapolation.</p>
+<p>Splitting with proportions will order the index or the reference column first, and then
+determine the data that will go into each dataframe. In other words, the order of the index
+or the variable indicated in <code class="docutils literal notranslate"><span class="pre">split_col</span></code> matters. Observations with the lowest values will
+be sent to the basis dataframe and the ones with the highest values to the test set.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">features_to_drop_</span></code> attribute provides the list with the features to
+be dropped when executing the <code class="docutils literal notranslate"><span class="pre">transform</span></code> method.</p>
+<p>The command</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">transformer</span><span class="o">.</span><span class="n">features_to_drop_</span>
+</pre></div>
+</div>
+<p>Yields the following result:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="s1">&#39;var_3&#39;</span><span class="p">]</span>
+</pre></div>
+</div>
+<p>That the <em>var_3</em> feature is dropped during the procedure is illustrated when
+looking at the columns from the <code class="docutils literal notranslate"><span class="pre">X_transformed</span></code> dataframe.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">X_transformed</span> <span class="o">=</span> <span class="n">transformer</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+
+<span class="n">X_transformed</span><span class="o">.</span><span class="n">columns</span>
+
+<span class="n">Index</span><span class="p">([</span><span class="s1">&#39;var_0&#39;</span><span class="p">,</span> <span class="s1">&#39;var_1&#39;</span><span class="p">,</span> <span class="s1">&#39;var_2&#39;</span><span class="p">,</span> <span class="s1">&#39;var_4&#39;</span><span class="p">,</span> <span class="s1">&#39;var_5&#39;</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="s1">&#39;object&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><code class="xref py py-class docutils literal notranslate"><span class="pre">DropHighPSIFeatures()</span></code> also contains a <code class="docutils literal notranslate"><span class="pre">fit_transform</span></code> method that combines
+the <code class="docutils literal notranslate"><span class="pre">fit</span></code> and the <code class="docutils literal notranslate"><span class="pre">transform</span></code> methods.</p>
+<p>The difference in distribution between a non-shifted and
+a shifted distribution is clearly visible when plotting the cumulative density
+function.</p>
+<p>For the shifted variable:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">X</span><span class="p">[</span><span class="s1">&#39;above_cut_off&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">X</span><span class="o">.</span><span class="n">index</span> <span class="o">&gt;</span> <span class="n">transformer</span><span class="o">.</span><span class="n">cut_off_</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">ecdfplot</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">X</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="s1">&#39;var_3&#39;</span><span class="p">,</span> <span class="n">hue</span><span class="o">=</span><span class="s1">&#39;above_cut_off&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>and a non-shifted variable (for example <em>var_1</em>)</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">sns</span><span class="o">.</span><span class="n">ecdfplot</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">X</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="s1">&#39;var_1&#39;</span><span class="p">,</span> <span class="n">hue</span><span class="o">=</span><span class="s1">&#39;above_cut_off&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<img alt="../../_images/PSI_distribution_case1.png" src="../../_images/PSI_distribution_case1.png" />
+</section>
+<section id="case-2-split-data-based-on-variable-numerical-cut-off">
+<h3>Case 2: split data based on variable (numerical cut_off)<a class="headerlink" href="#case-2-split-data-based-on-variable-numerical-cut-off" title="Permalink to this heading">#</a></h3>
+<p>In the previous example, we wanted to split the input dataframe in 2 datasets, with the
+reference dataset containing 60% of the observations. We let <code class="xref py py-class docutils literal notranslate"><span class="pre">DropHighPSIFeatures()</span></code>
+find the cut-off to achieve this.</p>
+<p>We can instead, provide ourselves the numerical cut-off that determines which observations will
+go to the reference or basis data set, and which to the test set. Using the <code class="docutils literal notranslate"><span class="pre">cut_off</span></code> parameter,
+we can define the specific threshold for the split.</p>
+<p>A real life example for this case is the use of the customer ID or contract ID
+to split the dataframe. These IDs are often increasing in value over time which justifies
+their use to assess distribution shifts in the features.</p>
+<p>Let’s create a toy dataframe representing the customers’ characteristics of a
+company. This dataset contains six random variables (in
+real life this are variables like age or postal code), the seniority of the customer
+(i.e. the number of months since the start of the relationship between the
+customer and the company) and the customer ID (i.e. the number (integer) used
+to identify the customer). Generally the customer ID grows
+over time which means that early customers have a lower customer ID than late
+customers.</p>
+<p>From the definition of the variables, we expect the <em>seniority</em> to increase with
+the customer ID and therefore to have a high PSI value when comparing early and
+late customer,</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">from</span> <span class="nn">sklearn.datasets</span> <span class="kn">import</span> <span class="n">make_classification</span>
+<span class="kn">from</span> <span class="nn">feature_engine.selection</span> <span class="kn">import</span> <span class="n">DropHighPSIFeatures</span>
+
+<span class="n">X</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">make_classification</span><span class="p">(</span>
+        <span class="n">n_samples</span><span class="o">=</span><span class="mi">500</span><span class="p">,</span>
+        <span class="n">n_features</span><span class="o">=</span><span class="mi">6</span><span class="p">,</span>
+        <span class="n">random_state</span><span class="o">=</span><span class="mi">0</span>
+    <span class="p">)</span>
+
+<span class="n">colnames</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;var_&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">6</span><span class="p">)]</span>
+<span class="n">X</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="n">colnames</span><span class="p">)</span>
+
+<span class="c1"># Let&#39;s add a variable for the customer ID</span>
+<span class="n">X</span><span class="p">[</span><span class="s1">&#39;customer_id&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">customer_id</span> <span class="k">for</span> <span class="n">customer_id</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">501</span><span class="p">)]</span>
+
+<span class="c1"># Add a column with the seniority... that is related to the customer ID</span>
+<span class="n">X</span><span class="p">[</span><span class="s1">&#39;seniority&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">100</span> <span class="o">-</span> <span class="n">X</span><span class="p">[</span><span class="s1">&#39;customer_id&#39;</span><span class="p">]</span> <span class="o">//</span> <span class="mi">10</span>
+
+<span class="n">transformer</span> <span class="o">=</span> <span class="n">DropHighPSIFeatures</span><span class="p">(</span><span class="n">split_col</span><span class="o">=</span><span class="s1">&#39;customer_id&#39;</span><span class="p">,</span> <span class="n">cut_off</span><span class="o">=</span><span class="mi">250</span><span class="p">)</span>
+<span class="n">transformer</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>In this case, <code class="xref py py-class docutils literal notranslate"><span class="pre">DropHighPSIFeatures()</span></code> will allocate in the basis or reference data
+set, all observations which values in <code class="docutils literal notranslate"><span class="pre">customer_id</span></code> are &lt;= 250. The test dataframe contains the
+remaining observations.</p>
+<p>The method <code class="docutils literal notranslate"><span class="pre">fit()</span></code> will determine the PSI values, which are stored in the class:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">transformer</span><span class="o">.</span><span class="n">psi_values_</span>
+</pre></div>
+</div>
+<p>We see that <code class="xref py py-class docutils literal notranslate"><span class="pre">DropHighPSIFeatures()</span></code> does not provide any PSI value for
+the <code class="docutils literal notranslate"><span class="pre">customer_id</span></code> feature, because this variable was used as a reference to split the data.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="p">{</span><span class="s1">&#39;var_0&#39;</span><span class="p">:</span> <span class="mf">0.07385590683974477</span><span class="p">,</span>
+<span class="s1">&#39;var_1&#39;</span><span class="p">:</span> <span class="mf">0.061155637727757485</span><span class="p">,</span>
+<span class="s1">&#39;var_2&#39;</span><span class="p">:</span> <span class="mf">0.1736694458621651</span><span class="p">,</span>
+<span class="s1">&#39;var_3&#39;</span><span class="p">:</span> <span class="mf">0.044965387331530465</span><span class="p">,</span>
+<span class="s1">&#39;var_4&#39;</span><span class="p">:</span> <span class="mf">0.0904519893659045</span><span class="p">,</span>
+<span class="s1">&#39;var_5&#39;</span><span class="p">:</span> <span class="mf">0.027545195437270797</span><span class="p">,</span>
+<span class="s1">&#39;seniority&#39;</span><span class="p">:</span> <span class="mf">7.8688986006052035</span><span class="p">}</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">transformer</span><span class="o">.</span><span class="n">features_to_drop_</span>
+</pre></div>
+</div>
+<p>Gives</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="s1">&#39;seniority&#39;</span><span class="p">]</span>
+</pre></div>
+</div>
+<p>Executing the dataframe transformation leads to the exclusion of the <em>seniority</em>
+feature but not to the exclusion of the <em>customer_id</em>.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">X_transformed</span> <span class="o">=</span> <span class="n">transformer</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+
+<span class="n">X_transformed</span><span class="o">.</span><span class="n">columns</span>
+
+<span class="n">Index</span><span class="p">([</span><span class="s1">&#39;var_0&#39;</span><span class="p">,</span> <span class="s1">&#39;var_1&#39;</span><span class="p">,</span> <span class="s1">&#39;var_2&#39;</span><span class="p">,</span> <span class="s1">&#39;var_3&#39;</span><span class="p">,</span> <span class="s1">&#39;var_4&#39;</span><span class="p">,</span> <span class="s1">&#39;var_5&#39;</span><span class="p">,</span> <span class="s1">&#39;customer_id&#39;</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="s1">&#39;object&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="case-3-split-data-based-on-time-date-as-cut-off">
+<h3>Case 3: split data based on time (date as cut_off)<a class="headerlink" href="#case-3-split-data-based-on-time-date-as-cut-off" title="Permalink to this heading">#</a></h3>
+<p><code class="xref py py-class docutils literal notranslate"><span class="pre">DropHighPSIFeatures()</span></code> can handle different types of <code class="docutils literal notranslate"><span class="pre">split_col</span></code>
+variables. The following case illustrates how it works with a date variable. In fact,
+we often want to determine if the distribution of a feature changes in time, for example
+after a certain event like the start of the Covid-19 pandemic.</p>
+<p>This is how to do it. Let’s create a toy dataframe with 6 random numerical variables
+and two date variables. One will be use to specific the split of the dataframe
+while the second one is expected to have a high PSI value.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">date</span>
+<span class="kn">from</span> <span class="nn">sklearn.datasets</span> <span class="kn">import</span> <span class="n">make_classification</span>
+<span class="kn">from</span> <span class="nn">feature_engine.selection</span> <span class="kn">import</span> <span class="n">DropHighPSIFeatures</span>
+
+<span class="n">X</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">make_classification</span><span class="p">(</span>
+        <span class="n">n_samples</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span>
+        <span class="n">n_features</span><span class="o">=</span><span class="mi">6</span><span class="p">,</span>
+        <span class="n">random_state</span><span class="o">=</span><span class="mi">0</span>
+    <span class="p">)</span>
+
+<span class="n">colnames</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;var_&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">6</span><span class="p">)]</span>
+<span class="n">X</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="n">colnames</span><span class="p">)</span>
+
+<span class="c1"># Add two time variables to the dataframe</span>
+<span class="n">X</span><span class="p">[</span><span class="s1">&#39;time&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">date</span><span class="p">(</span><span class="n">year</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span> <span class="k">for</span> <span class="n">year</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1000</span><span class="p">,</span> <span class="mi">2000</span><span class="p">)]</span>
+<span class="n">X</span><span class="p">[</span><span class="s1">&#39;century&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">X</span><span class="p">[</span><span class="s1">&#39;time&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="p">((</span><span class="n">x</span><span class="o">.</span><span class="n">year</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">//</span> <span class="mi">100</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+
+<span class="c1"># Let&#39;s shuffle the dataframe and reset the index to remove the correlation</span>
+<span class="c1"># between the index and the time variables.</span>
+
+<span class="n">X</span> <span class="o">=</span> <span class="n">X</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="n">frac</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">drop</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Dropping features with high PSI values comparing two periods of time is done simply
+by providing the name of the column with the date and a cut-off date.
+In the example below the PSI calculations
+will be done comparing the periods up to the French revolution and after.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">transformer</span> <span class="o">=</span> <span class="n">DropHighPSIFeatures</span><span class="p">(</span><span class="n">split_col</span><span class="o">=</span><span class="s1">&#39;time&#39;</span><span class="p">,</span> <span class="n">cut_off</span><span class="o">=</span><span class="n">date</span><span class="p">(</span><span class="mi">1789</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">14</span><span class="p">))</span>
+<span class="n">transformer</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>Important</strong>: if the date variable is in pandas or NumPy datetime format, you may need
+to pass the cut_off value as <code class="docutils literal notranslate"><span class="pre">pd.to_datetime(1789-07-14)</span></code>.</p>
+<p>The PSI values shows the <em>century</em> variables in unstable as its value is above
+the 0.25 threshold.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">transformer</span><span class="o">.</span><span class="n">psi_values_</span>
+
+<span class="p">{</span><span class="s1">&#39;var_0&#39;</span><span class="p">:</span> <span class="mf">0.0181623637463045</span><span class="p">,</span>
+<span class="s1">&#39;var_1&#39;</span><span class="p">:</span> <span class="mf">0.10595496570984747</span><span class="p">,</span>
+<span class="s1">&#39;var_2&#39;</span><span class="p">:</span> <span class="mf">0.05425659114295842</span><span class="p">,</span>
+<span class="s1">&#39;var_3&#39;</span><span class="p">:</span> <span class="mf">0.09720689210928271</span><span class="p">,</span>
+<span class="s1">&#39;var_4&#39;</span><span class="p">:</span> <span class="mf">0.07917647542638032</span><span class="p">,</span>
+<span class="s1">&#39;var_5&#39;</span><span class="p">:</span> <span class="mf">0.10122468631060424</span><span class="p">,</span>
+<span class="s1">&#39;century&#39;</span><span class="p">:</span> <span class="mf">8.272395772368412</span><span class="p">}</span>
+</pre></div>
+</div>
+<p>The class has correctly identified the feature to be dropped.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">transformer</span><span class="o">.</span><span class="n">features_to_drop_</span>
+
+<span class="p">[</span><span class="s1">&#39;century&#39;</span><span class="p">]</span>
+</pre></div>
+</div>
+<p>And the transform method correctly removes the feature.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">X_transformed</span> <span class="o">=</span> <span class="n">transformer</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+
+<span class="n">X_transformed</span><span class="o">.</span><span class="n">columns</span>
+
+<span class="n">Index</span><span class="p">([</span><span class="s1">&#39;var_0&#39;</span><span class="p">,</span> <span class="s1">&#39;var_1&#39;</span><span class="p">,</span> <span class="s1">&#39;var_2&#39;</span><span class="p">,</span> <span class="s1">&#39;var_3&#39;</span><span class="p">,</span> <span class="s1">&#39;var_4&#39;</span><span class="p">,</span> <span class="s1">&#39;var_5&#39;</span><span class="p">,</span> <span class="s1">&#39;time&#39;</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="s1">&#39;object&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The difference in distribution between a non-shifted and
+a shifted distribution is clearly visible when plotting the cumulative density
+function for each of the group.</p>
+<p>We can plot the cumulative distribution of the shifted variable like this:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">X</span><span class="p">[</span><span class="s1">&#39;above_cut_off&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">X</span><span class="o">.</span><span class="n">time</span> <span class="o">&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">(</span><span class="n">transformer</span><span class="o">.</span><span class="n">cut_off_</span><span class="p">)</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">ecdfplot</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">X</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="s1">&#39;century&#39;</span><span class="p">,</span> <span class="n">hue</span><span class="o">=</span><span class="s1">&#39;above_cut_off&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>and the distribution of a non-shifted variable, for example <em>var_2</em>, like this:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">sns</span><span class="o">.</span><span class="n">ecdfplot</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">X</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="s1">&#39;var_2&#39;</span><span class="p">,</span> <span class="n">hue</span><span class="o">=</span><span class="s1">&#39;above_cut_off&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>And below we can compare both plots:</p>
+<img alt="../../_images/PSI_distribution_case3.png" src="../../_images/PSI_distribution_case3.png" />
+</section>
+<section id="case-4-split-data-based-on-a-categorical-variable-category-or-list-as-cut-off">
+<h3>Case 4: split data based on a categorical variable (category or list as cut_off)<a class="headerlink" href="#case-4-split-data-based-on-a-categorical-variable-category-or-list-as-cut-off" title="Permalink to this heading">#</a></h3>
+<p><code class="xref py py-class docutils literal notranslate"><span class="pre">DropHighPSIFeatures()</span></code> can also split the original dataframe based on
+a categorical variable. The cut-off can then be defined in two ways:</p>
+<ul class="simple">
+<li><p>Using a single string.</p></li>
+<li><p>Using a list of values.</p></li>
+</ul>
+<p>In the first case, the column with the categorical variable is sorted alphabetically and
+the split is determined by the cut-off. We recommend being very careful when using a single
+category as cut-off, because alphabetical sorting in combination with a cut-off does
+not always provide obvious results. In other words, for this way of splitting the data to
+be meaningful, the alphabetical order of the categories in the reference variable should have
+an intrinsic meaning.</p>
+<p>A better purpose for splitting the data based on a categorical variable would be to pass a
+list with the values of the variable that want in the reference dataframe. A real life
+example for this case is the computation of the PSI between different customer segments
+like ‘Retail’, ‘SME’ or ‘Wholesale’. In this case, if we indicate [‘Retail’] as
+cut-off, observations for Retail will be sent to the basis data set, and those for ‘SME’
+and ‘Wholesale’ will be added to the test set.</p>
+<section id="split-passing-a-category-value">
+<h4>Split passing a category value<a class="headerlink" href="#split-passing-a-category-value" title="Permalink to this heading">#</a></h4>
+<p>Let’s show how to set up the transformer in this case. The example data set
+contains 6 randoms variables, a categorical variable with the labels of the
+different categories and 2 category related features.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">seaborn</span> <span class="k">as</span> <span class="nn">sns</span>
+
+<span class="kn">from</span> <span class="nn">sklearn.datasets</span> <span class="kn">import</span> <span class="n">make_classification</span>
+<span class="kn">from</span> <span class="nn">feature_engine.selection</span> <span class="kn">import</span> <span class="n">DropHighPSIFeatures</span>
+
+<span class="n">X</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">make_classification</span><span class="p">(</span>
+    <span class="n">n_samples</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span>
+    <span class="n">n_features</span><span class="o">=</span><span class="mi">6</span><span class="p">,</span>
+    <span class="n">random_state</span><span class="o">=</span><span class="mi">0</span>
+<span class="p">)</span>
+
+<span class="n">colnames</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;var_&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">6</span><span class="p">)]</span>
+<span class="n">X</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="n">colnames</span><span class="p">)</span>
+
+<span class="c1"># Add a categorical column</span>
+<span class="n">X</span><span class="p">[</span><span class="s1">&#39;group&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;A&quot;</span><span class="p">,</span> <span class="s2">&quot;B&quot;</span><span class="p">,</span> <span class="s2">&quot;C&quot;</span><span class="p">,</span> <span class="s2">&quot;D&quot;</span><span class="p">,</span> <span class="s2">&quot;E&quot;</span><span class="p">]</span> <span class="o">*</span> <span class="mi">200</span>
+
+<span class="c1"># And two category related features</span>
+<span class="n">X</span><span class="p">[</span><span class="s1">&#39;group_means&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">X</span><span class="o">.</span><span class="n">group</span><span class="o">.</span><span class="n">map</span><span class="p">({</span><span class="s2">&quot;A&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;B&quot;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span> <span class="s2">&quot;C&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s2">&quot;D&quot;</span><span class="p">:</span> <span class="mf">1.5</span><span class="p">,</span> <span class="s2">&quot;E&quot;</span><span class="p">:</span> <span class="mf">2.5</span><span class="p">})</span>
+<span class="n">X</span><span class="p">[</span><span class="s1">&#39;shifted_feature&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">X</span><span class="p">[</span><span class="s1">&#39;group_means&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="n">X</span><span class="p">[</span><span class="s1">&#39;var_2&#39;</span><span class="p">]</span>
+</pre></div>
+</div>
+<p>We can define a simple cut-off value (for example the letter C). In this case, observations
+with values that come before C, alphabetically, will be allocated to the reference data set.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">transformer</span> <span class="o">=</span> <span class="n">DropHighPSIFeatures</span><span class="p">(</span><span class="n">split_col</span><span class="o">=</span><span class="s1">&#39;group&#39;</span><span class="p">,</span> <span class="n">cut_off</span><span class="o">=</span><span class="s1">&#39;C&#39;</span><span class="p">)</span>
+<span class="n">X_transformed</span> <span class="o">=</span> <span class="n">transformer</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The PSI values are provided in the <code class="docutils literal notranslate"><span class="pre">psi_values_</span></code> attribute.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">transformer</span><span class="o">.</span><span class="n">psi_values_</span>
+
+<span class="p">{</span><span class="s1">&#39;var_0&#39;</span><span class="p">:</span> <span class="mf">0.06485778974895254</span><span class="p">,</span>
+<span class="s1">&#39;var_1&#39;</span><span class="p">:</span> <span class="mf">0.03605540598761757</span><span class="p">,</span>
+<span class="s1">&#39;var_2&#39;</span><span class="p">:</span> <span class="mf">0.040632784917352296</span><span class="p">,</span>
+<span class="s1">&#39;var_3&#39;</span><span class="p">:</span> <span class="mf">0.023845405645510645</span><span class="p">,</span>
+<span class="s1">&#39;var_4&#39;</span><span class="p">:</span> <span class="mf">0.028007185972248064</span><span class="p">,</span>
+<span class="s1">&#39;var_5&#39;</span><span class="p">:</span> <span class="mf">0.07009152672971862</span><span class="p">,</span>
+<span class="s1">&#39;group_means&#39;</span><span class="p">:</span> <span class="mf">6.601444547497699</span><span class="p">,</span>
+<span class="s1">&#39;shifted_feature&#39;</span><span class="p">:</span> <span class="mf">0.48428009522119164</span><span class="p">}</span>
+</pre></div>
+</div>
+<p>From these values we see that the last 2 features should be removed. We can corroborate
+that in the <code class="docutils literal notranslate"><span class="pre">features_to_drop_</span></code> attribute:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">transformer</span><span class="o">.</span><span class="n">features_to_drop_</span>
+
+<span class="p">[</span><span class="s1">&#39;group_means&#39;</span><span class="p">,</span> <span class="s1">&#39;shifted_feature&#39;</span><span class="p">]</span>
+</pre></div>
+</div>
+<p>And these columns are removed from the original dataframe by the transform
+method that, in the present case, has been applied through the fit_transform
+method a couple of block cells above.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">X_transformed</span><span class="o">.</span><span class="n">columns</span>
+
+<span class="n">Index</span><span class="p">([</span><span class="s1">&#39;var_0&#39;</span><span class="p">,</span> <span class="s1">&#39;var_1&#39;</span><span class="p">,</span> <span class="s1">&#39;var_2&#39;</span><span class="p">,</span> <span class="s1">&#39;var_3&#39;</span><span class="p">,</span> <span class="s1">&#39;var_4&#39;</span><span class="p">,</span> <span class="s1">&#39;var_5&#39;</span><span class="p">,</span> <span class="s1">&#39;group&#39;</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="s1">&#39;object&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="split-passing-a-list-of-categories">
+<h4>Split passing a list of categories<a class="headerlink" href="#split-passing-a-list-of-categories" title="Permalink to this heading">#</a></h4>
+<p>Instead of passing a category value, we can instead pass a list of values to the <code class="docutils literal notranslate"><span class="pre">cut_off</span></code>.
+Using the same data set let’s set up the <code class="xref py py-class docutils literal notranslate"><span class="pre">DropHighPSIFeatures()</span></code> to split
+the dataframe according to the list [‘A’, ‘C’, ‘E’] for the categorical variable <em>group</em>.</p>
+<p>In this case, the PSI’s will be computed by comparing two dataframes: the first one
+containing only the values A, C and E for the <em>group</em> variable and the second one containing
+only the values B and D.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">trans</span> <span class="o">=</span> <span class="n">DropHighPSIFeatures</span><span class="p">(</span><span class="n">split_col</span><span class="o">=</span><span class="s1">&#39;group&#39;</span><span class="p">,</span> <span class="n">cut_off</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;A&#39;</span><span class="p">,</span> <span class="s1">&#39;C&#39;</span><span class="p">,</span> <span class="s1">&#39;E&#39;</span><span class="p">])</span>
+<span class="n">X_no_drift</span> <span class="o">=</span> <span class="n">trans</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">trans</span><span class="o">.</span><span class="n">psi_values_</span>
+
+<span class="s1">&#39;var_0&#39;</span><span class="p">:</span> <span class="mf">0.04322345673014104</span><span class="p">,</span>
+<span class="s1">&#39;var_1&#39;</span><span class="p">:</span> <span class="mf">0.03534439253617049</span><span class="p">,</span>
+<span class="s1">&#39;var_2&#39;</span><span class="p">:</span> <span class="mf">0.05220272785661243</span><span class="p">,</span>
+<span class="s1">&#39;var_3&#39;</span><span class="p">:</span> <span class="mf">0.04550964862452317</span><span class="p">,</span>
+<span class="s1">&#39;var_4&#39;</span><span class="p">:</span> <span class="mf">0.04492720670343145</span><span class="p">,</span>
+<span class="s1">&#39;var_5&#39;</span><span class="p">:</span> <span class="mf">0.044886435640028144</span><span class="p">,</span>
+<span class="s1">&#39;group_means&#39;</span><span class="p">:</span> <span class="mf">6.601444547497699</span><span class="p">,</span>
+<span class="s1">&#39;shifted_features&#39;</span><span class="p">:</span> <span class="mf">0.3683642099948127</span><span class="p">}</span>
+</pre></div>
+</div>
+<p>Here again, the object will remove the <em>group_means</em> and the <em>shifted_features</em> columns
+from the dataframe.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">trans</span><span class="o">.</span><span class="n">features_to_drop_</span>
+
+<span class="p">[</span><span class="s1">&#39;group_means&#39;</span><span class="p">,</span> <span class="s1">&#39;shifted_features&#39;</span><span class="p">]</span>
+</pre></div>
+</div>
+<p>And these columns are removed from the original dataframe by the transform
+method that has been applied through the <code class="docutils literal notranslate"><span class="pre">fit_transform</span></code> method.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">X_transformed</span><span class="o">.</span><span class="n">columns</span>
+
+<span class="n">Index</span><span class="p">([</span><span class="s1">&#39;var_0&#39;</span><span class="p">,</span> <span class="s1">&#39;var_1&#39;</span><span class="p">,</span> <span class="s1">&#39;var_2&#39;</span><span class="p">,</span> <span class="s1">&#39;var_3&#39;</span><span class="p">,</span> <span class="s1">&#39;var_4&#39;</span><span class="p">,</span> <span class="s1">&#39;var_5&#39;</span><span class="p">,</span> <span class="s1">&#39;group&#39;</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="s1">&#39;object&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>In the following plots, we can compare the distribution of a feature with high PSI and
+one with low PSI, in the different categories of the categorical variable.</p>
+<p>With this code we plot the cumulative distribution of a feature which distribution is
+different among the different categories of the variable:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">sns</span><span class="o">.</span><span class="n">ecdfplot</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">X</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="s1">&#39;shifted_feature&#39;</span><span class="p">,</span> <span class="n">hue</span><span class="o">=</span><span class="s1">&#39;group&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>With this code we plot the cumulative distribution of a feature which distribution is
+the same across the different categories of the categorical variable:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">sns</span><span class="o">.</span><span class="n">ecdfplot</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">X</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="s1">&#39;var_0&#39;</span><span class="p">,</span> <span class="n">hue</span><span class="o">=</span><span class="s1">&#39;group&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>And below we can compare the plots of both features:</p>
+<img alt="../../_images/PSI_distribution_case4.png" src="../../_images/PSI_distribution_case4.png" />
+</section>
+</section>
+<section id="case-5-split-data-based-on-unique-values-split-distinct">
+<h3>Case 5: split data based on unique values (split_distinct)<a class="headerlink" href="#case-5-split-data-based-on-unique-values-split-distinct" title="Permalink to this heading">#</a></h3>
+<p>A variant to the previous example is the use of the <code class="docutils literal notranslate"><span class="pre">split_distinct</span></code> functionality.
+In this case, the split is not done based on the number observations from
+<code class="docutils literal notranslate"><span class="pre">split_col</span></code> but from the number of distinct values in the reference variable indicated
+in <code class="docutils literal notranslate"><span class="pre">split_col</span></code>.</p>
+<p>A real life example for this case is when dealing with groups of different sizes
+like customers income classes (‘1000’, ‘2000’, ‘3000’, ‘4000’, …).
+Split_distinct allows to control the numbers of classes in the basis and test
+dataframes regardless of the number of observations in each class.</p>
+<p>This case is illustrated in the toy data for this case. The data set contains
+6 random variable and 1 income variable that is larger for one of the 6 group
+defined (the F group).</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">seaborn</span> <span class="k">as</span> <span class="nn">sns</span>
+
+<span class="kn">from</span> <span class="nn">sklearn.datasets</span> <span class="kn">import</span> <span class="n">make_classification</span>
+<span class="kn">from</span> <span class="nn">feature_engine.selection</span> <span class="kn">import</span> <span class="n">DropHighPSIFeatures</span>
+
+<span class="n">X</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">make_classification</span><span class="p">(</span>
+    <span class="n">n_samples</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span>
+    <span class="n">n_features</span><span class="o">=</span><span class="mi">6</span><span class="p">,</span>
+    <span class="n">random_state</span><span class="o">=</span><span class="mi">0</span>
+<span class="p">)</span>
+
+<span class="n">colnames</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;var_&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">6</span><span class="p">)]</span>
+<span class="n">X</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="n">colnames</span><span class="p">)</span>
+
+<span class="c1"># Add a categorical column</span>
+<span class="n">X</span><span class="p">[</span><span class="s1">&#39;group&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;A&quot;</span><span class="p">,</span> <span class="s2">&quot;B&quot;</span><span class="p">,</span> <span class="s2">&quot;C&quot;</span><span class="p">,</span> <span class="s2">&quot;D&quot;</span><span class="p">,</span> <span class="s2">&quot;E&quot;</span><span class="p">]</span> <span class="o">*</span> <span class="mi">100</span> <span class="o">+</span> <span class="p">[</span><span class="s2">&quot;F&quot;</span><span class="p">]</span> <span class="o">*</span> <span class="mi">500</span>
+
+<span class="c1"># And an income variable that is category dependent.</span>
+<span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">X</span><span class="p">[</span><span class="s1">&#39;income&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="mi">1000</span><span class="p">,</span> <span class="mi">2000</span><span class="p">,</span> <span class="mi">500</span><span class="p">)</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span> <span class="o">+</span>
+              <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="mi">1250</span><span class="p">,</span> <span class="mi">2250</span><span class="p">,</span> <span class="mi">500</span><span class="p">)</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
+
+<span class="c1"># Shuffle the dataframe to make the dataset more real life case.</span>
+<span class="n">X</span> <span class="o">=</span> <span class="n">X</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="n">frac</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">drop</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The <code class="docutils literal notranslate"><span class="pre">group</span></code> column contains 500 observations in the (A, B, C, D, E)
+group and 500 in the (F) group.</p>
+<p>When we pass <code class="docutils literal notranslate"><span class="pre">split_distinct=True</span></code> when initializing
+the <code class="docutils literal notranslate"><span class="pre">DropHighPSIFeatures</span></code> object, the two dataframes used to compute the
+PSI will contain the same number of <strong>unique</strong> values in the <code class="docutils literal notranslate"><span class="pre">group</span></code>
+column (i.e., one dataframe will contain 300 rows associated to groups A, B and C
+while the other will contain 700 rows associated to groups D, E and F).</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">transformer</span> <span class="o">=</span> <span class="n">DropHighPSIFeatures</span><span class="p">(</span><span class="n">split_col</span><span class="o">=</span><span class="s1">&#39;group&#39;</span><span class="p">,</span> <span class="n">split_distinct</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">transformer</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+
+<span class="n">transformer</span><span class="o">.</span><span class="n">psi_values_</span>
+</pre></div>
+</div>
+<p>This yields the following PSI values:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="p">{</span><span class="s1">&#39;var_0&#39;</span><span class="p">:</span> <span class="mf">0.014825303242393804</span><span class="p">,</span>
+<span class="s1">&#39;var_1&#39;</span><span class="p">:</span> <span class="mf">0.03818316821350485</span><span class="p">,</span>
+<span class="s1">&#39;var_2&#39;</span><span class="p">:</span> <span class="mf">0.029635981271458896</span><span class="p">,</span>
+<span class="s1">&#39;var_3&#39;</span><span class="p">:</span> <span class="mf">0.021700399485890084</span><span class="p">,</span>
+<span class="s1">&#39;var_4&#39;</span><span class="p">:</span> <span class="mf">0.061194837255216114</span><span class="p">,</span>
+<span class="s1">&#39;var_5&#39;</span><span class="p">:</span> <span class="mf">0.04119583769297253</span><span class="p">,</span>
+<span class="s1">&#39;income&#39;</span><span class="p">:</span> <span class="mf">0.46191580731264914</span><span class="p">}</span>
+</pre></div>
+</div>
+<p>And we can find the feature that will be dropped, income, here:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">transformer</span><span class="o">.</span><span class="n">features_to_drop_</span>
+
+    <span class="p">[</span><span class="s1">&#39;income&#39;</span><span class="p">]</span>
+</pre></div>
+</div>
+<p>The former feature will be removed from the dataset when calling the <code class="docutils literal notranslate"><span class="pre">transform()</span></code> method.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">X_transformed</span> <span class="o">=</span> <span class="n">transformer</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+
+<span class="n">X_transformed</span><span class="o">.</span><span class="n">columns</span>
+
+<span class="n">Index</span><span class="p">([</span><span class="s1">&#39;var_0&#39;</span><span class="p">,</span> <span class="s1">&#39;var_1&#39;</span><span class="p">,</span> <span class="s1">&#39;var_2&#39;</span><span class="p">,</span> <span class="s1">&#39;var_3&#39;</span><span class="p">,</span> <span class="s1">&#39;var_4&#39;</span><span class="p">,</span> <span class="s1">&#39;var_5&#39;</span><span class="p">,</span> <span class="s1">&#39;group&#39;</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="s1">&#39;object&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The difference in distribution between a non-shifted and
+a shifted distribution is clearly visible when plotting the cumulative density
+function for each of the group.</p>
+<p>For the shifted variable (income):</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">sns</span><span class="o">.</span><span class="n">ecdfplot</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">X</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="s1">&#39;income&#39;</span><span class="p">,</span> <span class="n">hue</span><span class="o">=</span><span class="s1">&#39;group&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>and a non-shifted variable (for example <em>var_4</em>)</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">sns</span><span class="o">.</span><span class="n">ecdfplot</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">X</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="s2">&quot;var_4&quot;</span><span class="p">,</span> <span class="n">hue</span><span class="o">=</span><span class="s2">&quot;group&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<img alt="../../_images/PSI_distribution_case5.png" src="../../_images/PSI_distribution_case5.png" />
+</section>
+</section>
+<section id="additional-resources">
+<h2>Additional resources<a class="headerlink" href="#additional-resources" title="Permalink to this heading">#</a></h2>
+<p>In this notebook, we show how to use <code class="xref py py-class docutils literal notranslate"><span class="pre">DropHighPSIFeatures</span></code> on a real dataset and
+give more detail about the underlying base and reference sub-dataframes used to
+determine the PSI.</p>
+<ul class="simple">
+<li><p><a class="reference external" href="https://nbviewer.org/github/feature-engine/feature-engine-examples/blob/main/selection/Drop-High-PSI-Features.ipynb">Jupyter notebook</a></p></li>
+</ul>
+<p>All notebooks can be found in a <a class="reference external" href="https://github.com/feature-engine/feature-engine-examples">dedicated repository</a>.</p>
+<p>For more details about this and other feature selection methods check out these resources:</p>
+<figure class="align-center align-left" id="id1">
+<a class="reference external image-reference" href="https://www.trainindata.com/p/feature-selection-for-machine-learning"><img alt="../../_images/fsml.png" src="../../_images/fsml.png" style="width: 300px;" /></a>
+<figcaption>
+<p><span class="caption-text">Feature Selection for Machine Learning</span><a class="headerlink" href="#id1" title="Permalink to this image">#</a></p>
+</figcaption>
+</figure>
+<div class="line-block">
+<div class="line"><br /></div>
+<div class="line"><br /></div>
+<div class="line"><br /></div>
+<div class="line"><br /></div>
+<div class="line"><br /></div>
+<div class="line"><br /></div>
+<div class="line"><br /></div>
+<div class="line"><br /></div>
+<div class="line"><br /></div>
+<div class="line"><br /></div>
+</div>
+<p>Or read our book:</p>
+<figure class="align-center align-left" id="id2">
+<a class="reference external image-reference" href="https://www.trainindata.com/p/feature-selection-in-machine-learning-book"><img alt="../../_images/fsmlbook.png" src="../../_images/fsmlbook.png" style="width: 200px;" /></a>
+<figcaption>
+<p><span class="caption-text">Feature Selection in Machine Learning</span><a class="headerlink" href="#id2" title="Permalink to this image">#</a></p>
+</figcaption>
+</figure>
+<div class="line-block">
+<div class="line"><br /></div>
+<div class="line"><br /></div>
+<div class="line"><br /></div>
+<div class="line"><br /></div>
+<div class="line"><br /></div>
+<div class="line"><br /></div>
+<div class="line"><br /></div>
+<div class="line"><br /></div>
+<div class="line"><br /></div>
+<div class="line"><br /></div>
+<div class="line"><br /></div>
+<div class="line"><br /></div>
+<div class="line"><br /></div>
+<div class="line"><br /></div>
+</div>
+<p>Both our book and course are suitable for beginners and more advanced data scientists
+alike. By purchasing them you are supporting Sole, the main developer of Feature-engine.</p>
+</section>
+</section>
+
+
+                </article>
+              
+              
+              
+              
+              
+                <footer class="prev-next-footer">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="SelectByTargetMeanPerformance.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">SelectByTargetMeanPerformance</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="SelectByInformationValue.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">SelectByInformationValue</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+  <div class="sidebar-secondary-item">
+
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> On this page
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#population-stability-index-psi">Population Stability Index - PSI</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#important">Important</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#threshold">Threshold</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#procedure">Procedure</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#splitting-the-data">Splitting the data</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#proportion-of-observations">Proportion of observations</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#proportions-of-unique-observations">Proportions of unique observations</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#using-a-cut-off-value">Using a cut-off value</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#split-col">split_col</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#examples">Examples</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#case-1-split-data-based-on-proportions-split-frac">Case 1: split data based on proportions (split_frac)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#case-2-split-data-based-on-variable-numerical-cut-off">Case 2: split data based on variable (numerical cut_off)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#case-3-split-data-based-on-time-date-as-cut-off">Case 3: split data based on time (date as cut_off)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#case-4-split-data-based-on-a-categorical-variable-category-or-list-as-cut-off">Case 4: split data based on a categorical variable (category or list as cut_off)</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#split-passing-a-category-value">Split passing a category value</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#split-passing-a-list-of-categories">Split passing a list of categories</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#case-5-split-data-based-on-unique-values-split-distinct">Case 5: split data based on unique values (split_distinct)</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#additional-resources">Additional resources</a></li>
+</ul>
+  </nav></div>
+
+  <div class="sidebar-secondary-item">
+
+  <div class="tocsection sourcelink">
+    <a href="../../_sources/user_guide/selection/DropHighPSIFeatures.rst.txt">
+      <i class="fa-solid fa-file-lines"></i> Show Source
+    </a>
+  </div>
+</div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../_static/scripts/bootstrap.js?digest=5b4479735964841361fd"></script>
+<script src="../../_static/scripts/pydata-sphinx-theme.js?digest=5b4479735964841361fd"></script>
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+
+  <p class="sphinx-version">
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.1.2.
+    <br/>
+  </p>
+</div>
+      
+    </div>
+  
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item">
+<p class="theme-version">
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.14.4.
+</p></div>
+      
+    </div>
+  
+</div>
+
+  </footer>
+  </body>
+</html>

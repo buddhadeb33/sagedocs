@@ -127,7 +127,7 @@ html_theme_options = {
 # Add any paths that contain custom static files (such as style sheets) here,
 # relative to this directory. They are copied after the builtin static files,
 # so a file named "default.css" will overwrite the builtin "default.css".
-html_static_path = ["_static", '../images']
+html_static_path = ["_static"]
 
 
 # The name for this set of Sphinx documents.  If None, it defaults to
@@ -148,6 +148,11 @@ html_style = "css/custom.css"
 html_css_files = [
     "css/custom.css",
 ]
+
+# Add external font link in the extra_html_head section
+# extra_html_head = [
+#     '<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap">'
+# ]
 
 # If true, "Created using Sphinx" is shown in the HTML footer. Default is True.
 html_show_sphinx = True
@@ -175,47 +180,37 @@ autosummary_generate = True
 # see https://github.com/numpy/numpydoc/issues/69
 numpydoc_show_class_members = False
 
-# -- Options for intersphinx --------------------------------------------------
 
-# intersphinx configuration
-# intersphinx_mapping = {
-#     "python": ("https://docs.python.org/{.major}".format(sys.version_info), None),
-#     # "numpy": ("https://numpy.org/doc/", None),
-#     "pandas": ("https://pandas.pydata.org/docs/", None),
-#     "scipy": ("https://docs.scipy.org/doc/scipy/", None),
-#     # "matplotlib": ("https://matplotlib.org/", None),
-#     "sklearn": ("https://scikit-learn.org/stable/", None),
-# }
 
 # -- Options for LaTeX output ---------------------------------------------
 
-latex_elements = {
-    # The paper size ('letterpaper' or 'a4paper').
-    #
-    # 'papersize': 'letterpaper',
-    # The font size ('10pt', '11pt' or '12pt').
-    #
-    # 'pointsize': '10pt',
-    # Additional stuff for the LaTeX preamble.
-    #
-    # 'preamble': '',
-    # Latex figure (float) alignment
-    #
-    # 'figure_align': 'htbp',
-}
+# latex_elements = {
+#     # The paper size ('letterpaper' or 'a4paper').
+#     #
+#     # 'papersize': 'letterpaper',
+#     # The font size ('10pt', '11pt' or '12pt').
+#     #
+#     # 'pointsize': '10pt',
+#     # Additional stuff for the LaTeX preamble.
+#     #
+#     # 'preamble': '',
+#     # Latex figure (float) alignment
+#     #
+#     # 'figure_align': 'htbp',
+# }
 
 # Grouping the document tree into LaTeX files. List of tuples
 # (source start file, target name, title,
 #  author, documentclass [howto, manual, or own class]).
-latex_documents = [
-    (
-        master_doc,
-        "feature_engine.tex",
-        "feature\\_engine Documentation",
-        "Feature-engine Developers",
-        "manual",
-    ),
-]
+# latex_documents = [
+#     (
+#         master_doc,
+#         "feature_engine.tex",
+#         "feature\\_engine Documentation",
+#         "Feature-engine Developers",
+#         "manual",
+#     ),
+# ]
 
 # -- Options for manual page output ---------------------------------------
 
