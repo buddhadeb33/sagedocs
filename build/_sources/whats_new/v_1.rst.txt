@@ -1,0 +1,12 @@
+Version 1.1.X
+=============
+
+Version 1.1.2
+-------------
+
+Deployed: 31th August 2024
+
+Contributors
+~~~~~~~~~~~~
+
+    - Buddhadeb Mondal
